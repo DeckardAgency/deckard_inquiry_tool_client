@@ -34,6 +34,14 @@
           [attr.aria-label]="'Select ' + prettyMake(v.make) + ' ' + v.model"
           (click)="selectVehicle(v)"
         >
+          <span class="car-card__logo">
+            <img
+              [src]="brandLogoUrl(v.make)"
+              [alt]="prettyMake(v.make) + ' logo'"
+              loading="lazy"
+              onerror="this.style.display='none'"
+            />
+          </span>
           <span class="car-card__make">{{ prettyMake(v.make) }}</span>
           <span class="car-card__model">{{ v.model }}</span>
           <span class="car-card__meta">
@@ -57,6 +65,12 @@
           [attr.aria-label]="'Select module ' + m.label"
           (click)="selectModule(m)"
         >
+          <span class="module-card__icon" [attr.aria-hidden]="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path [attr.d]="moduleIcon(m.code)" />
+            </svg>
+          </span>
           <span class="module-card__label">{{ m.label }}</span>
           <span class="module-card__count">{{ m.partCount }} parts</span>
         </button>

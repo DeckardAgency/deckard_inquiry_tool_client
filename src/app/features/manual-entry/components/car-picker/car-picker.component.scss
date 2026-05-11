@@ -77,6 +77,23 @@
 }
 
 .car-card {
+  padding-top: 12px;
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 56px;
+    margin-bottom: 8px;
+
+    img {
+      max-height: 100%;
+      max-width: 80%;
+      object-fit: contain;
+    }
+  }
+
   &__make {
     font-size: 11px;
     text-transform: uppercase;
@@ -111,6 +128,25 @@
 }
 
 .module-card {
+  align-items: center;
+  text-align: center;
+  padding: 18px 16px;
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 8px;
+    color: #18181b;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
   &__label {
     font-size: 15px;
     font-weight: 600;

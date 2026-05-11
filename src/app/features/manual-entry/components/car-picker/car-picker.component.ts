@@ -69,6 +69,60 @@ export class CarPickerComponent implements OnInit {
   }
 
   /**
+   * Brand logo via the Simple Icons SVG set on jsDelivr (MIT-licensed,
+   * monochrome glyphs). The slug matches the lowercase make.
+   */
+  brandLogoUrl(make: string): string {
+    const slug = make.toLowerCase();
+    if (!CarPickerComponent.SUPPORTED_BRANDS.has(slug)) {
+      return '';
+    }
+    return `https://cdn.jsdelivr.net/npm/simple-icons@13/icons/${slug}.svg`;
+  }
+
+  /** Inline SVG path data for each top-level module. */
+  moduleIcon(code: string): string {
+    return CarPickerComponent.MODULE_ICONS[code] ?? CarPickerComponent.MODULE_ICONS['_default'];
+  }
+
+  private static readonly SUPPORTED_BRANDS = new Set([
+    'toyota',
+    'volkswagen',
+    'mercedes',
+    'bmw',
+    'ford',
+    'renault',
+    'skoda',
+    'audi',
+    'opel',
+    'peugeot',
+  ]);
+
+  /**
+   * Inline SVG path `d` attributes for each module. Drawn into a 24x24
+   * viewBox in the template. Stroke-based icons so they sit well next
+   * to the brand logos in the picker.
+   */
+  private static readonly MODULE_ICONS: Record<string, string> = {
+    cars_engine:
+      'M5 8h14v8H5z M8 8V6h8v2 M8 16v2h8v-2 M3 10h2 M3 14h2 M19 10h2 M19 14h2 M12 8v8',
+    cars_brakes:
+      'M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16z M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M12 2v2 M12 20v2 M2 12h2 M20 12h2',
+    cars_suspension:
+      'M12 3v4 M12 17v4 M8 7l8 0 M8 10l8 0 M8 13l8 0 M8 17l8 0',
+    cars_electrical:
+      'M13 2L4 14h7l-1 8 9-12h-7l1-8z',
+    cars_body:
+      'M3 12l2-5a3 3 0 0 1 2.8-2h8.4a3 3 0 0 1 2.8 2l2 5v5H3v-5z M7 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z M17 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
+    cars_interior:
+      'M7 4h10v4H7z M7 8c0 4 -2 6 -2 10h14c0-4-2-6-2-10 M9 18v3 M15 18v3',
+    cars_transmission:
+      'M7 3v6 M7 15v6 M17 3v6 M17 15v6 M4 9h6 M14 9h6 M4 15h6 M14 15h6 M7 9a3 3 0 0 1 0 6 M17 9a3 3 0 0 1 0 6',
+    _default:
+      'M4 4h16v16H4z',
+  };
+
+  /**
    * Synthesize a Machine the parent can store as the "selected machine"
    * in its existing per-machine parts map. ID is stable per (car, module)
    * so switching back to the same selection preserves entered data.
