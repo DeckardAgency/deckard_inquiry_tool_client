@@ -1,0 +1,321 @@
+// File Upload Container
+.file-upload-container {
+  border: none;
+  border-radius: 0.5rem;
+  background-color: transparent;
+}
+
+// Enhanced Drop Zone Styles
+.file-upload-dropzone {
+  padding: 2.375rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 0.125rem dashed #e2e8f0;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+
+  &.active {
+    background-color: #eff6ff;
+    border-color: #3b82f6;
+    border-style: solid;
+    box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.15);
+    transform: scale(1.01);
+
+    .upload-icon svg {
+      circle, path {
+        stroke: #3b82f6;
+      }
+    }
+
+    .drag-text {
+      color: #1e40af;
+      font-weight: 500;
+    }
+
+    .add-files-btn {
+      background-color: #3b82f6;
+      border-color: #3b82f6;
+    }
+  }
+
+  .add-files-btn {
+    background-color: #27272a;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #18181b;
+      transform: translateY(-0.0625rem);
+    }
+  }
+
+  .drag-text {
+    color: #232323;
+    margin: 0;
+    padding: 0;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.25rem;
+  }
+
+  .file-types {
+    color: #71717A;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+  }
+
+  .upload-icon {
+    cursor: pointer;
+  }
+}
+
+// Uploaded Files List
+.uploaded-files {
+  .file-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0rem 1rem;
+    border-radius: 0.375rem;
+    border: 0.0625rem solid #E4E4E7;
+    background: #FFF;
+    z-index: 4;
+    margin-bottom: 0.625rem;
+    height: 4rem;
+    transition: all 0.2s ease;
+
+    &.file-error {
+      border-radius: 0.375rem;
+      border: 0.0625rem solid #DC2626;
+      background: #ffffff;
+
+      .file-error-message {
+        color: #dc2626;
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+      }
+    }
+
+    &.file-uploading {
+      .upload-progress {
+        opacity: 1;
+        transition: opacity 0.2s ease-in;
+      }
+    }
+  }
+
+  .file-icon {
+    margin-right: 0.75rem;
+
+    &.clickable {
+      cursor: pointer;
+    }
+  }
+
+  .file-info {
+    flex: 1;
+    min-width: 0;
+
+    &.clickable {
+      cursor: pointer;
+    }
+
+    .file-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-size {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .upload-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 4rem;
+      width: 100%;
+      border-radius: 0.375rem;
+      overflow: hidden;
+      z-index: -1;
+
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(0deg, var(--alpha-default-10, rgba(255, 255, 255, 0.90)) 0%, var(--alpha-default-10, rgba(255, 255, 255, 0.90)) 100%), var(--base-success, #237804);
+        transition: width 0.3s ease;
+        border-radius: 0.375rem;
+        min-width: 2%;
+        position: relative;
+        overflow: hidden;
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(
+              90deg,
+              transparent,
+              rgba(255, 255, 255, 0.3),
+              transparent
+          );
+          animation: shimmer 1.5s infinite;
+        }
+      }
+    }
+  }
+
+  .file-actions {
+    display: flex;
+    gap: 0.5rem;
+    position: relative;
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.375rem 0.625rem;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+      border: none;
+      cursor: pointer;
+
+      svg {
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+
+    .cancel-btn {
+      padding: 0.5rem 1.75rem;
+      border-radius: 0.375rem;
+      border: 0.0625rem solid #E4E4E7;
+      background: #ffffff;
+
+      &:hover {
+        background-color: #f8fafc;
+      }
+    }
+
+    .retry-btn {
+      padding: 0.5rem 1.75rem;
+      border-radius: 0.375rem;
+      border: 0.0625rem solid #E4E4E7;
+      background: #ffffff;
+
+      &:hover {
+        background-color: #f8fafc;
+      }
+    }
+
+    .delete-btn {
+      padding: 0.5rem 1.125rem;
+      border-radius: 0.375rem;
+      border: 0.0625rem solid #E4E4E7;
+      background: #ffffff;
+
+      &:hover {
+        background-color: #fee2e2;
+        color: #dc2626;
+      }
+    }
+
+    .edit-btn {
+      padding: 0.5rem 1.875rem;
+      border-radius: 0.375rem;
+      border: 0.0625rem solid #E4E4E7;
+      background: #ffffff;
+
+      &:hover {
+        background-color: #f8fafc;
+      }
+    }
+  }
+}
+
+// Upload Summary
+.upload-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  background: #237804;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%;
+
+  .summary-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #F0FDF4;
+    font-weight: 500;
+
+    &__icon {
+      border-radius: 0.375rem;
+      background: #F0FDF4;
+      width: 2.25rem;
+      height: 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .add-more-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1rem;
+    background-color: white;
+    color: #237804;
+    border-radius: 0.25rem;
+    border: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.9;
+    }
+
+    svg {
+      stroke: #237804;
+    }
+  }
+}
+
+// Shimmer animation for upload progress
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

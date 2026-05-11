@@ -1,0 +1,161 @@
+:host {
+  margin-bottom: 2rem;
+  display: block;
+}
+
+// Shimmer animation
+@keyframes shimmerAnimation {
+  0% {
+    background-position: -62.5rem 0;
+  }
+  100% {
+    background-position: 62.5rem 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(90deg,
+    rgba(244, 244, 245, 0.3) 0%,
+    rgba(244, 244, 245, 0.6) 50%,
+    rgba(244, 244, 245, 0.3) 100%);
+  background-size: 62.5rem 100%;
+  animation: shimmerAnimation 2s infinite linear;
+  border-radius: 0.25rem;
+}
+
+.inquiry-card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 0.375rem;
+  box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+
+  &--shimmer {
+    pointer-events: none;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+
+  &__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    margin-right: 0.75rem;
+    background-color: #f4f4f5;
+  }
+
+  &__id {
+    width: 9.375rem;
+    height: 1.25rem;
+    background-color: #f4f4f5;
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__reference {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+
+    &-icon {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 0.5rem;
+      margin-right: 0.75rem;
+      background-color: #f4f4f5;
+    }
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+  }
+
+  &__details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  &__detail {
+    display: flex;
+    align-items: flex-start;
+    flex: 1;
+    min-width: calc(50% - 0.5rem);
+
+    &-icon {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 0.5rem;
+      margin-right: 0.75rem;
+      background-color: #f4f4f5;
+    }
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+  }
+
+  &__label {
+    width: 80%;
+    height: 0.75rem;
+    margin-bottom: 0.5rem;
+    background-color: #f4f4f5;
+  }
+
+  &__value {
+    width: 60%;
+    height: 1rem;
+    background-color: #f4f4f5;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.25rem;
+  }
+
+  &__status-badge {
+    width: 7.5rem;
+    height: 1.75rem;
+    border-radius: 1rem;
+    background-color: #f4f4f5;
+  }
+
+  &__status-arrow {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background-color: #f4f4f5;
+  }
+}
+
+// Media queries for responsive design
+@media (max-width: 48rem) {
+  .inquiry-card {
+    &__details {
+      flex-direction: column;
+    }
+
+    &__detail {
+      width: 100%;
+    }
+  }
+}

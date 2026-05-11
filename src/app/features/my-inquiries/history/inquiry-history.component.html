@@ -1,0 +1,37 @@
+<div class="inquiries-history">
+  <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+
+  <div class="inquiries-history__header">
+    <h2 class="inquiries-history__title">
+      <app-icon name="fileWarning" size="20px" color="#232323"></app-icon>
+      Activity / History
+    </h2>
+  </div>
+
+  <div class="inquiries-history__body">
+    @if (loading) {
+      <div class="inquiries-history__loading">
+        <div class="inquiries-history__loading-spinner"></div>
+        <p>Loading history...</p>
+      </div>
+    } @else if (error) {
+      <div class="inquiries-history__error">
+        <app-icon name="alertTriangle" size="24px" color="#DC2626"></app-icon>
+        <p>{{ error }}</p>
+        <button (click)="retry()" class="inquiries-history__retry-btn">
+          <app-icon name="refresh" size="16px" color="#ffffff"></app-icon>
+          Try Again
+        </button>
+      </div>
+    } @else {
+      @if (!hasHistoryItems) {
+        <div class="inquiries-history__empty">
+          <app-icon name="inbox" size="32px" color="#71717A"></app-icon>
+          <p>No history items found.</p>
+        </div>
+      } @else {
+        <app-inquiry-table [inquiries]="allHistoryItems" [loading]="loading"></app-inquiry-table>
+      }
+    }
+  </div>
+</div>

@@ -1,0 +1,90 @@
+<div class="image-modal-overlay" (click)="handleClose()">
+  <div class="image-modal-content" (click)="$event.stopPropagation()">
+    <!-- Modal header with image name and edit title -->
+    <div class="image-modal-header">
+      <div class="image-title">
+        <h2>Edit image</h2>
+        <div class="image-filename">{{ imageFileName }}</div>
+      </div>
+      <button class="close-button" (click)="handleClose()">×</button>
+    </div>
+
+    <!-- Toolbar Component -->
+    <app-drawing-toolbar
+      [drawingMode]="drawingMode"
+      [isCropMode]="isCropMode"
+      [currentColor]="currentColor"
+      [fontSize]="fontSize"
+      (drawingModeChange)="onDrawingModeChange($event)"
+      (cropModeToggle)="onCropModeToggle()"
+      (rotateImage)="onRotateImage($event)"
+      (colorChange)="onColorChange($event)"
+      (fontSizeChange)="onFontSizeChange($event)"
+      (undo)="onUndo()"
+      (redo)="onRedo()"
+      (reset)="onReset()">
+    </app-drawing-toolbar>
+
+    <!-- Image Container -->
+    <div class="image-container">
+      <div class="image-wrapper"
+           [class.drawing-active]="drawingMode !== DrawingMode.None"
+           [class.crop-active]="isCropMode"
+           [style.transform]="'rotate(' + imageRotation + 'deg)'">
+
+        <img [src]="imageSrc" [alt]="imageAlt" class="preview-image" #previewImage
+             (load)="onImageLoad()">
+
+        <!-- Annotation overlay -->
+        <canvas #annotationCanvas class="annotation-canvas"
+                [class.active]="drawingMode !== DrawingMode.None || isCropMode"
+                (mousedown)="startDrawing($event)"
+                (mousemove)="draw($event)"
+                (mouseup)="stopDrawing()"
+                (mouseleave)="stopDrawing()"></canvas>
+
+        <!-- Text input overlay (only visible when adding text) -->
+        <div *ngIf="isAddingText" class="text-input-overlay"
+             [style.left.px]="textPosition.x"
+             [style.top.px]="textPosition.y">
+          <input #textInput type="text" [(ngModel)]="currentText"
+                 (keyup.enter)="confirmTextInput()"
+                 (blur)="confirmTextInput()"
+                 class="text-annotation-input"
+                 [style.font-size.px]="fontSize">
+        </div>
+
+        <!-- Crop Tool Component -->
+        <app-crop-tool
+          #cropTool
+          [isActive]="isCropMode"
+          [imageRotation]="imageRotation"
+          (cropApplied)="onCropApplied($event)"
+          (cropCancelled)="onCropCancelled()">
+        </app-crop-tool>
+      </div>
+    </div>
+
+    <!-- Footer with action buttons -->
+    <div class="image-modal-footer">
+      <button class="btn-secondary" (click)="discardChanges()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Discard changes
+      </button>
+
+      <!-- Apply crop button only visible in crop mode -->
+      <button *ngIf="isCropMode && cropTool && cropTool.cropStarted" class="btn-primary" (click)="cropTool.applyCrop()">
+        Apply Crop
+      </button>
+
+      <button class="btn-primary" (click)="saveChanges()">
+        Save
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 9v3a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h3M8 12L16 4M12 4h4v4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>

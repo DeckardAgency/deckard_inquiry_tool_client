@@ -1,0 +1,115 @@
+<div class="client-detail">
+  <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+
+  <!-- Loading -->
+  @if (isLoading) {
+    <div class="client-detail__loading">
+      <div class="client-detail__spinner"></div>
+      <p>Loading client details...</p>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error && !isLoading) {
+    <div class="client-detail__error">
+      <p>{{ error }}</p>
+      <button class="client-detail__back-btn" (click)="goBack()">Back to clients</button>
+    </div>
+  }
+
+  <!-- Content -->
+  @if (!isLoading && !error && client) {
+    <div class="client-detail__header">
+      <div class="client-detail__header-left">
+        <button class="client-detail__back-arrow" (click)="goBack()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 12.667L3.333 8 8 3.333M3.333 8h9.334" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <h1 class="client-detail__title">{{ client.name }}</h1>
+        <span class="client-detail__status"
+              [class.client-detail__status--active]="client.isActive"
+              [class.client-detail__status--inactive]="!client.isActive">
+          {{ getStatusLabel() }}
+        </span>
+      </div>
+      <div class="client-detail__header-actions">
+        <button class="client-detail__action-btn client-detail__action-btn--primary" (click)="createOrder()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.333 1.333h2.667l1.787 8.92a1.333 1.333 0 0 0 1.333 1.08h6.48a1.333 1.333 0 0 0 1.333-1.08L16 4H4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="6" cy="14" r="1" fill="currentColor"/>
+            <circle cx="13.333" cy="14" r="1" fill="currentColor"/>
+          </svg>
+          Create Order
+        </button>
+        <button class="client-detail__action-btn" (click)="createInquiry()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 10v2.667A1.334 1.334 0 0 1 12.667 14H3.333A1.334 1.334 0 0 1 2 12.667V10m9.333-4.667L8 2m0 0L4.667 5.333M8 2v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Create Manual Inquiry
+        </button>
+      </div>
+    </div>
+
+    <div class="client-detail__content">
+      <!-- Company Information -->
+      <div class="client-detail__card">
+        <div class="client-detail__card-header">
+          <h2 class="client-detail__card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            Company Information
+          </h2>
+        </div>
+        <div class="client-detail__card-body">
+          <div class="client-detail__info-grid">
+            <div class="client-detail__info-row">
+              <span class="client-detail__info-label">Company Name</span>
+              <span class="client-detail__info-value">{{ client.name }}</span>
+            </div>
+            <div class="client-detail__info-row">
+              <span class="client-detail__info-label">Company Code</span>
+              <span class="client-detail__info-value client-detail__info-value--code">{{ client.code }}</span>
+            </div>
+            <div class="client-detail__info-row" *ngIf="client.vatNumber">
+              <span class="client-detail__info-label">VAT / OIB Number</span>
+              <span class="client-detail__info-value">{{ client.vatNumber }}</span>
+            </div>
+            <div class="client-detail__info-row" *ngIf="client.email">
+              <span class="client-detail__info-label">Email</span>
+              <span class="client-detail__info-value">
+                <a [href]="'mailto:' + client.email">{{ client.email }}</a>
+              </span>
+            </div>
+            <div class="client-detail__info-row" *ngIf="client.phoneNumber">
+              <span class="client-detail__info-label">Phone</span>
+              <span class="client-detail__info-value">
+                <a [href]="'tel:' + client.phoneNumber">{{ client.phoneNumber }}</a>
+              </span>
+            </div>
+            <div class="client-detail__info-row" *ngIf="client.address">
+              <span class="client-detail__info-label">Address</span>
+              <span class="client-detail__info-value">{{ client.address }}</span>
+            </div>
+            <div class="client-detail__info-row" *ngIf="client.description">
+              <span class="client-detail__info-label">Description</span>
+              <span class="client-detail__info-value">{{ client.description }}</span>
+            </div>
+            <div class="client-detail__info-row">
+              <span class="client-detail__info-label">Status</span>
+              <span class="client-detail__info-value">
+                <span class="client-detail__badge"
+                      [class.client-detail__badge--active]="client.isActive"
+                      [class.client-detail__badge--inactive]="!client.isActive">
+                  {{ getStatusLabel() }}
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

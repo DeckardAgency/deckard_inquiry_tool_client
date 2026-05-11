@@ -1,0 +1,119 @@
+.info-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1px solid #f59e0b;
+    border-radius: 12px;
+    margin: 1rem;
+
+    &__icon {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f59e0b;
+        border-radius: 50%;
+        color: #fff;
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    &__content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__title {
+        margin: 0 0 4px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #92400e;
+    }
+
+    &__message {
+        margin: 0;
+        font-size: 14px;
+        color: #78350f;
+        line-height: 1.5;
+
+        strong {
+            font-weight: 600;
+        }
+    }
+
+    &__actions {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    &__btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        white-space: nowrap;
+
+        &--primary {
+            background: #f59e0b;
+            border: 1px solid #f59e0b;
+            color: #fff;
+
+            &:hover {
+                background: #d97706;
+                border-color: #d97706;
+            }
+        }
+
+        &--secondary {
+            background: #fff;
+            border: 1px solid #d1d5db;
+            color: #374151;
+
+            &:hover {
+                background: #f9fafb;
+            }
+        }
+
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .info-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 16px;
+
+        &__icon {
+            margin: 0 auto;
+        }
+
+        &__actions {
+            width: 100%;
+            justify-content: center;
+        }
+
+        &__btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+}

@@ -1,0 +1,18 @@
+<!-- Crop overlay (only visible when crop mode is active and selection started) -->
+<div *ngIf="isActive && cropStarted"
+     class="crop-overlay"
+     [style.left]="getCropOverlayStyle().left"
+     [style.top]="getCropOverlayStyle().top"
+     [style.width]="getCropOverlayStyle().width"
+     [style.height]="getCropOverlayStyle().height">
+  <div class="crop-handles">
+    <div class="crop-handle top-left"></div>
+    <div class="crop-handle top-right"></div>
+    <div class="crop-handle bottom-left"></div>
+    <div class="crop-handle bottom-right"></div>
+  </div>
+  <!-- Message about keyboard shortcut -->
+  <div *ngIf="cropSelectionFinalized" class="crop-message">
+    Press Enter to apply crop
+  </div>
+</div>

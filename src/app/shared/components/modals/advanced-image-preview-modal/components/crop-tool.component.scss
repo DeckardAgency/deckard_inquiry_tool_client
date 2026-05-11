@@ -1,0 +1,61 @@
+// Crop Tool Styles
+// Extracted from advanced-image-preview-modal.component.scss
+
+.crop-overlay {
+  position: absolute;
+  border: 2px dashed #0d6efd;
+  background-color: rgba(13, 110, 253, 0.1);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.crop-handles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.crop-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #0d6efd;
+  border: 2px solid white;
+  border-radius: 50%;
+
+  &.top-left {
+    top: -5px;
+    left: -5px;
+  }
+
+  &.top-right {
+    top: -5px;
+    right: -5px;
+  }
+
+  &.bottom-left {
+    bottom: -5px;
+    left: -5px;
+  }
+
+  &.bottom-right {
+    bottom: -5px;
+    right: -5px;
+  }
+}
+
+.crop-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  pointer-events: none;
+  white-space: nowrap;
+}

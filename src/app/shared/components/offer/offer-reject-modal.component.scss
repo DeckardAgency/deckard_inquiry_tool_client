@@ -1,0 +1,210 @@
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+    padding: 20px;
+}
+
+.modal {
+    background: #fff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 24px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    &__title {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #111827;
+    }
+
+    &__close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: transparent;
+        border-radius: 6px;
+        cursor: pointer;
+        color: #6b7280;
+        transition: all 0.15s ease;
+
+        &:hover:not(:disabled) {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+
+    &__body {
+        padding: 24px;
+        overflow-y: auto;
+        flex: 1;
+    }
+
+    &__warning {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+        background: #fef3c7;
+        border: 1px solid #fde68a;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    &__warning-icon {
+        flex-shrink: 0;
+        color: #d97706;
+    }
+
+    &__warning-text {
+        margin: 0;
+        font-size: 14px;
+        color: #92400e;
+        line-height: 1.5;
+
+        strong {
+            font-weight: 600;
+        }
+    }
+
+    &__field {
+        margin-bottom: 0;
+    }
+
+    &__field-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 8px;
+    }
+
+    &__required {
+        color: #ef4444;
+    }
+
+    &__textarea {
+        width: calc(100% - 24px);
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #111827;
+        resize: vertical;
+        min-height: 100px;
+        font-family: inherit;
+        transition: border-color 0.15s ease;
+
+        &:focus {
+            outline: none;
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        &::placeholder {
+            color: #9ca3af;
+        }
+
+        &:disabled {
+            background: #f9fafb;
+            cursor: not-allowed;
+        }
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        padding: 16px 24px;
+        border-top: 1px solid #e5e7eb;
+        background: #f9fafb;
+    }
+
+    &__btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+
+        &--cancel {
+            background: #fff;
+            border: 1px solid #d1d5db;
+            color: #374151;
+
+            &:hover:not(:disabled) {
+                background: #f3f4f6;
+            }
+        }
+
+        &--reject {
+            background: #ef4444;
+            border: 1px solid #ef4444;
+            color: #fff;
+
+            &:hover:not(:disabled) {
+                background: #dc2626;
+                border-color: #dc2626;
+            }
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .modal-backdrop {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .modal {
+        max-width: 100%;
+        max-height: 90vh;
+        border-radius: 16px 16px 0 0;
+
+        &__footer {
+            flex-direction: column;
+
+            .modal__btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    }
+}

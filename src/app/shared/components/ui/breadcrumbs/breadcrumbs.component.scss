@@ -1,0 +1,44 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  padding: 1.25rem 1rem;
+  font-family: "Inter", serif;
+
+  &__home {
+    color: #64748b;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      color: #805AD5;
+    }
+  }
+
+  &__separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0.5rem;
+    color: #94a3b8;
+    width: 24px;
+    height: 24px;
+  }
+
+  &__link {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: normal;
+
+    &:hover {
+      color: #805AD5;
+    }
+  }
+
+  &__current {
+    color: #232323;
+    font-weight: 400;
+    font-size: 0.875rem;
+  }
+}

@@ -1,0 +1,25 @@
+<div
+  class="cart-notification"
+  *ngIf="visible"
+  [@slideInOut]
+>
+  <div class="cart-notification__content" [ngClass]="{'cart-notification__content--remove': type === 'remove'}">
+    <div class="cart-notification__message">
+      <h2 class="cart-notification__title">{{ type === 'success' ? 'Success!' : 'Removed!' }}</h2>
+      <p class="cart-notification__text">{{ message }}</p>
+    </div>
+    <div class="cart-notification__actions" *ngIf="type === 'success'">
+      <button
+        class="cart-notification__view-cart"
+        (click)="onViewCart()"
+      >
+        View Cart
+        <span class="icon">
+          <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 12l4-4-4-4" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>

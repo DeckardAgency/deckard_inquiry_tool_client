@@ -1,0 +1,43 @@
+<div class="my-company-page">
+  <!-- Breadcrumbs -->
+  <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+
+  <!-- Page Header -->
+  <div class="my-company-page__header">
+    <h1 class="my-company-page__title">My Company</h1>
+    <p class="my-company-page__subtitle">View and manage your company information</p>
+  </div>
+
+  <!-- Company Content -->
+  <div class="my-company-page__content">
+    <div class="company-card">
+      <div class="company-card__header">
+        <h2 class="company-card__title">Company Information</h2>
+      </div>
+      <div class="company-card__body">
+        @if (currentUser && currentUser.client) {
+          <div class="company-info">
+            <div class="company-info__row">
+              <span class="company-info__label">Company Name:</span>
+              <span class="company-info__value">{{ currentUser.client.name }}</span>
+            </div>
+            <div class="company-info__row">
+              <span class="company-info__label">Company Code:</span>
+              <span class="company-info__value">{{ currentUser.client.code }}</span>
+            </div>
+            <div class="company-info__row">
+              <span class="company-info__label">Status:</span>
+              <span class="company-info__value">
+                <span class="status-badge" [class.status-badge--active]="currentUser.client.isActive" [class.status-badge--inactive]="!currentUser.client.isActive">
+                  {{ currentUser.client.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </span>
+            </div>
+          </div>
+        } @else {
+          <p>No company information available.</p>
+        }
+      </div>
+    </div>
+  </div>
+</div>

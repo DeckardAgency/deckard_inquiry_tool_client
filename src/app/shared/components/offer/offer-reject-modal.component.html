@@ -1,0 +1,54 @@
+<div class="modal-backdrop" *ngIf="isOpen && offer" (click)="onBackdropClick($event)">
+    <div class="modal">
+        <div class="modal__header">
+            <h2 class="modal__title">Reject Offer</h2>
+            <button class="modal__close" (click)="onClose()" [disabled]="saving">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <div class="modal__body">
+            <div class="modal__warning">
+                <div class="modal__warning-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+                <p class="modal__warning-text">
+                    You are about to reject offer <strong>{{ offer.offerNumber }}</strong>.
+                    Deckard will be notified and may send a revised offer.
+                </p>
+            </div>
+
+            <div class="modal__field">
+                <label class="modal__field-label">
+                    Reason for Rejection <span class="modal__required">*</span>
+                </label>
+                <textarea
+                    class="modal__textarea"
+                    [(ngModel)]="rejectionReason"
+                    placeholder="Please explain why you are rejecting this offer (e.g., pricing, quantities, missing items)..."
+                    rows="4"
+                    [disabled]="saving">
+                </textarea>
+            </div>
+        </div>
+
+        <div class="modal__footer">
+            <button class="modal__btn modal__btn--cancel" (click)="onClose()" [disabled]="saving">
+                Cancel
+            </button>
+            <button
+                class="modal__btn modal__btn--reject"
+                (click)="onSubmit()"
+                [disabled]="!isValid || saving">
+                {{ saving ? 'Rejecting...' : 'Confirm Rejection' }}
+            </button>
+        </div>
+    </div>
+</div>

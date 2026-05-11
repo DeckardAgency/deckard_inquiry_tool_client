@@ -1,0 +1,174 @@
+<div class="register-container">
+  <div class="register-card">
+    <!-- Header -->
+    <div class="register-header">
+      <h1>Complete Your Registration</h1>
+      <p class="subtitle">Set your password to activate your account</p>
+    </div>
+
+    <!-- Verifying State -->
+    <div *ngIf="verifying" class="verifying-state">
+      <div class="spinner"></div>
+      <p>Verifying your invitation...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="!verifying && error && !invitation" class="error-state">
+      <div class="error-icon">⚠️</div>
+      <h2>Invitation Error</h2>
+      <p class="error-message">{{ error }}</p>
+      <a href="/login" class="btn btn-secondary">Go to Login</a>
+    </div>
+
+    <!-- Success State -->
+    <div *ngIf="success" class="success-state">
+      <div class="success-icon">✓</div>
+      <h2>Registration Complete!</h2>
+      <p>Your account has been created successfully.</p>
+      <p class="redirect-message">Redirecting you to login...</p>
+    </div>
+
+    <!-- Registration Form -->
+    <div *ngIf="!verifying && !error && invitation && !success" class="register-content">
+      <!-- User Info Display -->
+      <div class="user-info">
+        <div class="info-item">
+          <label>Email</label>
+          <div class="info-value">{{ invitation.email }}</div>
+        </div>
+        <div class="info-item">
+          <label>Name</label>
+          <div class="info-value">{{ invitation.firstName }} {{ invitation.lastName }}</div>
+        </div>
+      </div>
+
+      <!-- Expiration Warning -->
+      <div *ngIf="invitation.isExpired" class="alert alert-danger">
+        <strong>Expired!</strong> This invitation has expired. Please contact your administrator.
+      </div>
+
+      <!-- Registration Form -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" *ngIf="!invitation.isExpired">
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password">Password <span class="required">*</span></label>
+          <div class="password-input-wrapper">
+            <input
+              id="password"
+              [type]="passwordVisible ? 'text' : 'password'"
+              formControlName="password"
+              class="form-control"
+              [class.is-invalid]="hasError('password', 'required') || hasError('password', 'minlength') || hasError('password', 'passwordStrength')"
+              placeholder="Enter your password"
+            />
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="passwordVisible ? 'Hide password' : 'Show password'"
+            >
+              {{ passwordVisible ? '👁️' : '👁️‍🗨️' }}
+            </button>
+          </div>
+
+          <!-- Password Errors -->
+          <div class="invalid-feedback" *ngIf="hasError('password', 'required')">
+            Password is required
+          </div>
+          <div class="invalid-feedback" *ngIf="hasError('password', 'minlength')">
+            Password must be at least 8 characters long
+          </div>
+          <div class="invalid-feedback" *ngIf="hasError('password', 'passwordStrength')">
+            Password must contain uppercase, lowercase, and number
+          </div>
+
+          <!-- Password Strength Indicator -->
+          <div class="password-strength" *ngIf="registerForm.get('password')?.value">
+            <div class="strength-bar">
+              <div
+                class="strength-fill"
+                [class]="getPasswordStrengthClass()"
+                [style.width.%]="getPasswordStrength() * 20"
+              ></div>
+            </div>
+            <span class="strength-label" [class]="getPasswordStrengthClass()">
+              {{ getPasswordStrengthLabel() }}
+            </span>
+          </div>
+
+          <!-- Password Requirements -->
+          <div class="password-requirements">
+            <p class="requirements-title">Password must contain:</p>
+            <ul>
+              <li [class.met]="hasMinimumLength()">
+                At least 8 characters
+              </li>
+              <li [class.met]="hasUpperCase()">
+                One uppercase letter
+              </li>
+              <li [class.met]="hasLowerCase()">
+                One lowercase letter
+              </li>
+              <li [class.met]="hasNumber()">
+                One number
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Password Confirm Field -->
+        <div class="form-group">
+          <label for="passwordConfirm">Confirm Password <span class="required">*</span></label>
+          <div class="password-input-wrapper">
+            <input
+              id="passwordConfirm"
+              [type]="passwordConfirmVisible ? 'text' : 'password'"
+              formControlName="passwordConfirm"
+              class="form-control"
+              [class.is-invalid]="hasError('passwordConfirm', 'required') || hasFormError('passwordMismatch')"
+              placeholder="Re-enter your password"
+            />
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="togglePasswordConfirmVisibility()"
+              [attr.aria-label]="passwordConfirmVisible ? 'Hide password' : 'Show password'"
+            >
+              {{ passwordConfirmVisible ? '👁️' : '👁️‍🗨️' }}
+            </button>
+          </div>
+
+          <!-- Password Confirm Errors -->
+          <div class="invalid-feedback" *ngIf="hasError('passwordConfirm', 'required')">
+            Please confirm your password
+          </div>
+          <div class="invalid-feedback" *ngIf="hasFormError('passwordMismatch')">
+            Passwords do not match
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div class="alert alert-danger" *ngIf="error">
+          {{ error }}
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="btn btn-primary btn-block"
+          [disabled]="registerForm.invalid || loading"
+        >
+          <span *ngIf="!loading">Create Account</span>
+          <span *ngIf="loading">
+            <span class="spinner-small"></span> Creating Account...
+          </span>
+        </button>
+      </form>
+
+      <!-- Footer -->
+      <div class="register-footer">
+        <p>Already have an account? <a href="/login">Sign in</a></p>
+      </div>
+    </div>
+  </div>
+</div>

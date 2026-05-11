@@ -1,0 +1,63 @@
+<div class="inquiry-confirmation">
+
+  <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+
+  <div class="inquiry-confirmation__header"></div>
+  <div class="inquiry-confirmation__body">
+    <div class="confirmation-container">
+      <div class="confirmation-content">
+        <div class="icon-container">
+          <svg viewBox="0 0 24 24" width="64" height="64">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
+            <path d="M7 13l3 3 7-7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+
+        <h2 class="confirmation-title" *ngIf="!isPendingApproval">Thanks for placing your Inquiry.</h2>
+        <h2 class="confirmation-title" *ngIf="isPendingApproval">Your Inquiry has been submitted for approval.</h2>
+
+        <div class="inquiry-details">
+          <p class="inquiry-number" *ngIf="inquiryNumber">Inquiry number: {{ inquiryNumber }}</p>
+          <p class="inquiry-number" *ngIf="inquiryNumber">ERP number: {{ inquiryNumber }}</p>
+
+
+          <!-- Loading state -->
+          <ng-container *ngIf="managerLoading">
+            <p class="area-manager">Loading your Area Manager...</p>
+          </ng-container>
+
+          <!-- Manager loaded successfully -->
+          <ng-container *ngIf="!managerLoading && primaryManager && !isPendingApproval">
+            <p class="area-manager">Your Area Manager: <strong>{{ managerFullName }}</strong> will contact you soon.</p>
+          </ng-container>
+
+          <!-- Fallback when no manager found -->
+          <ng-container *ngIf="!managerLoading && !primaryManager && !isPendingApproval">
+            <p class="area-manager">Your Area Manager will contact you soon</p>
+          </ng-container>
+
+          <!-- Pending approval message -->
+          <ng-container *ngIf="isPendingApproval">
+            <p class="area-manager">Your company administrator will review and approve this inquiry.</p>
+          </ng-container>
+        </div>
+
+      </div>
+
+      <div class="navigation-buttons">
+        <a routerLink="/dashboard" class="btn btn-outline">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <polyline points="15 18 9 12 15 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          Back to Dashboard
+        </a>
+        <a routerLink="/my-inquiries/active" class="btn btn-primary">
+          View active Inquiries
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <polyline points="9 18 15 12 9 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+.cart-notification {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1rem;
+  //transform: translateX(-50%);
+  z-index: 1000;
+  width: 100%;
+  max-width: 24.25rem;
+
+  &__content {
+    background-color: #111111;
+    color: white;
+    border-radius: 0.375rem;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &--remove {
+      background-color: #DC2626; // Red background for removal notification
+    }
+  }
+
+  &__message {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+  }
+
+  &__text {
+    font-size: 0.875rem;
+    font-weight: 300;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+  }
+
+  &__view-cart {
+    background: none;
+    border: 0.0625rem solid var(--base-input, #272727);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+
+    //&:hover {
+    //  background-color: rgba(255, 255, 255, 0.1);
+    //}
+
+    .icon {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    bottom: 1rem;
+    max-width: calc(100% - 2rem);
+
+    &__content {
+      padding: 0.875rem 1rem;
+    }
+  }
+}

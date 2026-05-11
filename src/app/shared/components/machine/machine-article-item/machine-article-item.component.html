@@ -1,0 +1,28 @@
+<!-- src/app/shared/components/machine/machine-article-item/machine-article-item.component.html -->
+<article
+  class="article-item"
+  [class.article-item--selected]="isSelected"
+  [class.article-item--grid]="viewMode === 'grid'"
+  [class.article-item--list]="viewMode === 'list'"
+  (click)="onMachineClick()"
+  @fadeIn
+>
+  <div class="article-item__image">
+    <img
+      [src]="environment.apiBaseUrl + machine.featuredImage?.filePath"
+      [alt]="machine.articleDescription"
+      onerror="this.src='https://via.assets.so/img.jpg?w=130&h=74'"
+      loading="lazy"
+    >
+  </div>
+  <div class="article-item__content">
+    <div class="article-item__header">
+      <span class="article-item__label">Machine ID</span>
+      <h3 class="article-item__name">{{ machine.mcNumber }}</h3>
+    </div>
+    <div class="article-item__machine">
+      <span class="article-item__label">Machine name</span>
+      <p class="article-item__machine-name">{{ machine.articleDescription }}</p>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,114 @@
+<div class="machine-search">
+  <!-- Search Header -->
+  <div class="machine-search__header">
+    <div class="machine-search__title">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <g clip-path="url(#clip0_333_67880)">
+          <path d="M3.66683 5.66683L6.00016 8.00016L3.66683 10.3335L1.3335 8.00016L3.66683 5.66683Z" stroke="#232323" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8.00016 1.3335L10.3335 3.66683L8.00016 6.00016L5.66683 3.66683L8.00016 1.3335Z" stroke="#232323" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12.3335 5.66683L14.6668 8.00016L12.3335 10.3335L10.0002 8.00016L12.3335 5.66683Z" stroke="#232323" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8.00016 10.0002L10.3335 12.3335L8.00016 14.6668L5.66683 12.3335L8.00016 10.0002Z" stroke="#232323" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_333_67880">
+            <rect width="16" height="16" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+      <span>Part 1: </span>
+      <span>Select machine</span>
+    </div>
+
+    <!-- Projected content (e.g. agent client select) -->
+    <ng-content select="[slot=before-search]"></ng-content>
+
+    <!-- Search Input -->
+    <div class="machine-search__search">
+      <span class="material-icons">
+        @if (searchLoading()) {
+          <div class="search-loading-spinner"></div>
+        } @else {
+          <app-icon name="searchInput" size="16px" color="#71717A"></app-icon>
+        }
+      </span>
+      <input
+        type="text"
+        [formControl]="searchControl"
+        placeholder="Filter by machine name"
+        class="machine-search__search-input"
+        [class.search-loading]="searchLoading()"
+      >
+      @if (searchControl.value && searchControl.value.length > 0) {
+        <button class="machine-search__clear" (click)="clearSearch()">
+          <app-icon name="close" size="14px" color="#71717A"></app-icon>
+        </button>
+      }
+    </div>
+
+  </div>
+
+  <!-- Search Error -->
+  @if (searchError()) {
+    <div class="machine-search__search-error">
+      <app-icon name="alert" size="16px" color="#DC2626"></app-icon>
+      {{ searchError() }}
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="machine-search__machines machine-search__machines--list">
+      <app-machine-article-item-shimmer *ngFor="let i of [1,2,3,4,5,6,7,8,9]; trackBy: trackByIndex" [viewMode]="'list'"></app-machine-article-item-shimmer>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error()) {
+    <div class="machine-search__error">{{ error() }}</div>
+  }
+
+  <!-- Machine List -->
+  @if (!loading() && !error()) {
+    <div class="machine-search__machines machine-search__machines--list">
+      @if (filteredMachines().length === 0 && !searchLoading()) {
+        <div class="machine-search__no-results">
+          <p>No machines found</p>
+        </div>
+      } @else {
+        @for (machine of filteredMachines(); track machine.id) {
+          @if (isOtherMachine(machine)) {
+            <!-- "Other" Machine Option -->
+            <div class="machine-other-item"
+                 [class.machine-other-item--selected]="selectedMachineId() === 'other'"
+                 (click)="onOtherMachineClick()">
+              <div class="other-item-content">
+                <div class="other-item-icon">
+                  <app-icon name="addPlus" size="20px" color="#232323"></app-icon>
+                </div>
+                <div class="other-item-text">
+                  <div class="other-item-title">{{ machine.articleDescription }}</div>
+                  <div class="other-item-subtitle">For machines not listed above</div>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <!-- Regular Machine -->
+            <app-machine-article-item
+              [machine]="machine"
+              viewMode="list"
+              [isSelected]="selectedMachineId() === machine.id"
+              (machineSelected)="onMachineClick($event)"
+            ></app-machine-article-item>
+          }
+        }
+      }
+    </div>
+  }
+
+  <!-- Results Count -->
+  @if (!loading() && !error() && totalItems() > 0) {
+    <div class="machine-search__results-count">
+      Showing {{ filteredMachines().length - 1 }} of {{ totalItems() }} machines
+    </div>
+  }
+</div>

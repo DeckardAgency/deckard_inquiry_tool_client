@@ -1,0 +1,99 @@
+<div class="manual-entry">
+  <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+
+  <div class="manual-entry__header">
+    <div class="manual-entry__header-left">
+      <h1 class="manual-entry__title">
+        Manual inquiry
+      </h1>
+    </div>
+
+    <div class="manual-entry__header-right">
+      <div class="manual-entry__controls">
+        <div class="manual-entry__view-controls">
+          <button class="manual-entry__view-btn">
+            <a routerLink="/manual-entry/input-form" routerLinkActive="manual-entry__view-btn--active">
+              <app-icon name="inputForm" size="17px" color="#232323"></app-icon>
+              Use input form
+            </a>
+          </button>
+          <button class="manual-entry__view-btn">
+            <a routerLink="/manual-entry/template" routerLinkActive="manual-entry__view-btn--active">
+              <app-icon name="template" size="17px" color="#232323"></app-icon>
+              Use template
+            </a>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="manual-entry__container">
+    <div class="manual-entry__machines-section"
+         [class.manual-entry__machines-section--details]="selectedMachine">
+
+      <!-- Machine Search Component -->
+      <app-machine-search
+        #machineSearch
+        [restoreSelectedMachineId]="selectedMachine?.id ?? null"
+        (machineSelected)="selectMachine($event)"
+        (otherMachineSelected)="selectOtherMachine()">
+        <div slot="before-search" *ngIf="isAgent" class="manual-entry__agent-client-select">
+          <span class="manual-entry__client-label">Choose client(s):</span>
+          <app-agent-client-select
+            [selectedClients]="selectedAgentClients"
+            (clientSelected)="onAgentClientSelected($event)"
+            (clientDeselected)="onAgentClientDeselected($event)">
+          </app-agent-client-select>
+        </div>
+      </app-machine-search>
+    </div>
+
+    @if (selectedMachine) {
+      <div class="product-details">
+        <div class="manual-entry__details">
+          <div class="manual-entry__details-header">
+            <app-icon name="calculator" size="16px" color="#232323"></app-icon>
+            <h2 class="manual-entry__details-title">Input data</h2>
+          </div>
+
+          <div class="manual-entry__form">
+            <!-- Parts Form Component -->
+            <app-parts-form
+              #partsForm
+              [selectedMachine]="selectedMachine"
+              [isOtherMachine]="isOtherMachineSelected"
+              (partsChanged)="onPartsChanged($event)"
+              (validityChanged)="onValidityChanged($event)"
+              (filePreviewRequested)="openImagePreview($event)">
+            </app-parts-form>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" (click)="closeDetails()">Cancel</button>
+              <button type="button" class="btn btn-primary" [disabled]="!isFormValid()" (click)="onSubmit()">
+                Continue
+                <span>
+                  <app-icon name="continueArrow" size="17px" color="white"></app-icon>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+@if (showImagePreview && previewImageSrc) {
+  <app-advanced-image-preview-modal
+    [imageSrc]="previewImageSrc"
+    [imageAlt]="previewImageAlt"
+    [imageFileName]="previewImageFileName"
+    (closeModal)="closeImagePreview()"
+    (saveImage)="saveEditedImage($event)"
+  ></app-advanced-image-preview-modal>
+}
+
+<!-- Dev Tool: Form Populator (Cmd+T+M to toggle) -->
+<app-form-populator (populate)="onPopulateForm($event)"></app-form-populator>

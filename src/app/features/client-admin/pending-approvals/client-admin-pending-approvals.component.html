@@ -1,0 +1,106 @@
+<div class="client-admin-pending-approvals">
+  <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+
+  <div class="client-admin-pending-approvals__header">
+    <h2 class="client-admin-pending-approvals__title">
+      <app-icon name="clipboardCheck" size="20px" color="#232323"></app-icon>
+      Pending Approvals
+    </h2>
+  </div>
+
+  <div class="client-admin-pending-approvals__body">
+    @if (isLoading) {
+      <div class="client-admin-pending-approvals__loading">
+        <div class="client-admin-pending-approvals__loading-spinner"></div>
+        <p>Loading pending items...</p>
+      </div>
+    } @else if (error) {
+      <div class="client-admin-pending-approvals__empty">
+        <app-icon name="inbox" size="32px" color="#71717A"></app-icon>
+        <p>{{ error }}</p>
+        <button (click)="loadPendingItems()" class="client-admin-pending-approvals__retry-btn">
+          <app-icon name="refresh" size="16px" color="#ffffff"></app-icon>
+          Refresh
+        </button>
+      </div>
+    } @else if (pendingItems.length === 0) {
+      <div class="client-admin-pending-approvals__empty">
+        <app-icon name="inbox" size="32px" color="#71717A"></app-icon>
+        <p>No items pending approval for your organization.</p>
+      </div>
+    } @else {
+      <div class="client-admin-pending-approvals__table-container">
+        <table class="client-admin-pending-approvals__table">
+          <thead>
+          <tr>
+            <th (click)="sortBy('dateCreated')" class="sortable">
+              <span>Date Created</span>
+              <app-icon
+                [name]="sortField === 'dateCreated' ? (sortDirection === 'asc' ? 'chevronUp' : 'chevronDown') : 'chevronUpDown'"
+                size="14px"
+                color="#71717A">
+              </app-icon>
+            </th>
+            <th>Type</th>
+            <th>Reference Number</th>
+            <th (click)="sortBy('customer')" class="sortable">
+              <span>Submitted By</span>
+              <app-icon
+                [name]="sortField === 'customer' ? (sortDirection === 'asc' ? 'chevronUp' : 'chevronDown') : 'chevronUpDown'"
+                size="14px"
+                color="#71717A">
+              </app-icon>
+            </th>
+            <th>Status</th>
+            <th class="actions-column"></th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (item of pendingItems; track item.id) {
+              <tr>
+                <td class="date-cell">{{ item.dateCreated | date: 'dd.MM.yyyy' }}.</td>
+                <td>
+                  <span class="type-badge">
+                    {{ item.type }}
+                  </span>
+                </td>
+                <td class="reference-cell">{{ item.internalReference }}</td>
+                <td class="customer-cell">
+                  <div class="customer-info">
+                    @if (item.customer.avatar) {
+                      <img [src]="item.customer.avatar" [alt]="item.customer.name" class="customer-avatar">
+                    } @else {
+                      <div class="customer-initials">{{ item.customer.initials }}</div>
+                    }
+                    <span class="customer-name">{{ item.customer.name }}</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge status-badge--pending-approval">
+                    Pending Approval
+                  </span>
+                </td>
+                <td class="actions-cell">
+                  <div class="actions">
+                    <button class="action-button action-button--approve" (click)="onApprove(item)" title="Approve">
+                      <app-icon name="check" size="16px" color="#059669"></app-icon>
+                      <span>Approve</span>
+                    </button>
+                    <button class="action-button" (click)="onView(item)" title="View">
+                      <app-icon name="eye" size="16px" color="#18181B"></app-icon>
+                      <span>View</span>
+                    </button>
+                    <button class="action-button" (click)="onDelete(item)" title="Delete">
+                      <app-icon name="trash" size="16px" color="#DC2626"></app-icon>
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

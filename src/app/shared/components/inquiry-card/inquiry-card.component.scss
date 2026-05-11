@@ -1,0 +1,249 @@
+:host {
+  margin-bottom: 3rem;
+  display: block;
+}
+
+.inquiry-card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 0.375rem;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border: 0.0625rem solid #E4E4E7;
+
+  &:hover {
+
+  }
+
+  &__client {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+
+  &__client-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f5;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.375rem;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  &__client-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f5;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    margin-right: 0.75rem;
+  }
+
+  &__id {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #18181b;
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__reference {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+
+    &-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f4f4f5;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 0.5rem;
+      margin-right: 0.75rem;
+    }
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__machine {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+
+    &-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f4f4f5;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 0.5rem;
+      margin-right: 0.75rem;
+    }
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  &__detail {
+    display: flex;
+    align-items: flex-start;
+    flex: 1;
+    min-width: calc(50% - 0.5rem);
+
+    &-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f4f4f5;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 0.5rem;
+      margin-right: 0.75rem;
+    }
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__label {
+    font-size: 0.75rem;
+    color: #71717a;
+    margin-bottom: 0.25rem;
+  }
+
+  &__value {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #18181b;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.25rem;
+  }
+
+  &__status-badge {
+    padding: 0.25rem 0.625rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    color: #ffffff;
+
+    &--submitted {
+      background-color: #3B0075;
+    }
+
+    &--in_review {
+      background-color: #1976d2;
+    }
+
+    &--more_info {
+      background-color: #f59e0b;
+    }
+
+    &--information_provided {
+      background-color: #8b5cf6;
+    }
+
+    &--in_progress {
+      background-color: #AD7F00;
+    }
+
+    &--completed {
+      background-color: #28A745;
+    }
+
+    &--accepted {
+      background-color: #0d9488;
+    }
+
+    &--canceled {
+      background-color: #DC3545;
+    }
+
+    &--dispatched {
+      background-color: #0e3ed7;
+    }
+
+    &--confirmed {
+      background-color: #FFA500;
+    }
+
+    &--pending_approval {
+      background-color: #f59e0b;
+    }
+
+    &--default {
+      background-color: #6C757D;
+    }
+  }
+
+  &__status-arrow {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #f4f4f5;
+    transition: transform 0.2s ease;
+  }
+}
+
+// Media queries for responsive design
+@media (max-width: 48rem) {
+  .inquiry-card {
+    &__details {
+      flex-direction: column;
+    }
+
+    &__detail {
+      width: 100%;
+    }
+  }
+}

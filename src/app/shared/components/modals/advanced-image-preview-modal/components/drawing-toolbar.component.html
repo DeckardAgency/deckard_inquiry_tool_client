@@ -1,0 +1,84 @@
+<div class="image-toolbar">
+  <div class="toolbar-group">
+    <button class="toolbar-button" [class.toolbar-button-active]="drawingMode === DrawingMode.Freehand" title="Freehand Draw" (click)="toggleDrawingMode(DrawingMode.Freehand)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+        <path d="M9.79346 11.8997L17.8635 3.83967C18.1265 3.56812 18.441 3.35162 18.7885 3.20278C19.1361 3.05395 19.5098 2.97575 19.8878 2.97275C20.2659 2.96974 20.6408 3.04199 20.9907 3.18529C21.3405 3.32858 21.6584 3.54006 21.9257 3.8074C22.1931 4.07474 22.4045 4.39261 22.5478 4.74248C22.6911 5.09235 22.7634 5.46723 22.7604 5.8453C22.7574 6.22336 22.6792 6.59705 22.5303 6.9446C22.3815 7.29215 22.165 7.60661 21.8935 7.86967L13.8335 15.9497M7.80342 14.9397C6.14342 14.9397 4.80342 16.2897 4.80342 17.9597C4.80342 19.2897 2.30342 19.4797 2.80342 19.9797C3.88342 21.0797 5.29342 21.9997 6.80342 21.9997C9.00342 21.9997 10.8034 20.1997 10.8034 17.9597C10.8047 17.5644 10.7282 17.1728 10.5781 16.8071C10.4281 16.4414 10.2075 16.1088 9.92889 15.8284C9.65031 15.5479 9.31923 15.3251 8.95454 15.1726C8.58985 15.0202 8.1987 14.941 7.80342 14.9397Z" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button class="toolbar-button" [class.toolbar-button-active]="drawingMode === DrawingMode.Circle" title="Circle" (click)="toggleDrawingMode(DrawingMode.Circle)">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+      </svg>
+    </button>
+
+    <button class="toolbar-button" [class.toolbar-button-active]="drawingMode === DrawingMode.Text" title="Add Text" (click)="toggleDrawingMode(DrawingMode.Text)">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 7V4h16v3M9 20h6M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <!-- Crop button -->
+    <button class="toolbar-button" [class.toolbar-button-active]="isCropMode" title="Crop" (click)="onCropModeToggle()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+        <path d="M6.7334 2V16C6.7334 16.5304 6.94411 17.0391 7.31918 17.4142C7.69426 17.7893 8.20297 18 8.7334 18H22.7334M18.7334 22V8C18.7334 7.46957 18.5227 6.96086 18.1476 6.58579C17.7725 6.21071 17.2638 6 16.7334 6H2.7334" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <!-- Rotate buttons -->
+    <button class="toolbar-button" title="Rotate Left" (click)="onRotateImage(-90)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+        <path d="M21.7334 12C21.7334 13.78 21.2056 15.5201 20.2166 17.0001C19.2277 18.4802 17.8221 19.6337 16.1776 20.3149C14.533 20.9961 12.7234 21.1743 10.9776 20.8271C9.23176 20.4798 7.62811 19.6226 6.36944 18.364C5.11077 17.1053 4.2536 15.5016 3.90633 13.7558C3.55907 12.01 3.7373 10.2004 4.41849 8.55585C5.09968 6.91131 6.25323 5.50571 7.73327 4.51677C9.21331 3.52784 10.9534 3 12.7334 3C15.2534 3 17.6634 4 19.4734 5.74L21.7334 8M21.7334 8L21.7334 3M21.7334 8H16.7334" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button class="toolbar-button" title="Rotate Right" (click)="onRotateImage(90)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+        <path d="M3.7334 12C3.7334 13.78 4.26124 15.5201 5.25017 17.0001C6.2391 18.4802 7.64471 19.6337 9.28925 20.3149C10.9338 20.9961 12.7434 21.1743 14.4892 20.8271C16.235 20.4798 17.8387 19.6226 19.0974 18.364C20.356 17.1053 21.2132 15.5016 21.5605 13.7558C21.9077 12.01 21.7295 10.2004 21.0483 8.55585C20.3671 6.91131 19.2136 5.50571 17.7335 4.51677C16.2535 3.52784 14.5134 3 12.7334 3C10.2174 3.00947 7.80237 3.99122 5.9934 5.74L3.7334 8M3.7334 8V3M3.7334 8H8.7334" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="toolbar-divider"></div>
+
+  <!-- Color picker for annotations -->
+  <div class="toolbar-group">
+    <div class="color-picker-container">
+      <label>Color:</label>
+      <input type="color" [ngModel]="currentColor" (ngModelChange)="onColorChange($event)" class="color-picker">
+    </div>
+  </div>
+
+  <div class="toolbar-divider"></div>
+
+  <!-- Text controls (visible only in text mode) -->
+  <div *ngIf="drawingMode === DrawingMode.Text" class="toolbar-group text-controls">
+    <div class="font-size-control">
+      <label>Font Size:</label>
+      <input type="number" [ngModel]="fontSize" (ngModelChange)="onFontSizeChange($event)" min="10" max="72" step="2" class="font-size-input">
+    </div>
+  </div>
+
+  <div class="toolbar-divider"></div>
+
+  <div class="toolbar-group">
+    <button class="toolbar-button" title="Undo" (click)="onUndo()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+        <path d="M3.7334 7V13M3.7334 13H9.7334M3.7334 13L6.7334 10.3C8.38225 8.82116 10.5185 8.00226 12.7334 8C15.1203 8 17.4095 8.94821 19.0974 10.636C20.7852 12.3239 21.7334 14.6131 21.7334 17" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button class="toolbar-button" title="Redo" (click)="onRedo()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+        <path d="M21.7334 7V13M21.7334 13H15.7334M21.7334 13L18.7334 10.3C17.0845 8.82116 14.9483 8.00226 12.7334 8C10.3465 8 8.05726 8.94821 6.36944 10.636C4.68161 12.3239 3.7334 14.6131 3.7334 17" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button class="toolbar-button" title="Reset" (click)="onReset()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M9 9h6v6H9z" fill="currentColor"/>
+      </svg>
+    </button>
+  </div>
+</div>

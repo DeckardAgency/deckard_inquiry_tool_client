@@ -1,0 +1,108 @@
+<div *ngIf="isOpen" class="modal-overlay" (click)="closeOnBackdrop($event)" [@fadeAnimation]>
+  <div class="modal-container" [@slideAnimation]>
+    <div class="modal-header">
+      <div class="modal-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M4.93 19.07C5.9 20.03 7.25 20.59 8.75 20.59H15.25C16.75 20.59 18.1 20.03 19.07 19.07C20.03 18.1 20.59 16.75 20.59 15.25V8.75C20.59 7.25 20.03 5.9 19.07 4.93C18.1 3.97 16.75 3.41 15.25 3.41H8.75C7.25 3.41 5.9 3.97 4.93 4.93C3.97 5.9 3.41 7.25 3.41 8.75V15.25C3.41 16.75 3.97 18.1 4.93 19.07Z" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9 9.41L15 15.41M15 9.41L9 15.41" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Contact Service area manager
+      </div>
+      <button class="modal-close" (click)="close()">
+        <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-content">
+      <form (ngSubmit)="submitForm()" #supportForm="ngForm">
+        <div class="form-group">
+          <label for="subject">Subject <span class="required">(Required)</span></label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            [(ngModel)]="formData.subject"
+            required
+            placeholder="Summarize your inquiry in one or two sentences."
+            class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message <span class="required">(Required)</span></label>
+          <textarea
+            id="message"
+            name="message"
+            [(ngModel)]="formData.message"
+            required
+            placeholder="Enter your message here. Include any relevant details, questions, or requests."
+            class="form-control form-textarea"
+            rows="5"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="orderId">Order/Inquiry ID <span class="optional">(Optional)</span></label>
+          <input
+            type="text"
+            id="orderId"
+            name="orderId"
+            [(ngModel)]="formData.orderId"
+            placeholder="Summarize your inquiry in one or two sentences."
+            class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="machine">Machine/Part <span class="optional">(Optional)</span></label>
+          <input
+            type="text"
+            id="machine"
+            name="machine"
+            [(ngModel)]="formData.machine"
+            placeholder="Summarize your inquiry in one or two sentences."
+            class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="attachment">Attachment <span class="optional">(Optional)</span></label>
+          <div class="file-input-wrapper">
+            <label for="fileUpload" class="custom-file-upload">
+              Choose file
+            </label>
+            <input
+              type="file"
+              id="fileUpload"
+              name="fileUpload"
+              (change)="onFileSelected($event)"
+              class="file-input">
+            <span class="file-name">{{ fileName }}</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="urgency">Urgency</label>
+          <div class="select-wrapper">
+            <select
+              id="urgency"
+              name="urgency"
+              [(ngModel)]="formData.urgency"
+              class="form-control">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="!supportForm.valid || isSubmitting" class="submit-button">
+          <span *ngIf="!isSubmitting">Send message</span>
+          <span *ngIf="isSubmitting">Sending...</span>
+          <svg *ngIf="!isSubmitting" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M10.0003 18.3334C14.6027 18.3334 18.3337 14.6024 18.3337 10C18.3337 5.39765 14.6027 1.66669 10.0003 1.66669C5.39795 1.66669 1.66699 5.39765 1.66699 10C1.66699 14.6024 5.39795 18.3334 10.0003 18.3334Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10 13.3333L13.3333 10M13.3333 10L10 6.66666M13.3333 10H6.66667" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

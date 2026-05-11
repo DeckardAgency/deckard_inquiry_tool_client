@@ -1,0 +1,351 @@
+<!-- src/app/shop/shop.component.html -->
+<div class="shop">
+  <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+
+  @if (!(viewMode === 'grid' && selectedProduct)) {
+    <div class="shop__header">
+      <div class="shop__header-left">
+        <h1 class="shop__title">Available parts
+          <span class="shop__title--total-items" *ngIf="!loading">{{ filteredProducts.length }}</span>
+          <span class="shop__title--total-items shimmer-effect" *ngIf="loading"></span>
+        </h1>
+      </div>
+
+      <div class="shop__header-right">
+        <!-- Cart client badges for agents -->
+        <div class="shop__cart-badges" *ngIf="isAgent && cartClientBadges.length > 0">
+          <div class="shop__cart-badge-wrapper" *ngFor="let badge of cartClientBadges">
+            <div class="shop__cart-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="8.5" cy="7" r="4"></circle>
+              </svg>
+              <span class="shop__cart-badge-name">{{ badge.clientName }}</span>
+              <span class="shop__cart-badge-count">{{ badge.itemCount }}</span>
+            </div>
+            <!-- Hover tooltip with product list -->
+            <div class="shop__cart-badge-tooltip">
+              <div class="shop__cart-badge-tooltip-header">{{ badge.clientName }}</div>
+              <div class="shop__cart-badge-tooltip-item" *ngFor="let item of badge.items">
+                <span class="shop__cart-badge-tooltip-partno">{{ item.partNo }}</span>
+                <span class="shop__cart-badge-tooltip-desc">{{ item.shortDescription }}</span>
+                <span class="shop__cart-badge-tooltip-qty">x{{ item.quantity }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shop__controls">
+          <div class="shop__view-controls">
+            <button
+              class="shop__view-btn"
+              [class.active]="viewMode === 'grid'"
+              (click)="viewMode = 'grid'; closeDetails()"
+            >
+            <span class="material-icons">
+              <app-icon name="grid" size="16px" color="#232323"></app-icon>
+            </span>
+              Grid view
+            </button>
+            <button
+              class="shop__view-btn"
+              [class.active]="viewMode === 'list'"
+              (click)="viewMode = 'list'; closeDetails()"
+            >
+            <span class="material-icons">
+              <app-icon name="list" size="16px" color="#232323"></app-icon>
+            </span>
+              List view
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Grid View with Full Page Details -->
+  @if (viewMode === 'grid' && selectedProduct) {
+    <div class="shop__details shop__details--full">
+      <div class="shop__details-header">
+        <button class="shop__back-btn" (click)="closeDetails()">
+          <span class="material-icons">
+            <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 12 6 8l4-4" stroke="#232323" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M21 9.9999V7.9999C20.9996 7.64918 20.9071 7.30471 20.7315 7.00106C20.556 6.69742 20.3037 6.44526 20 6.2699L13 2.2699C12.696 2.09437 12.3511 2.00195 12 2.00195C11.6489 2.00195 11.304 2.09437 11 2.2699L4 6.2699C3.69626 6.44526 3.44398 6.69742 3.26846 7.00106C3.09294 7.30471 3.00036 7.64918 3 7.9999V15.9999C3.00036 16.3506 3.09294 16.6951 3.26846 16.9987C3.44398 17.3024 3.69626 17.5545 4 17.7299L11 21.7299C11.304 21.9054 11.6489 21.9979 12 21.9979C12.3511 21.9979 12.696 21.9054 13 21.7299L15 20.5899M7.5 4.27002L16.5 9.42002M3.29004 7L12 12M12 12L20.71 7M12 12L12 22M20.27 17.27L22 19M21 15.5C21 16.8807 19.8807 18 18.5 18C17.1193 18 16 16.8807 16 15.5C16 14.1193 17.1193 13 18.5 13C19.8807 13 21 14.1193 21 15.5Z" stroke="#232323" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h2 class="shop__details-title">Part details</h2>
+        <button class="shop__wishlist-btn">
+          <span class="material-icons">
+            <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.333 8h9.334M8 3.333v9.334" stroke="#232323" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Add to Wishlist
+        </button>
+      </div>
+
+      <div class="shop__details-content">
+        @if (isProductDetailsLoading) {
+          <div class="shop__details-part shimmer-container">
+            <div class="shop__details-image shimmer-effect"></div>
+            <div class="shop__details-info">
+              <div class="shop__details-specs">
+                <div class="shop__spec-item shimmer-effect" *ngFor="let i of [1,2,3]; trackBy: trackByIndex"></div>
+              </div>
+              <div class="shop__details-name shimmer-effect"></div>
+              <div class="shop__details-description shimmer-effect"></div>
+              <div class="shop__details-price shimmer-effect"></div>
+              <div class="shop__details-machine shimmer-effect"></div>
+              <div class="shop__details-tech shimmer-effect"></div>
+              <div class="shop__details-actions">
+                <div class="shop__quantity shimmer-effect"></div>
+                <div class="shop__add-cart shimmer-effect"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="shop__related">
+            <h3 class="shop__related-title shimmer-effect"></h3>
+            <div class="shop__related-grid">
+              <div class="related-product-shimmer shimmer-effect" *ngFor="let i of [1,2,3,4]; trackBy: trackByIndex"></div>
+            </div>
+          </div>
+        } @else {
+          <div class="shop__details-part">
+            <div class="shop__details-image">
+              <img
+                [src]="environment.apiBaseUrl + selectedProduct.featuredImage?.filePath"
+                [alt]="selectedProduct.name"
+                onerror="this.src='https://via.assets.so/img.jpg?w=600&h=400'"
+                loading="lazy"
+              >
+            </div>
+            <div class="shop__details-info">
+              <div class="shop__details-specs">
+                <div class="shop__spec-item">
+            <span class="material-icons">
+              <app-icon name="tag" size="20px" color="#71717A"></app-icon>
+            </span>
+                  <div class="shop__spec-content">
+                    <span class="shop__spec-label">Part no.</span>
+                    <span class="shop__spec-value">{{ selectedProduct.partNo }}</span>
+                  </div>
+                </div>
+                <div class="shop__spec-item">
+            <span class="material-icons">
+              <app-icon name="analytics" size="20px" color="#71717A"></app-icon>
+            </span>
+                  <div class="shop__spec-content">
+                    <span class="shop__spec-label">Statistic</span>
+                    <span class="shop__spec-value">ET</span>
+                  </div>
+                </div>
+                <div class="shop__spec-item">
+            <span class="material-icons">
+              <app-icon name="scale" size="20px" color="#71717A"></app-icon>
+            </span>
+                  <div class="shop__spec-content">
+                    <span class="shop__spec-label">Weight</span>
+                    <span class="shop__spec-value">0.4 kg</span>
+                  </div>
+                </div>
+              </div>
+
+              <h1 class="shop__details-name">{{ selectedProduct.shortDescription }}</h1>
+
+              <div class="shop__details-price" *ngIf="selectedProduct.clientPrice > 0">
+                <span class="shop__original-price">€ {{ selectedProduct.clientPrice }}</span>
+<!--                <span class="shop__discount">-20%</span>-->
+<!--                <span class="shop__final-price">€ {{ selectedProduct.clientPrice * 0.8 | number:'1.2-2' }}</span>-->
+              </div>
+
+              <div class="shop__details-machine">
+                <span class="material-icons">
+                  <app-icon name="precision_manufacturing" size="20px" color="#71717A"></app-icon>
+                </span>
+                <div class="shop__machine-info">
+                  <span class="shop__machine-label">Machine</span>
+                  <span class="shop__machine-value">{{ selectedProduct.machineText }}</span>
+                </div>
+              </div>
+
+<!--              <div class="shop__details-tech">-->
+<!--                <span class="material-icons">-->
+<!--                  <app-icon name="settings" size="20px" color="#71717A"></app-icon>-->
+<!--                </span>-->
+<!--                <div class="shop__tech-info">-->
+<!--                  <span class="shop__tech-label">Technical description</span>-->
+<!--                  <span class="shop__tech-value">{{ selectedProduct.technicalDescription }}</span>-->
+<!--                </div>-->
+<!--              </div>-->
+
+              <div class="shop__details-actions">
+                <div class="shop__quantity">
+                  <button class="shop__quantity-btn" (click)="decrementQuantity()">−</button>
+                  <input type="number" [formControl]="quantityControl" class="shop__quantity-input">
+                  <button class="shop__quantity-btn" (click)="incrementQuantity()">+</button>
+                </div>
+                <button class="shop__add-cart" (click)="addSelectedProductToCart()">
+                  Add to Cart
+                  <span class="material-icons">
+              <app-icon name="arrowRight" size="18px" color="#FFFFFF"></app-icon>
+            </span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="shop__related">
+            <h3 class="shop__related-title">Related parts</h3>
+            <div class="shop__related-grid">
+              @for (product of relatedProducts; track product.id) {
+                <app-article-item
+                  [product]="product"
+                  viewMode="grid"
+                  (productSelected)="selectProduct($event)"
+                ></app-article-item>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Normal List/Grid View -->
+  @if (!selectedProduct || viewMode === 'list') {
+    <div class="shop__container"
+         [class.shop__container--list]="viewMode === 'list'"
+         [class.shop__container--grid-details]="viewMode === 'grid' && selectedProduct">
+
+      <div class="shop__products-section"
+           [class.shop__products-section--details]="selectedProduct"
+           [class.shop__products-section--hidden]="viewMode === 'grid' && selectedProduct">
+
+        @if (!(viewMode === 'grid' && selectedProduct)) {
+          <div class="shop__filters">
+            <div class="shop__agent-client-select" *ngIf="isAgent">
+              <span class="shop__client-label">Choose client(s):</span>
+              <app-agent-client-select
+                [selectedClients]="selectedAgentClients"
+                (clientSelected)="onAgentClientSelected($event)"
+                (clientDeselected)="onAgentClientDeselected($event)">
+              </app-agent-client-select>
+            </div>
+
+            <div class="shop__search">
+        <span class="material-icons">
+          <app-icon name="magnifier" size="16px" color="#71717A"></app-icon>
+        </span>
+              <input
+                type="text"
+                [formControl]="searchControl"
+                placeholder="Filter by part number/part name"
+                class="shop__search-input"
+              >
+            </div>
+
+<!--            <div class="shop__machine-filter">-->
+<!--              <button class="shop__filter-btn" (click)="toggleFilter()">-->
+<!--                <span class="material-icons">-->
+<!--                  <app-icon name="filter" size="16px" color="#232323 "></app-icon>-->
+<!--                </span>-->
+<!--                Filter by machine-->
+<!--                <app-icon name="arrowDown" size="16px" color="#232323 "></app-icon>-->
+<!--              </button>-->
+
+<!--              @if (isFilterOpen) {-->
+<!--                <div class="shop__filter-dropdown">-->
+<!--                  @for (machine of machines; track machine.id) {-->
+<!--                    <label class="shop__filter-option">-->
+<!--                      <input-->
+<!--                        type="checkbox"-->
+<!--                        [checked]="machine.checked"-->
+<!--                        (change)="toggleMachine(machine)"-->
+<!--                      >-->
+<!--                      <span class="shop__filter-checkbox"></span>-->
+<!--                      <span class="shop__filter-label">{{ machine.name }}</span>-->
+<!--                    </label>-->
+<!--                  }-->
+<!--                </div>-->
+<!--              }-->
+
+<!--            </div>-->
+          </div>
+        }
+
+        @if (activeFilters.length > 0) {
+          <div class="shop__active-filters">
+            <span>Active filters:</span>
+            @for (filter of activeFilters; track filter) {
+              <div class="shop__filter-tag">
+                {{ filter }}
+                <button class="shop__filter-remove" (click)="removeFilter(filter)">
+                  <span class="material-icons">
+                    <app-icon name="close" size="16px" color="#71717A  "></app-icon>
+                  </span>
+                </button>
+              </div>
+            }
+          </div>
+        }
+
+        @if (loading) {
+          <div class="shop__products shop__products--list">
+            <app-article-item-shimmer *ngFor="let i of [1,2,3,4,5,6,7,8,9]; trackBy: trackByIndex"></app-article-item-shimmer>
+          </div>
+        }
+
+        @if (error) {
+          <div class="shop__error">{{ error }}</div>
+        }
+
+        @if (!loading && !error) {
+          <div
+            class="shop__products"
+            [class.shop__products--grid]="viewMode === 'grid'"
+            [class.shop__products--list]="viewMode === 'list'"
+          >
+            @for (product of filteredProducts; track product.id) {
+              <app-article-item
+                [product]="product"
+                [viewMode]="viewMode"
+                [isSelected]="selectedProduct?.id === product.id"
+                (productSelected)="selectProduct($event)"
+              ></app-article-item>
+            }
+          </div>
+        }
+      </div>
+
+      @if (selectedProduct && viewMode === 'list') {
+        <div class="product-details">
+          <div class="shop__details">
+            <div class="shop__details-header">
+              <button class="shop__back-btn" (click)="closeDetails()">
+                  <span class="material-icons">
+                    <app-icon name="packageSearch" size="24px" color="#232323"></app-icon>
+                  </span>
+              </button>
+              <h2 class="shop__details-title">Part details</h2>
+              <button class="shop__wishlist-btn">
+                  <span class="material-icons">
+                    <app-icon name="plus" size="16px" color="#232323"></app-icon>
+                  </span>
+                Add to Wishlist
+              </button>
+            </div>
+          </div>
+
+          <div>
+            @if (isListProductDetailsLoading) {
+              <app-product-card-shimmer></app-product-card-shimmer>
+            } @else if (selectedProduct) {
+              <app-product-card [product]="selectedProduct"></app-product-card>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

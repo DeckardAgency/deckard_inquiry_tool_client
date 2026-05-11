@@ -1,0 +1,904 @@
+$color-primary: #4f46e5;
+$color-gray-50: #f9fafb;
+$color-gray-100: #f3f4f6;
+$color-gray-200: #e5e7eb;
+$color-gray-300: #d1d5db;
+$color-gray-400: #9ca3af;
+$color-gray-500: #6b7280;
+$color-gray-600: #4b5563;
+$color-gray-700: #374151;
+$color-gray-800: #1f2937;
+$color-gray-900: #111827;
+$color-white: #ffffff;
+$color-red: #DC3545;
+$color-green: #28A745;
+$color-purple: #3B0075;
+$color-amber: #FFA500;
+
+.inquiry-detail {
+  margin: 0 auto;
+  color: $color-gray-800;
+
+  // Header styles
+  &__header {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    border-top: 0.0625rem solid #E4E4E7;
+  }
+
+  &__header-top {
+    margin-bottom: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__header-bottom {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #F9FAFB;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__info-group {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+
+    &--left {
+      flex: 1;
+    }
+
+    &--right {
+      flex-shrink: 0;
+    }
+  }
+
+  &__info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  &__info-label {
+    color: #71717A;
+    font-weight: 400;
+  }
+
+  &__info-value {
+    color: #232323;
+    font-weight: 400;
+  }
+
+  &__back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    cursor: pointer;
+    margin-right: 0.75rem;
+    border-radius: 0.375rem;
+    border: 0.0625rem solid #E4E4E7;
+    background: #FFF;
+
+    &:hover {
+      background-color: $color-gray-100;
+    }
+  }
+
+  &__title-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  &__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 1rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__badges {
+    display: flex;
+    gap: 0.625rem;
+  }
+
+  &__badge {
+    padding: 0.25rem 0.625rem;
+    border-radius: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: $color-gray-200;
+    color: $color-gray-700;
+    text-transform: capitalize;
+
+    &--manual {
+      background-color: $color-gray-700;
+      color: $color-white;
+    }
+
+    &--shop {
+      background-color: $color-gray-700;
+      color: $color-white;
+    }
+
+    &--submitted {
+      background-color: $color-purple;
+      color: $color-white;
+    }
+
+    &--confirmed {
+      background-color: $color-amber;
+      color: $color-white;
+    }
+
+    &--dispatched {
+      background-color: #28A745;
+      color: $color-white;
+    }
+
+    &--completed {
+      background-color: $color-green;
+      color: $color-white;
+    }
+
+    &--accepted {
+      background-color: #0d9488;
+      color: $color-white;
+    }
+
+    &--pending_approval {
+      background-color: #f59e0b;
+      color: $color-white;
+    }
+
+    &--canceled,
+    &--cancelled {
+      background-color: $color-red;
+      color: $color-white;
+    }
+
+    &--draft {
+      background-color: $color-gray-400;
+      color: $color-white;
+    }
+
+    &--processing {
+      background-color: $color-amber;
+      color: $color-white;
+    }
+
+    &--in_review {
+      background-color: #1976d2;
+      color: $color-white;
+    }
+
+    &--more_info {
+      background-color: #f59e0b;
+      color: $color-white;
+    }
+
+    &--information_provided {
+      background-color: #8b5cf6;
+      color: $color-white;
+    }
+
+    &--in_progress {
+      background-color: #AD7F00;
+      color: $color-white;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: $color-white;
+    border: 0.0625rem solid $color-gray-300;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $color-gray-700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: $color-gray-50;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  &__content {
+    // Container for main content area
+  }
+
+  // Info History Section (shown when there are completed requests but no pending)
+  &__info-history {
+    margin: 1rem;
+    padding: 1rem;
+    background-color: #f0f9ff;
+    border: 0.0625rem solid #bae6fd;
+    border-radius: 0.5rem;
+  }
+
+  &__info-history-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__info-history-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: #e0f2fe;
+    border-radius: 50%;
+    color: #0284c7;
+  }
+
+  &__info-history-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__info-history-title {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: #0c4a6e;
+  }
+
+  &__info-history-description {
+    font-size: 0.875rem;
+    color: #0369a1;
+  }
+
+  &__info-history-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1rem;
+    background-color: #0284c7;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #0369a1;
+    }
+
+    svg {
+      flex-shrink: 0;
+    }
+  }
+
+  &__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    gap: 1rem;
+  }
+
+  &__spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 0.1875rem solid $color-gray-200;
+    border-top-color: $color-primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  &__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    gap: 1rem;
+    color: $color-red;
+  }
+
+  &__retry-button {
+    padding: 0.5rem 1rem;
+    background-color: $color-primary;
+    color: $color-white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-weight: 500;
+
+    &:hover {
+      background-color: color-mix(in srgb, $color-primary 90%, black);
+    }
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // Offers section
+  &__offers-section {
+    padding: 1rem;
+    border-top: 0.0625rem solid #E4E4E7;
+  }
+
+  &__offers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__offer-card {
+    border: 0.0625rem solid #E4E4E7;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background: #fff;
+    transition: border-color 0.2s;
+
+    &:hover {
+      border-color: #d1d5db;
+    }
+  }
+
+  &__offer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  &__offer-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__offer-number {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: #111827;
+  }
+
+  &__offer-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.75rem;
+    font-size: 0.6875rem;
+    font-weight: 500;
+  }
+
+  &__offer-date {
+    font-size: 0.8125rem;
+    color: #6b7280;
+  }
+
+  &__offer-details {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__offer-items {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  &__offer-amount {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  &__offer-rejection {
+    font-size: 0.8125rem;
+    color: #991b1b;
+    background: #fef2f2;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+
+    strong {
+      font-weight: 600;
+    }
+  }
+
+  &__offer-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__offer-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #374151;
+    background: #fff;
+    border: 0.0625rem solid #d1d5db;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: #f3f4f6;
+    }
+  }
+
+  // Products section (below offers section)
+  &__products-section {
+    padding: 1rem;
+    border-top: 0.0625rem solid #E4E4E7;
+  }
+
+  &__section-title {
+    font-size: 1.125rem;
+    line-height: 100%;
+    font-weight: 500;
+    margin: 0 0 1rem 0;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+
+  &__empty-state {
+    padding: 3rem;
+    text-align: center;
+    color: #71717A;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    border: 0.0625rem solid #E4E4E7;
+  }
+
+  // Machine section styles
+  &__machine {
+    border: 0.0625rem solid #E4E4E7;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__machine-header {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: $color-gray-50;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color-gray-100;
+    }
+  }
+
+  &__machine-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__machine-name {
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+
+  &__machine-number {
+    font-size: 0.75rem;
+    color: $color-gray-500;
+  }
+
+  &__machine-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+
+    &--open {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__machine-content {
+    border-top: 0.0625rem solid #E4E4E7;
+  }
+
+  &__machine-notes {
+    padding: 0.75rem 1rem;
+    background-color: #fef3c7;
+    border-left: 0.1875rem solid $color-amber;
+    font-size: 0.875rem;
+    margin-bottom: 0;
+
+    strong {
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+  }
+
+  &__machine-files {
+    padding: 1rem;
+    background-color: $color-gray-50;
+    border-bottom: 0.0625rem solid #E4E4E7;
+  }
+
+  &__machine-files-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $color-gray-700;
+    margin: 0 0 0.75rem 0;
+  }
+
+  &__files-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__products-table {
+    border-radius: 0.375rem;
+    overflow: hidden;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead {
+      background-color: #ffffff;
+    }
+
+    tbody {
+      background-color: transparent;
+    }
+  }
+
+  &__table-header {
+    padding: 1rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #232323;
+    border-bottom: 0.0625rem solid #E4E4E7;
+
+    &:last-child {
+      text-align: left;
+    }
+  }
+
+  &__table-row {
+    background-color: transparent !important;
+
+    &:not(:last-child) {
+      border-bottom: 0.0625rem solid #E4E4E7;
+    }
+
+    &:hover {
+      background-color: #F9FAFB;
+    }
+  }
+
+  &__table-cell {
+    padding: 1rem;
+    font-size: 0.875rem;
+    color: #232323;
+    background-color: transparent;
+
+    &:last-child {
+      text-align: left;
+    }
+  }
+
+  // File attachment styles
+  &__files {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__file-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background-color: $color-gray-50;
+    border: 0.0625rem solid $color-gray-200;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: $color-gray-100;
+    }
+  }
+
+  &__file-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__file-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__file-name {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: $color-gray-700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__file-download {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: $color-gray-200;
+    }
+
+    &:active {
+      background-color: $color-gray-300;
+    }
+  }
+
+  // Responsive styles
+  @media (max-width: 62rem) {
+    &__header {
+      gap: 1rem;
+    }
+
+    &__header-top {
+      flex-wrap: wrap;
+    }
+
+    &__actions {
+      width: 100%;
+      justify-content: flex-end;
+    }
+  }
+
+  @media (max-width: 48rem) {
+    &__header-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+    }
+
+    &__info-group {
+      width: 100%;
+      gap: 1rem;
+
+      &--right {
+        padding-top: 0.5rem;
+        border-top: 0.0625rem solid $color-gray-200;
+      }
+    }
+
+    &__products-table {
+      overflow-x: auto;
+    }
+
+    &__table {
+      min-width: 37.5rem;
+    }
+
+    &__actions {
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+  }
+}
+
+// Offer status badge styles
+.offer-status {
+  &--sent {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+  }
+
+  &--accepted {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+
+  &--rejected {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+}
+
+// Inquiry logs section
+.inquiry-logs {
+  padding: 1rem;
+  border-top: 0.0625rem solid #E4E4E7;
+
+  &__title {
+    font-size: 1.125rem;
+    line-height: 100%;
+    font-weight: 500;
+    margin: 0 0 1rem 0;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+
+  &__container {
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.375rem;
+    border: 0.0625rem solid #E4E4E7;
+    background-color: #fff;
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: 7.5rem 10rem 6.25rem 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 0.0625rem solid #E4E4E7;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: #ffffff;
+    white-space: nowrap;
+    width: fit-content;
+
+    &--inquiry {
+      background-color: #3B0075;
+    }
+
+    &--order {
+      background-color: #3B0075;
+    }
+
+    &--canceled {
+      background-color: #DC3545;
+    }
+
+    &--completed {
+      background-color: #28A745;
+    }
+
+    &--dispatched {
+      background-color: #28A745;
+    }
+
+    &--confirmed {
+      background-color: #FFA500;
+    }
+
+    &--pending_approval {
+      background-color: #f59e0b;
+    }
+
+    &--submitted {
+      background-color: #3B0075;
+    }
+
+    &--default {
+      background-color: #6C757D;
+    }
+  }
+
+  &__date {
+    font-size: 0.875rem;
+    color: #232323;
+    font-weight: 500;
+  }
+
+  &__user {
+    font-size: 0.875rem;
+    color: #71717A;
+  }
+
+  &__comment {
+    font-size: 0.875rem;
+    color: #232323;
+    line-height: 1.4;
+  }
+
+  // Responsive
+  @media (max-width: 48rem) {
+    &__item {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    &__status {
+      justify-self: start;
+    }
+  }
+}
+
+// Animation keyframes
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Spinner for export button
+.spinner {
+  animation: spin 1s linear infinite;
+}

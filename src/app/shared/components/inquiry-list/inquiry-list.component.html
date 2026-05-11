@@ -1,0 +1,213 @@
+<section class="inquiry-list">
+  <!-- Header -->
+  <div class="inquiry-list__header">
+    <h2 class="inquiry-list__title">
+      <app-icon name="fileWarning" size="20px" color="#232323"></app-icon>
+      {{ title }}
+    </h2>
+
+    <!-- View all link (dashboard mode) -->
+    @if (showViewAllLink) {
+      <a routerLink="/my-inquiries/active" class="inquiry-list__view-all">
+        View all
+        <app-icon name="chevronRight" size="16px" color="#DC2626"></app-icon>
+      </a>
+    }
+
+    <!-- Filters (full page mode) -->
+    @if (enableFiltering || enableSorting) {
+      <div class="inquiry-list__controls">
+        <!-- Search -->
+        @if (enableFiltering) {
+          <div class="inquiry-list__search">
+            <input
+              type="text"
+              class="inquiry-list__search-input"
+              placeholder="Search by order/inquiry number..."
+              [ngModel]="searchQuery()"
+              (ngModelChange)="onSearchChange($event)"
+            />
+            <app-icon name="search" size="16px" color="#71717A" class="inquiry-list__search-icon"></app-icon>
+          </div>
+
+          <!-- Status Filter -->
+          <div class="inquiry-list__filter">
+            <select
+              class="inquiry-list__select"
+              [ngModel]="selectedStatus()"
+              (ngModelChange)="onStatusChange($event)"
+            >
+              <option value="all">All Statuses</option>
+              <option value="submitted">Submitted</option>
+              <option value="in_review">In Review</option>
+              <option value="more_info">More Info</option>
+              <option value="information_provided">Information Provided</option>
+              <option value="in_progress">In Progress</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="processing">Processing</option>
+              <option value="dispatched">Dispatched</option>
+              <option value="completed">Completed</option>
+              <option value="canceled">Canceled</option>
+            </select>
+          </div>
+        }
+
+        <!-- Sort By -->
+        @if (enableSorting) {
+          <div class="inquiry-list__filter">
+            <select
+              class="inquiry-list__select"
+              [ngModel]="sortBy()"
+              (ngModelChange)="onSortChange($event)"
+            >
+              <option value="date-desc">Newest First</option>
+              <option value="date-asc">Oldest First</option>
+              <option value="number-asc">Number (A-Z)</option>
+              <option value="number-desc">Number (Z-A)</option>
+            </select>
+          </div>
+        }
+
+        <!-- Clear Filters Button -->
+        @if (hasActiveFilters) {
+          <button
+            class="inquiry-list__clear-btn"
+            (click)="clearFilters()"
+            title="Clear all filters"
+          >
+            <app-icon name="trash" size="16px" color="#232323"></app-icon>
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Body -->
+  <div class="inquiry-list__body">
+    <!-- Loading state -->
+    @if (isLoading()) {
+      <div class="inquiry-list__grid">
+        <app-inquiry-card-shimmer *ngFor="let i of [1,2,3]; trackBy: trackByIndex"></app-inquiry-card-shimmer>
+      </div>
+    }
+    <!-- Error state -->
+    @else if (error()) {
+      <div class="inquiry-list__error">
+        <app-icon name="alertTriangle" size="24px" color="#DC2626"></app-icon>
+        <p>{{ error() }}</p>
+        <button (click)="loadData()" class="inquiry-list__retry-btn">
+          <app-icon name="refresh" size="16px" color="#ffffff"></app-icon>
+          Try Again
+        </button>
+      </div>
+    }
+    <!-- Empty state (no data) -->
+    @else if (inquiries().length === 0 && !hasActiveFilters) {
+      <div class="inquiry-list__empty">
+        <app-icon name="inbox" size="32px" color="#71717A"></app-icon>
+        <p>No inquiries found.</p>
+      </div>
+    }
+    <!-- Empty state (filtered out) -->
+    @else if (inquiries().length === 0 && hasActiveFilters) {
+      <div class="inquiry-list__empty">
+        <app-icon name="inbox" size="32px" color="#71717A"></app-icon>
+        <p>No inquiries match your filters.</p>
+        <button (click)="clearFilters()" class="inquiry-list__clear-filters-btn">
+          Clear Filters
+        </button>
+      </div>
+    }
+    <!-- Content -->
+    @else {
+      <div class="inquiry-list__grid">
+        <!-- Actual inquiry cards -->
+        @for (inquiry of inquiries(); track inquiry.id) {
+          <app-inquiry-card [inquiry]="inquiry"></app-inquiry-card>
+        }
+
+        <!-- Fill with shimmer placeholders (dashboard mode only) -->
+        @if (maxItems !== null) {
+          @for (placeholder of placeholdersNeeded(); track placeholder) {
+            <app-inquiry-card-shimmer></app-inquiry-card-shimmer>
+          }
+        }
+      </div>
+
+      <!-- Pagination (only in full page mode when there's more than 1 page) -->
+      @if (maxItems === null && totalPages() > 1) {
+        <div class="inquiry-list__footer">
+          <div class="inquiry-list__results">
+            Showing {{ (currentPage() - 1) * itemsPerPage() + 1 }}-{{ getEndItem() }} of {{ totalItems() }} results
+          </div>
+          <div class="inquiry-list__pagination">
+            <!-- First page button -->
+            <button
+              class="inquiry-list__page-button inquiry-list__page-button--icon"
+              [disabled]="currentPage() === 1"
+              (click)="goToFirstPage()"
+              aria-label="Go to first page"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="11 17 6 12 11 7"></polyline>
+                <polyline points="18 17 13 12 18 7"></polyline>
+              </svg>
+            </button>
+
+            <!-- Previous page button -->
+            <button
+              class="inquiry-list__page-button inquiry-list__page-button--icon"
+              [disabled]="currentPage() === 1"
+              (click)="previousPage()"
+              aria-label="Go to previous page"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+
+            <!-- Page numbers -->
+            @for (page of pagesArray(); track $index) {
+              @if (page === '...') {
+                <span class="inquiry-list__pagination-dots">...</span>
+              } @else {
+                <button
+                  class="inquiry-list__page-button"
+                  [class.inquiry-list__page-button--active]="currentPage() === page"
+                  (click)="goToPage(+page)"
+                >
+                  {{ page }}
+                </button>
+              }
+            }
+
+            <!-- Next page button -->
+            <button
+              class="inquiry-list__page-button inquiry-list__page-button--icon"
+              [disabled]="currentPage() === totalPages()"
+              (click)="nextPage()"
+              aria-label="Go to next page"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+
+            <!-- Last page button -->
+            <button
+              class="inquiry-list__page-button inquiry-list__page-button--icon"
+              [disabled]="currentPage() === totalPages()"
+              (click)="goToLastPage()"
+              aria-label="Go to last page"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="13 17 18 12 13 7"></polyline>
+                <polyline points="6 17 11 12 6 7"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      }
+    }
+  </div>
+</section>

@@ -1,0 +1,98 @@
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  border-radius: 6px;
+  white-space: nowrap;
+
+  // Sizes
+  &--sm {
+    padding: 2px 8px;
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  &--md {
+    padding: 4px 10px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  &--lg {
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  // Rounded (pill style)
+  &--rounded {
+    border-radius: 9999px;
+  }
+
+  // Variants
+  &--default {
+    background-color: #F4F4F5;
+    color: #52525B;
+  }
+
+  &--primary {
+    background-color: #FEE2E2;
+    color: #DC2626;
+  }
+
+  &--success {
+    background-color: #DCFCE7;
+    color: #16A34A;
+  }
+
+  &--warning {
+    background-color: #FEF3C7;
+    color: #D97706;
+  }
+
+  &--danger {
+    background-color: #FEE2E2;
+    color: #DC2626;
+  }
+
+  &--info {
+    background-color: #DBEAFE;
+    color: #2563EB;
+  }
+
+  // Dot indicator
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+    flex-shrink: 0;
+  }
+
+  &--with-dot {
+    &.ui-badge--default .ui-badge__dot {
+      background-color: #71717A;
+    }
+
+    &.ui-badge--primary .ui-badge__dot {
+      background-color: #DC2626;
+    }
+
+    &.ui-badge--success .ui-badge__dot {
+      background-color: #16A34A;
+    }
+
+    &.ui-badge--warning .ui-badge__dot {
+      background-color: #D97706;
+    }
+
+    &.ui-badge--danger .ui-badge__dot {
+      background-color: #DC2626;
+    }
+
+    &.ui-badge--info .ui-badge__dot {
+      background-color: #2563EB;
+    }
+  }
+}

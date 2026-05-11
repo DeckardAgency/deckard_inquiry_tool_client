@@ -1,0 +1,271 @@
+<!-- order-inquiry-table.component.html -->
+
+<div class="order-inquiry">
+  <!-- Tabs -->
+  <div class="order-inquiry__tabs" role="tablist" aria-label="Order and inquiry filter tabs">
+    @for (tab of tabs; track trackByTab($index, tab)) {
+      <button
+        class="order-inquiry__tab"
+        [class.order-inquiry__tab--active]="activeTab() === tab"
+        [attr.aria-selected]="activeTab() === tab"
+        [attr.aria-controls]="'order-inquiry-panel-' + tab.toLowerCase()"
+        [attr.id]="'order-inquiry-tab-' + tab.toLowerCase()"
+        role="tab"
+        (click)="selectTab(tab)"
+      >
+        {{ tab }}
+      </button>
+    }
+  </div>
+
+  <!-- Content section -->
+  <div
+    [attr.id]="'order-inquiry-panel-' + activeTab().toLowerCase()"
+    [attr.aria-labelledby]="'order-inquiry-tab-' + activeTab().toLowerCase()"
+    role="tabpanel"
+    class="order-inquiry__content"
+  >
+    @if (loading()) {
+      <!-- Loading state -->
+      <div aria-live="polite" aria-busy="true">
+        <app-inquiry-shimmer [rows]="8"></app-inquiry-shimmer>
+      </div>
+    } @else if (isEmpty()) {
+      <!-- Empty state -->
+      <div class="order-inquiry__empty-state" role="status" aria-live="polite">
+        <svg class="order-inquiry__empty-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M24 4C12.96 4 4 12.96 4 24C4 35.04 12.96 44 24 44C35.04 44 44 35.04 44 24C44 12.96 35.04 4 24 4ZM26 34H22V30H26V34ZM26 26H22V14H26V26Z" fill="#E4E4E7"/>
+        </svg>
+        <h3 class="order-inquiry__empty-title">No items found</h3>
+        <p class="order-inquiry__empty-message">
+          @if (searchTerm()) {
+            No results match your search criteria.
+          } @else {
+            There are no {{ activeTab().toLowerCase() }} items to display.
+          }
+        </p>
+      </div>
+    } @else {
+      <!-- Table -->
+      <div class="order-inquiry__table-wrapper" role="region" aria-label="Orders and inquiries table">
+        <table class="order-inquiry__table" role="table">
+          <caption class="sr-only">
+            List of {{ activeTab().toLowerCase() }} orders and inquiries with details
+          </caption>
+          <thead>
+          <tr role="row">
+            <th scope="col">
+              <button
+                class="order-inquiry__sort-button"
+                [class.order-inquiry__sort-button--active]="sortConfig()?.column === 'id'"
+                (click)="toggleSort('id')"
+                aria-label="Sort by Inquiry ID"
+                [disabled]="!config().enableSorting"
+              >
+                Inquiry ID
+                @if (config().enableSorting) {
+                  <svg class="order-inquiry__sort-icon" [class.order-inquiry__sort-icon--asc]="getSortIcon('id') === 'asc'" [class.order-inquiry__sort-icon--desc]="getSortIcon('id') === 'desc'" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M8 3L5 6H11L8 3Z" fill="currentColor" opacity="0.5"/>
+                    <path d="M8 13L11 10H5L8 13Z" fill="currentColor" opacity="0.5"/>
+                  </svg>
+                }
+              </button>
+            </th>
+            <th scope="col">
+              <button
+                class="order-inquiry__sort-button"
+                [class.order-inquiry__sort-button--active]="sortConfig()?.column === 'type'"
+                (click)="toggleSort('type')"
+                aria-label="Sort by Type"
+                [disabled]="!config().enableSorting"
+              >
+                Type
+                @if (config().enableSorting) {
+                  <svg class="order-inquiry__sort-icon" [class.order-inquiry__sort-icon--asc]="getSortIcon('type') === 'asc'" [class.order-inquiry__sort-icon--desc]="getSortIcon('type') === 'desc'" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M8 3L5 6H11L8 3Z" fill="currentColor" opacity="0.5"/>
+                    <path d="M8 13L11 10H5L8 13Z" fill="currentColor" opacity="0.5"/>
+                  </svg>
+                }
+              </button>
+            </th>
+            <th scope="col">
+              <button
+                class="order-inquiry__sort-button"
+                [class.order-inquiry__sort-button--active]="sortConfig()?.column === 'dateCreated'"
+                (click)="toggleSort('dateCreated')"
+                aria-label="Sort by Date Created"
+                [disabled]="!config().enableSorting"
+              >
+                Date Created
+                @if (config().enableSorting) {
+                  <svg class="order-inquiry__sort-icon" [class.order-inquiry__sort-icon--asc]="getSortIcon('dateCreated') === 'asc'" [class.order-inquiry__sort-icon--desc]="getSortIcon('dateCreated') === 'desc'" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M8 3L5 6H11L8 3Z" fill="currentColor" opacity="0.5"/>
+                    <path d="M8 13L11 10H5L8 13Z" fill="currentColor" opacity="0.5"/>
+                  </svg>
+                }
+              </button>
+            </th>
+            <th scope="col">
+              <button
+                class="order-inquiry__sort-button"
+                [class.order-inquiry__sort-button--active]="sortConfig()?.column === 'customerName'"
+                (click)="toggleSort('customerName')"
+                aria-label="Sort by Customer"
+                [disabled]="!config().enableSorting"
+              >
+                Customer
+                @if (config().enableSorting) {
+                  <svg class="order-inquiry__sort-icon" [class.order-inquiry__sort-icon--asc]="getSortIcon('customerName') === 'asc'" [class.order-inquiry__sort-icon--desc]="getSortIcon('customerName') === 'desc'" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M8 3L5 6H11L8 3Z" fill="currentColor" opacity="0.5"/>
+                    <path d="M8 13L11 10H5L8 13Z" fill="currentColor" opacity="0.5"/>
+                  </svg>
+                }
+              </button>
+            </th>
+            <th scope="col">
+              <button
+                class="order-inquiry__sort-button"
+                [class.order-inquiry__sort-button--active]="sortConfig()?.column === 'partsOrdered'"
+                (click)="toggleSort('partsOrdered')"
+                aria-label="Sort by Parts ordered"
+                [disabled]="!config().enableSorting"
+              >
+                Parts ordered
+                @if (config().enableSorting) {
+                  <svg class="order-inquiry__sort-icon" [class.order-inquiry__sort-icon--asc]="getSortIcon('partsOrdered') === 'asc'" [class.order-inquiry__sort-icon--desc]="getSortIcon('partsOrdered') === 'desc'" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M8 3L5 6H11L8 3Z" fill="currentColor" opacity="0.5"/>
+                    <path d="M8 13L11 10H5L8 13Z" fill="currentColor" opacity="0.5"/>
+                  </svg>
+                }
+              </button>
+            </th>
+            <th scope="col">
+              <button
+                class="order-inquiry__sort-button"
+                [class.order-inquiry__sort-button--active]="sortConfig()?.column === 'status'"
+                (click)="toggleSort('status')"
+                aria-label="Sort by Status"
+                [disabled]="!config().enableSorting"
+              >
+                Status
+                @if (config().enableSorting) {
+                  <svg class="order-inquiry__sort-icon" [class.order-inquiry__sort-icon--asc]="getSortIcon('status') === 'asc'" [class.order-inquiry__sort-icon--desc]="getSortIcon('status') === 'desc'" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M8 3L5 6H11L8 3Z" fill="currentColor" opacity="0.5"/>
+                    <path d="M8 13L11 10H5L8 13Z" fill="currentColor" opacity="0.5"/>
+                  </svg>
+                }
+              </button>
+            </th>
+            <th scope="col" class=""></th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (item of paginatedItems(); track trackByItemId($index, item)) {
+              <tr role="row">
+                <td>{{ item.id }}</td>
+                <td>
+                  <span class="order-inquiry__type-badge" [class]="getTypeClass(item.type)">
+                    {{ item.type }}
+                  </span>
+                </td>
+                <td>
+                  <time [dateTime]="item.dateCreated">{{ item.dateCreated | dateFilter:'dd.MM.yyyy @ HH:mm' }}</time>
+                </td>
+                <td>
+                  <div class="order-inquiry__customer-cell">
+                    @if (item.customer.image) {
+                      <img
+                        [src]="item.customer.image"
+                        [alt]="'Profile picture of ' + item.customer.name"
+                        class="order-inquiry__customer-image"
+                        loading="lazy"
+                      >
+                    } @else {
+                      <div class="order-inquiry__customer-initials" aria-hidden="true">
+                        {{ item.customer.initials }}
+                      </div>
+                    }
+                    <span class="order-inquiry__customer-name">{{ item.customer.name }}</span>
+                  </div>
+                </td>
+                <td class="text-right">{{ item.partsOrdered }}</td>
+                <td>
+                  <span
+                    class="order-inquiry__status-badge"
+                    [class]="getStatusClass(item.status)"
+                    role="status"
+                    [attr.aria-label]="'Status: ' + item.status"
+                  >
+                    {{ item.status }}
+                  </span>
+                </td>
+                <td>
+                  <div class="order-inquiry__action-wrapper">
+                    <button
+                      class="order-inquiry__action-menu"
+                      [attr.aria-label]="'More actions for item ' + item.id"
+                      [attr.data-item-id]="item.id"
+                      [attr.aria-expanded]="isDropdownOpen(item.id)"
+                      (click)="toggleDropdown(item.id, $event)"
+                    >
+                      <svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M10 10.833a.833.833 0 1 0 0-1.666.833.833 0 0 0 0 1.666ZM10 5a.833.833 0 1 0 0-1.667A.833.833 0 0 0 10 5Zm0 11.667a.833.833 0 1 0 0-1.667.833.833 0 0 0 0 1.667Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </button>
+
+                    @if (isDropdownOpen(item.id)) {
+                      <div class="order-inquiry__dropdown" role="menu" aria-orientation="vertical">
+                        <button
+                          class="order-inquiry__dropdown-item"
+                          role="menuitem"
+                          (click)="handleAction('view', item)"
+                        >
+                          <svg class="order-inquiry__dropdown-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 3.75C5.72 3.75 2.11 6.39 0.5 10C2.11 13.61 5.72 16.25 10 16.25C14.28 16.25 17.89 13.61 19.5 10C17.89 6.39 14.28 3.75 10 3.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M10 13.125C11.7259 13.125 13.125 11.7259 13.125 10C13.125 8.27411 11.7259 6.875 10 6.875C8.27411 6.875 6.875 8.27411 6.875 10C6.875 11.7259 8.27411 13.125 10 13.125Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                          View
+                        </button>
+                      </div>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      @if (config().showPagination && totalPages() > 1) {
+        <div class="order-inquiry__pagination" role="navigation" aria-label="Pagination">
+          <button
+            class="order-inquiry__pagination-button"
+            [disabled]="currentPage() === 1"
+            (click)="onPageChange(currentPage() - 1)"
+            aria-label="Previous page"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <span class="order-inquiry__pagination-info">
+            Page {{ currentPage() }} of {{ totalPages() }}
+          </span>
+
+          <button
+            class="order-inquiry__pagination-button"
+            [disabled]="currentPage() === totalPages()"
+            (click)="onPageChange(currentPage() + 1)"
+            aria-label="Next page"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      }
+    }
+  </div>
+</div>

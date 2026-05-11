@@ -1,0 +1,256 @@
+<div class="cart">
+  <div class="cart__top">
+    <div class="cart__breadcrumbs-wrapper">
+      <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+    </div>
+    <div class="cart__switcher-wrapper">
+      <app-cart-switcher></app-cart-switcher>
+    </div>
+  </div>
+
+
+  <div class="cart__header">
+    <h1 class="cart__title">
+      <span class="cart__title-icon">
+        <app-icon name="cartBag" size="20px" color="#232323"></app-icon>
+      </span>
+      Cart overview
+    </h1>
+    <!--    <span>-->
+    <!--      {{ quickCartService.getTotalItems() }}-->
+    <!--    </span>-->
+  </div>
+
+  @if (cartItems.length > 0) {
+    <div class="cart__container">
+
+      <!-- Agent cart: grouped by client -->
+      <div *ngIf="isAgent && clientGroups.length > 0" class="cart__items">
+        <div *ngFor="let group of clientGroups" class="cart__client-group">
+          <div class="cart__client-header" (click)="toggleClientGroup(group)">
+            <span class="cart__client-chevron" [class.cart__client-chevron--collapsed]="group.collapsed">
+              <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6l4 4 4-4" stroke="#374151" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="cart__client-name">Client: {{ group.clientName }}</span>
+            <span class="cart__client-code" *ngIf="group.clientCode">({{ group.clientCode }})</span>
+          </div>
+          <div *ngIf="!group.collapsed" class="cart__client-items">
+            <div class="cart__table-header">
+              <div class="cart__header-product">Item</div>
+              <div class="cart__header-price">Price</div>
+              <div class="cart__header-discount">Discount</div>
+              <div class="cart__header-quantity">Quantity</div>
+              <div class="cart__header-total">Total</div>
+              <div class="cart__header-actions"></div>
+            </div>
+
+            @for (item of group.items; track item.product.id) {
+              <div class="cart__item">
+                <div class="cart__product-info">
+                  <div class="cart__product-image">
+                    <img
+                      [src]="environment.apiBaseUrl + item.product.featuredImage?.filePath"
+                      [alt]="item.product.name"
+                      onerror="this.src='https://via.assets.so/img.jpg?w=90&h=90'"
+                      loading="lazy"
+                    >
+                  </div>
+                  <div class="cart__product-details">
+                    <div class="cart__product-details-part-number">
+                      <span class="cart__product-details-title">Part number</span>
+                      <h3 class="cart__product-name">{{ item.product.name }}</h3>
+                    </div>
+                    <div class="cart__product-details-product-name">
+                      <span class="cart__product-details-title">Part name</span>
+                      <p class="cart__product-id">{{ item.product.shortDescription }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cart__price">
+                  <div class="cart__original-price">{{ getEffectivePrice(item.product) | currency:'EUR':'symbol' }}</div>
+                </div>
+
+                <div class="cart__discount">
+                  <div *ngIf="item.product.discountPercentage" class="cart__discounted-price">-{{ item.product.discountPercentage }}%</div>
+                </div>
+
+                <div class="cart__quantity-controls">
+                  <button class="cart__quantity-btn cart__quantity-btn-left" (click)="decrementQuantity(item.product.id)">
+                    <span class="material-icons">
+                      <app-icon name="minus" size="16px" color="#232323"></app-icon>
+                    </span>
+                  </button>
+                  <input
+                    type="number"
+                    class="cart__quantity-input"
+                    [value]="item.quantity"
+                    (change)="updateQuantity(item.product.id, $event)"
+                    min="1"
+                  >
+                  <button class="cart__quantity-btn cart__quantity-btn-right" (click)="incrementQuantity(item.product.id)">
+                    <span class="material-icons">
+                      <app-icon name="plus" size="16px" color="#232323"></app-icon>
+                    </span>
+                  </button>
+                </div>
+
+                <div class="cart__item-total">
+                  {{ getItemTotal(item) | currency:'EUR':'symbol' }}
+                </div>
+
+                <div class="cart__item-actions">
+                  <button class="cart__remove-btn" (click)="removeItem(item.product.id)">
+                    <span class="material-icons">
+                      <app-icon name="trash" size="16px" color="#232323"></app-icon>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Non-agent cart: flat list -->
+      <div *ngIf="!isAgent" class="cart__items">
+        <div class="cart__table-header">
+          <div class="cart__header-product">Item</div>
+          <div class="cart__header-price">Price</div>
+          <div class="cart__header-discount">Discount</div>
+          <div class="cart__header-quantity">Quantity</div>
+          <div class="cart__header-total">Total</div>
+          <div class="cart__header-actions"></div>
+        </div>
+
+        @for (item of cartItems; track item.product.id) {
+          <div class="cart__item">
+            <div class="cart__product-info">
+              <div class="cart__product-image">
+                <img
+                  [src]="environment.apiBaseUrl + item.product.featuredImage?.filePath"
+                  [alt]="item.product.name"
+                  onerror="this.src='https://via.assets.so/img.jpg?w=90&h=90'"
+                  loading="lazy"
+                >
+              </div>
+              <div class="cart__product-details">
+                <div class="cart__product-details-part-number">
+                  <span class="cart__product-details-title">Part number</span>
+                  <h3 class="cart__product-name">{{ item.product.name }}</h3>
+                </div>
+                <div class="cart__product-details-product-name">
+                  <span class="cart__product-details-title">Part name</span>
+                  <p class="cart__product-id">{{ item.product.shortDescription }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="cart__price">
+              <div class="cart__original-price">{{ getEffectivePrice(item.product) | currency:'EUR':'symbol' }}</div>
+            </div>
+
+            <div class="cart__discount">
+              <div *ngIf="item.product.discountPercentage" class="cart__discounted-price">-{{ item.product.discountPercentage }}%</div>
+            </div>
+
+            <div class="cart__quantity-controls">
+              <button class="cart__quantity-btn cart__quantity-btn-left" (click)="decrementQuantity(item.product.id)">
+                <span class="material-icons">
+                  <app-icon name="minus" size="16px" color="#232323"></app-icon>
+                </span>
+              </button>
+              <input
+                type="number"
+                class="cart__quantity-input"
+                [value]="item.quantity"
+                (change)="updateQuantity(item.product.id, $event)"
+                min="1"
+              >
+              <button class="cart__quantity-btn cart__quantity-btn-right" (click)="incrementQuantity(item.product.id)">
+                <span class="material-icons">
+                  <app-icon name="plus" size="16px" color="#232323"></app-icon>
+                </span>
+              </button>
+            </div>
+
+            <div class="cart__item-total">
+              {{ getItemTotal(item) | currency:'EUR':'symbol' }}
+            </div>
+
+            <div class="cart__item-actions">
+              <button class="cart__remove-btn" (click)="removeItem(item.product.id)">
+                <span class="material-icons">
+                  <app-icon name="trash" size="16px" color="#232323"></app-icon>
+                </span>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="cart__summary">
+
+        <div class="cart__reference-number">
+          <span class="cart__reference-number-title">Enter internal reference number</span>
+          <input class="cart__reference-number-input" type="text" placeholder="#0001">
+        </div>
+
+        <div class="cart__summary-row">
+          <span class="cart__summary-col">
+            <span class="cart__summary-row-icon">
+              <app-icon name="truck" size="20px" color="#232323"></app-icon>
+            </span>
+            Provisional shipping & handling costs
+          </span>
+          <span>{{ shippingCost | currency }}</span>
+        </div>
+
+        <div class="cart__summary-row">
+          <span class="cart__summary-col">
+            <span class="cart__summary-row-icon">
+              <app-icon name="currency" size="20px" color="#232323"></app-icon>
+            </span>
+            Total
+          </span>
+          <span>{{ totalAmount | currency:'EUR':'symbol' }}</span>
+        </div>
+
+        <!--        <div class="cart__summary-total">-->
+        <!--          <span>Total</span>-->
+        <!--          <span>€{{ totalAmount.toFixed(2) }}</span>-->
+        <!--        </div>-->
+
+        <button class="cart__checkout-btn" (click)="checkout()">
+          Place order
+          <span>
+            <app-icon name="chevronRight" size="16px" color="white"></app-icon>
+          </span>
+        </button>
+
+        <button class="cart__add-btn" (click)="goToShopPage()">
+          Add products
+          <span>
+            <app-icon name="plus" size="16px" color="#232323"></app-icon>
+          </span>
+        </button>
+
+        <button class="cart__continue-btn" (click)="saveDraft()">
+          Save draft
+          <span>
+            <app-icon name="save" size="16px" color="#232323"></app-icon>
+          </span>
+        </button>
+      </div>
+    </div>
+  } @else {
+    <div class="cart__empty">
+      <div class="cart__empty-icon">
+        <app-icon name="cartEmpty" size="64px" color="#232323"></app-icon>
+      </div>
+      <h2 class="cart__empty-title">Your cart is empty</h2>
+      <p class="cart__empty-text">Looks like you haven't added any parts to your cart yet.</p>
+      <button class="cart__shop-btn" routerLink="/shop">Browse Parts</button>
+    </div>
+  }
+</div>

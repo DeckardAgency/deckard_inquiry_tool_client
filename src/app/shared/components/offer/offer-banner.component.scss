@@ -1,0 +1,108 @@
+.offer-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border: 1px solid #3b82f6;
+    border-radius: 12px;
+    margin: 1rem;
+
+    &__icon {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #3b82f6;
+        border-radius: 50%;
+        color: #fff;
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    &__content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__title {
+        margin: 0 0 4px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #1e3a5f;
+    }
+
+    &__message {
+        margin: 0;
+        font-size: 14px;
+        color: #1e40af;
+        line-height: 1.5;
+
+        strong {
+            font-weight: 600;
+        }
+    }
+
+    &__actions {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    &__btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        white-space: nowrap;
+
+        &--primary {
+            background: #3b82f6;
+            border: 1px solid #3b82f6;
+            color: #fff;
+
+            &:hover {
+                background: #2563eb;
+                border-color: #2563eb;
+            }
+        }
+
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .offer-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 16px;
+
+        &__icon {
+            margin: 0 auto;
+        }
+
+        &__actions {
+            width: 100%;
+            justify-content: center;
+        }
+
+        &__btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+}

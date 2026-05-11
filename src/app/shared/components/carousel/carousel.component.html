@@ -1,0 +1,55 @@
+<div class="carousel">
+  <div class="carousel__wrapper"
+       (touchstart)="onTouchStart($event)"
+       (touchmove)="onTouchMove($event)"
+       (touchend)="onTouchEnd($event)"
+       (mousedown)="onMouseDown($event)">
+
+    <div class="carousel__track"
+         #carouselTrack
+         [style.transform]="'translateX(' + translateX + '%)'"
+         [style.transition]="isDragging ? 'none' : 'transform ' + animationDuration + 'ms ease-in-out'">
+
+      <div class="carousel__slide" *ngFor="let image of images; let i = index; trackBy: trackByIndex">
+        <img class="carousel__image"
+             [src]="image.url"
+             [alt]="image.alt || 'Slide ' + (i + 1)"
+             draggable="false">
+        <div class="carousel__caption" *ngIf="image.caption">
+          {{ image.caption }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <button class="carousel__arrow carousel__arrow--prev"
+            *ngIf="showNavigationArrows"
+            (click)="previous()"
+            [disabled]="currentIndex === 0 && !infiniteLoop"
+            aria-label="Previous slide">
+      <svg class="carousel__arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+
+    <button class="carousel__arrow carousel__arrow--next"
+            *ngIf="showNavigationArrows"
+            (click)="next()"
+            [disabled]="currentIndex === images.length - 1 && !infiniteLoop"
+            aria-label="Next slide">
+      <svg class="carousel__arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Navigation Dots -->
+  <div class="carousel__dots" *ngIf="showNavigationDots">
+    <button class="carousel__dot"
+            *ngFor="let image of images; let i = index; trackBy: trackByIndex"
+            [class.carousel__dot--active]="i === currentIndex"
+            (click)="goToSlide(i)"
+            [attr.aria-label]="'Go to slide ' + (i + 1)">
+    </button>
+  </div>
+</div>

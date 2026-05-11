@@ -1,0 +1,119 @@
+<div class="file-upload-container" [class.has-files]="files.length > 0">
+  <!-- Hidden file input -->
+  <input
+    #fileInput
+    type="file"
+    multiple
+    hidden
+    (change)="onFileSelected($event)"
+  >
+
+  <!-- Upload Dropzone (shown when no files) -->
+  @if (files.length === 0) {
+    <div class="file-upload-dropzone"
+         (dragover)="onDragOver($event)"
+         (dragenter)="onDragEnter($event)"
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event)"
+         [class.active]="isDragging()">
+      <div class="upload-icon" (click)="triggerFileInput()">
+        <app-icon name="addPlus" size="48px" color="#232323"></app-icon>
+      </div>
+      <button type="button" class="add-files-btn" (click)="triggerFileInput()">
+        Add file(s)
+      </button>
+      <p class="drag-text">or Drag & Drop them here!</p>
+      <p class="file-types">We accept: JPG, PNG, WEBP, PDF, DOC. Max file size: 5 MB.</p>
+    </div>
+  }
+
+  <!-- Uploaded Files List -->
+  @if (files.length > 0) {
+    <div class="uploaded-files">
+      @for (file of files; track file.name) {
+        <div class="file-item"
+             [class.file-error]="file.status === 'error'"
+             [class.file-uploading]="file.status === 'uploading'">
+
+          <!-- File Icon -->
+          <div class="file-icon"
+               [class.clickable]="isImageFile(file.name) && file.previewUrl && file.status === 'success'"
+               (click)="isImageFile(file.name) && file.previewUrl && file.status === 'success' ? openImagePreview(file) : null">
+            <app-icon [name]="getFileIcon(file)" size="24px" color="#666666"></app-icon>
+          </div>
+
+          <!-- File Info -->
+          <div class="file-info"
+               [class.clickable]="isImageFile(file.name) && file.previewUrl && file.status === 'success'"
+               (click)="isImageFile(file.name) && file.previewUrl && file.status === 'success' ? openImagePreview(file) : null">
+            <div class="file-name">{{ file.name }}</div>
+            <div class="file-size">{{ formatFileSize(file.size) }}</div>
+
+            <!-- Upload Progress Bar -->
+            <div class="upload-progress">
+              <div class="progress-bar" [style.width.%]="file.progress"></div>
+            </div>
+
+            <!-- Error Message -->
+            @if (file.status === 'error') {
+              <div class="file-error-message">
+                {{ file.errorMessage || 'Failed to upload!' }}
+              </div>
+            }
+          </div>
+
+          <!-- File Actions -->
+          <div class="file-actions">
+            @if (file.status === 'uploading') {
+              <!-- Cancel button during upload -->
+              <button type="button" class="cancel-btn" (click)="cancelUpload(file)">
+                <app-icon name="cancelUpload" size="16px"></app-icon>
+                Cancel
+              </button>
+            } @else if (file.status === 'error') {
+              <!-- Retry and Delete buttons on error -->
+              <button type="button" class="retry-btn" (click)="retryUpload(file)">
+                <app-icon name="retryUpload" size="16px" color="#232323"></app-icon>
+                Retry
+              </button>
+              <button type="button" class="delete-btn" (click)="removeFile(file)">
+                <app-icon name="trashPart" size="16px" color="#232323"></app-icon>
+                Delete
+              </button>
+            } @else {
+              <!-- Delete and Edit buttons on success -->
+              <button type="button" class="delete-btn" (click)="removeFile(file)">
+                <app-icon name="trashPart" size="16px"></app-icon>
+                Delete
+              </button>
+              @if (isImageFile(file.name) && file.previewUrl && file.status === 'success') {
+                <button type="button" class="edit-btn" (click)="openImagePreview(file)">
+                  <app-icon name="edit" size="16px"></app-icon>
+                  Edit
+                </button>
+              }
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Upload Summary -->
+      @if (hasSuccessfulUploads() && !hasUploadsInProgress()) {
+        <div class="upload-summary">
+          <div class="summary-status">
+            <span class="summary-status__icon">
+              <app-icon name="successCheck" size="24px" color="#237804"></app-icon>
+            </span>
+            <span>
+              {{ getSuccessfulUploadCount() }} items successfully uploaded.
+            </span>
+          </div>
+          <button type="button" class="add-more-btn" (click)="triggerFileInput()">
+            Add more
+            <app-icon name="addMore" size="16px" color="#237804"></app-icon>
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

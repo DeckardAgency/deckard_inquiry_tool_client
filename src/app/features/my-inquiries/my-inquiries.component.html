@@ -1,0 +1,52 @@
+<div class="my-inquiries">
+  <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+
+  <!-- Active Orders & Inquiries Section -->
+  <section class="my-inquiries__section">
+    <app-inquiry-list
+      title="Active Orders & Inquiries"
+      [maxItems]="6"
+      [showViewAllLink]="true"
+      [showInquiries]="true">
+    </app-inquiry-list>
+  </section>
+
+  <!-- History Section -->
+  <section class="my-inquiries__section">
+    <div class="my-inquiries__section-header">
+      <h2 class="my-inquiries__section-title">
+        <app-icon name="clock" size="20px" color="#232323"></app-icon>
+        History
+      </h2>
+      <a routerLink="/my-inquiries/history" class="my-inquiries__view-all">
+        View all
+        <app-icon name="chevronRight" size="16px" color="#DC2626"></app-icon>
+      </a>
+    </div>
+
+    <div class="my-inquiries__section-body">
+      @if (historyLoading()) {
+        <div class="my-inquiries__loading">
+          <div class="my-inquiries__loading-spinner"></div>
+          <p>Loading history...</p>
+        </div>
+      } @else if (historyError()) {
+        <div class="my-inquiries__error">
+          <app-icon name="alertTriangle" size="24px" color="#DC2626"></app-icon>
+          <p>{{ historyError() }}</p>
+          <button (click)="retryHistory()" class="my-inquiries__retry-btn">
+            <app-icon name="refresh" size="16px" color="#ffffff"></app-icon>
+            Try Again
+          </button>
+        </div>
+      } @else if (historyItems().length === 0) {
+        <div class="my-inquiries__empty">
+          <app-icon name="inbox" size="32px" color="#71717A"></app-icon>
+          <p>No history items found.</p>
+        </div>
+      } @else {
+        <app-inquiry-table [inquiries]="historyItems()" [loading]="historyLoading()"></app-inquiry-table>
+      }
+    </div>
+  </section>
+</div>

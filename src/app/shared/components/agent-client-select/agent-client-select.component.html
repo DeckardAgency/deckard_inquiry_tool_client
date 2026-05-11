@@ -1,0 +1,58 @@
+<div class="agent-client-select">
+  <div class="agent-client-select__trigger" (click)="toggleDropdown($event)">
+    <div class="agent-client-select__chips">
+      @for (client of selectedClients; track client.id) {
+        <span class="agent-client-select__chip">
+          {{ client.name }}
+          <button
+            class="agent-client-select__chip-remove"
+            (click)="removeClient(client, $event)"
+            type="button"
+            aria-label="Remove {{ client.name }}"
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </span>
+      }
+      @if (selectedClients.length === 0) {
+        <span class="agent-client-select__placeholder">Select</span>
+      }
+    </div>
+    <span class="agent-client-select__arrow" [class.agent-client-select__arrow--open]="isOpen()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 6L8 10L12 6" stroke="#3F3F46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+  </div>
+
+  @if (isOpen()) {
+    <div class="agent-client-select__dropdown">
+      @if (isLoading()) {
+        <div class="agent-client-select__loading">Loading clients...</div>
+      } @else if (clients.length === 0) {
+        <div class="agent-client-select__empty">No clients found</div>
+      } @else {
+        <ul class="agent-client-select__list">
+          @for (client of clients; track client.id) {
+            <li
+              class="agent-client-select__option"
+              (click)="toggleClient(client, $event)"
+            >
+              <input
+                type="checkbox"
+                class="agent-client-select__checkbox"
+                [checked]="isSelected(client)"
+                (click)="$event.stopPropagation()"
+                (change)="toggleClient(client, $event)"
+              />
+              <span class="agent-client-select__option-name">{{ client.name }}</span>
+              <span class="agent-client-select__option-code">{{ client.code }}</span>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  }
+</div>

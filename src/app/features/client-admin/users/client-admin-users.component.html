@@ -1,0 +1,473 @@
+<div class="users-page">
+  <!-- Breadcrumbs -->
+  <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+
+  <!-- Page Header -->
+  <div class="users-page__header">
+    <div class="users-page__title-section">
+      <h1 class="users-page__title">Users & Invitations</h1>
+
+      <!-- View Toggle -->
+      <div class="users-page__view-toggle">
+        <button
+          class="users-page__toggle-btn"
+          [class.users-page__toggle-btn--active]="currentView === 'users'"
+          (click)="switchView('users')">
+          Users ({{ users.length }})
+        </button>
+        <button
+          class="users-page__toggle-btn"
+          [class.users-page__toggle-btn--active]="currentView === 'invitations'"
+          (click)="switchView('invitations')">
+          Invitations ({{ invitations.length }})
+        </button>
+      </div>
+    </div>
+
+    <div class="users-page__header-actions">
+      <!-- Search -->
+      <div class="users-page__search">
+        <svg class="users-page__search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16ZM19 19l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input
+          type="text"
+          class="users-page__search-input"
+          placeholder="Filter by user name"
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="onSearchChange()"
+        />
+      </div>
+
+      <!-- Add User Button -->
+      <button
+        class="users-page__add-button"
+        (click)="openAddUserDialog()"
+        [disabled]="getAvailableSlots() <= 0"
+        [title]="getAvailableSlots() <= 0 ? 'No available user slots. You have reached the maximum number of active users (' + maxActiveUsers + ').' : 'Add a new user'">
+        Add user
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading) {
+    <div class="users-page__loading">
+      <div class="users-page__spinner"></div>
+      <p>Loading users...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error && !isLoading) {
+    <div class="users-page__error">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4 4 12.954 4 24s8.954 20 20 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M24 16v8M24 32h.02" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p class="users-page__error-message">{{ error }}</p>
+      <button class="users-page__retry-button" (click)="loadUsers()">
+        Try Again
+      </button>
+    </div>
+  }
+
+  <!-- Backdrop for closing dropdown menu -->
+  @if (openMenuUserId) {
+    <div class="users-page__backdrop" (click)="closeActionsMenu()"></div>
+  }
+
+  <!-- Users Table -->
+  @if (!isLoading && !error && currentView === 'users' && filteredUsers.length > 0) {
+    <div class="users-page__table-container">
+      <table class="users-table">
+        <thead class="users-table__head">
+          <tr>
+            <th class="users-table__header">Name</th>
+            <th class="users-table__header users-table__header--sortable" (click)="toggleDateSort()">
+              Date Created
+              <svg class="users-table__sort-icon" [class.users-table__sort-icon--active]="sortColumn === 'dateCreated'" [class.users-table__sort-icon--desc]="sortDirection === 'desc'" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </th>
+            <th class="users-table__header">Role</th>
+            <th class="users-table__header">E-mail address</th>
+            <th class="users-table__header">Status</th>
+            <th class="users-table__header">Transactions</th>
+            <th class="users-table__header users-table__header--actions"></th>
+          </tr>
+        </thead>
+        <tbody class="users-table__body">
+          @for (user of filteredUsers; track user.id) {
+            <tr class="users-table__row">
+              <!-- Name (Avatar + Name) -->
+              <td class="users-table__cell users-table__cell--name">
+                <div class="user-info">
+                  <div class="user-info__avatar">
+                    {{ getUserInitials(user) }}
+                  </div>
+                  <div class="user-info__name">{{ getUserFullName(user) }}</div>
+                </div>
+              </td>
+
+              <!-- Date Created -->
+              <td class="users-table__cell">
+                {{ formatDate(user.createdAt) }}
+              </td>
+
+              <!-- Role -->
+              <td class="users-table__cell">
+                <span
+                  class="users-table__badge users-table__badge--role"
+                  [class.users-table__badge--admin]="getUserRoleType(user) === 'admin'"
+                  [class.users-table__badge--standard]="getUserRoleType(user) === 'standard'"
+                >
+                  {{ getUserRoleDisplay(user) }}
+                </span>
+              </td>
+
+              <!-- E-mail address -->
+              <td class="users-table__cell">
+                {{ user.email }}
+              </td>
+
+              <!-- Status -->
+              <td class="users-table__cell">
+                <span
+                  class="users-table__badge users-table__badge--status"
+                  [class.users-table__badge--active]="getUserStatus(user) === 'Active'"
+                  [class.users-table__badge--inactive]="getUserStatus(user) === 'Inactive'"
+                >
+                  {{ getUserStatus(user) }}
+                </span>
+              </td>
+
+              <!-- Transactions -->
+              <td class="users-table__cell">
+                {{ getTransactionsCount(user) }}
+              </td>
+
+              <!-- Actions -->
+              <td class="users-table__cell users-table__cell--actions">
+                <div class="users-table__actions-wrapper">
+                  <button
+                    class="users-table__actions-button"
+                    [class.users-table__actions-button--active]="isMenuOpen(user.id)"
+                    (click)="toggleActionsMenu(user.id, $event)"
+                    aria-label="Open actions menu"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                      <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                      <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                    </svg>
+                  </button>
+
+                  <!-- Dropdown Menu -->
+                  @if (isMenuOpen(user.id)) {
+                    <div class="users-table__dropdown-menu">
+                      <button class="users-table__menu-item" (click)="viewUserDetails(user, $event)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M14 8c-1.5 2.5-4 4-6 4s-4.5-1.5-6-4c1.5-2.5 4-4 6-4s4.5 1.5 6 4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        View Details
+                      </button>
+                      <button class="users-table__menu-item" (click)="editUser(user, $event)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M11.333 2A1.886 1.886 0 0 1 14 4.667l-9 9L2 14.5l.833-3 9-9.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Edit
+                      </button>
+                      <button class="users-table__menu-item" (click)="toggleUserStatus(user, $event)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        {{ getUserStatus(user) === 'Active' ? 'Deactivate' : 'Activate' }}
+                      </button>
+                      <div class="users-table__menu-divider"></div>
+                      <button class="users-table__menu-item users-table__menu-item--danger" (click)="deleteUser(user, $event)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M2 4h12M5.333 4V2.667a1.333 1.333 0 0 1 1.334-1.334h2.666a1.333 1.333 0 0 1 1.334 1.334V4m2 0v9.333a1.333 1.333 0 0 1-1.334 1.334H4.667a1.333 1.333 0 0 1-1.334-1.334V4h9.334Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Delete
+                      </button>
+                    </div>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <!-- Invitations Table -->
+  @if (!isLoading && !error && currentView === 'invitations' && filteredInvitations.length > 0) {
+    <div class="users-page__table-container">
+      <table class="users-table">
+        <thead class="users-table__head">
+          <tr>
+            <th class="users-table__header">Name</th>
+            <th class="users-table__header users-table__header--sortable" (click)="toggleDateSort()">
+              Date Created
+              <svg class="users-table__sort-icon" [class.users-table__sort-icon--active]="sortColumn === 'dateCreated'" [class.users-table__sort-icon--desc]="sortDirection === 'desc'" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </th>
+            <th class="users-table__header">E-mail address</th>
+            <th class="users-table__header">Status</th>
+            <th class="users-table__header">Expires At</th>
+            <th class="users-table__header users-table__header--actions"></th>
+          </tr>
+        </thead>
+        <tbody class="users-table__body">
+          @for (invitation of filteredInvitations; track invitation.id) {
+            <tr class="users-table__row">
+              <!-- Name (Avatar + Name) -->
+              <td class="users-table__cell users-table__cell--name">
+                <div class="user-info">
+                  <div class="user-info__avatar">
+                    {{ getInvitationInitials(invitation) }}
+                  </div>
+                  <div class="user-info__name">{{ getInvitationFullName(invitation) }}</div>
+                </div>
+              </td>
+
+              <!-- Date Created -->
+              <td class="users-table__cell">
+                {{ formatDate(invitation.createdAt) }}
+              </td>
+
+              <!-- E-mail address -->
+              <td class="users-table__cell">
+                {{ invitation.email }}
+              </td>
+
+              <!-- Status -->
+              <td class="users-table__cell">
+                <span
+                  class="users-table__badge users-table__badge--status"
+                  [class]="getInvitationStatusClass(invitation)"
+                >
+                  {{ getInvitationStatus(invitation) }}
+                </span>
+              </td>
+
+              <!-- Expires At -->
+              <td class="users-table__cell">
+                <span [class.text-danger]="isInvitationExpired(invitation)">
+                  {{ formatDate(invitation.expiresAt) }}
+                </span>
+              </td>
+
+              <!-- Actions -->
+              <td class="users-table__cell users-table__cell--actions">
+                <div class="users-table__actions-wrapper">
+                  <button
+                    class="users-table__actions-button"
+                    [class.users-table__actions-button--active]="isMenuOpen(invitation.id)"
+                    (click)="toggleActionsMenu(invitation.id, $event)"
+                    aria-label="Open actions menu"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                      <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                      <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                    </svg>
+                  </button>
+
+                  <!-- Dropdown Menu -->
+                  @if (isMenuOpen(invitation.id)) {
+                    <div class="users-table__dropdown-menu">
+                      @if (invitation.status === 'pending') {
+                        <button class="users-table__menu-item users-table__menu-item--danger" (click)="revokeInvitation(invitation, $event)">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                          Revoke Invitation
+                        </button>
+                      }
+                    </div>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!isLoading && !error && currentView === 'users' && filteredUsers.length === 0 && users.length > 0) {
+    <div class="users-page__empty">
+      <p class="users-page__empty-message">No users found matching your search</p>
+    </div>
+  }
+
+  @if (!isLoading && !error && currentView === 'invitations' && filteredInvitations.length === 0 && invitations.length > 0) {
+    <div class="users-page__empty">
+      <p class="users-page__empty-message">No invitations found matching your search</p>
+    </div>
+  }
+
+  @if (!isLoading && !error && currentView === 'users' && users.length === 0) {
+    <div class="users-page__empty">
+      <p class="users-page__empty-message">No users found</p>
+    </div>
+  }
+
+  @if (!isLoading && !error && currentView === 'invitations' && invitations.length === 0) {
+    <div class="users-page__empty">
+      <p class="users-page__empty-message">No invitations found</p>
+    </div>
+  }
+
+  <!-- Side Panel -->
+  @if (sidePanelOpen) {
+    <!-- Overlay -->
+    <div class="side-panel-overlay" (click)="closeSidePanel()"></div>
+
+    <!-- Side Panel Content -->
+    <div class="side-panel">
+      <!-- Header -->
+      <div class="side-panel__header">
+        <h2 class="side-panel__title">{{ getSidePanelTitle() }}</h2>
+        <button class="side-panel__close" (click)="closeSidePanel()" aria-label="Close panel">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Content -->
+      <div class="side-panel__content">
+        <!-- Info Banner -->
+        @if (sidePanelMode === 'add') {
+          <div class="side-panel__info-banner" [class.side-panel__info-banner--warning]="getAvailableSlots() <= 0">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="2"/>
+              <path d="M10 6v4M10 14h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <div class="side-panel__info-text">
+              <p>An invitation email will be sent to the user. They will be able to set their password and access the system after completing registration.</p>
+              <p [class.side-panel__slots-warning]="getAvailableSlots() <= 0">
+                <strong>{{ getAvailableSlots() }}/{{ maxActiveUsers }}</strong> active user slots available.
+                @if (getAvailableSlots() <= 0) {
+                  <br><span class="side-panel__slots-full">⚠️ No slots available - cannot send invitation.</span>
+                }
+              </p>
+            </div>
+          </div>
+        }
+
+        <!-- Form -->
+        <form class="side-panel__form" (ngSubmit)="submitForm()">
+          <!-- First Name -->
+          <div class="form-group">
+            <label for="firstName" class="form-label">First name</label>
+            <input
+              type="text"
+              id="firstName"
+              class="form-input"
+              placeholder="Enter first name"
+              [(ngModel)]="formData.firstName"
+              name="firstName"
+              [disabled]="isViewMode()"
+              required
+            />
+          </div>
+
+          <!-- Last Name -->
+          <div class="form-group">
+            <label for="lastName" class="form-label">Last name</label>
+            <input
+              type="text"
+              id="lastName"
+              class="form-input"
+              placeholder="Enter last name"
+              [(ngModel)]="formData.lastName"
+              name="lastName"
+              [disabled]="isViewMode()"
+              required
+            />
+          </div>
+
+          <!-- E-mail Address -->
+          <div class="form-group">
+            <label for="email" class="form-label">E-mail address</label>
+            <input
+              type="email"
+              id="email"
+              class="form-input"
+              placeholder="Type user's email address"
+              [(ngModel)]="formData.email"
+              name="email"
+              [disabled]="isViewMode()"
+              required
+            />
+          </div>
+
+          <!-- Choose Role -->
+          <div class="form-group">
+            <label class="form-label">Choose role</label>
+            <div class="form-roles">
+              <label class="form-checkbox">
+                <input
+                  type="checkbox"
+                  [checked]="hasRole('ROLE_CLIENT')"
+                  (change)="toggleRole('ROLE_CLIENT')"
+                  [disabled]="isViewMode()"
+                />
+                <span class="form-checkbox__checkmark"></span>
+                <span class="form-checkbox__label">Regular User</span>
+              </label>
+              <label class="form-checkbox">
+                <input
+                  type="checkbox"
+                  [checked]="hasRole('ROLE_CLIENT_ADMIN')"
+                  (change)="toggleRole('ROLE_CLIENT_ADMIN')"
+                  [disabled]="isViewMode()"
+                />
+                <span class="form-checkbox__checkmark"></span>
+                <span class="form-checkbox__label">Client Admin</span>
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="side-panel__footer">
+        <button type="button" class="side-panel__button side-panel__button--secondary" (click)="closeSidePanel()">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Cancel
+        </button>
+        @if (!isViewMode()) {
+          <button
+            type="button"
+            class="side-panel__button side-panel__button--primary"
+            (click)="submitForm()"
+            [disabled]="isSubmitting || (sidePanelMode === 'add' && getAvailableSlots() <= 0)">
+            @if (isSubmitting) {
+              <span>Sending...</span>
+            } @else {
+              {{ getSubmitButtonText() }}
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 10l-6-6m0 0l-6 6m6-6v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="rotate(90 10 10)"/>
+              </svg>
+            }
+          </button>
+        }
+      </div>
+    </div>
+  }
+</div>

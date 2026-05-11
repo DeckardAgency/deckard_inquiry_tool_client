@@ -1,0 +1,114 @@
+.ui-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+
+  &__label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #18181B;
+    line-height: 20px;
+  }
+
+  &__required {
+    color: #DC2626;
+    margin-left: 2px;
+  }
+
+  &__wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    // Style child inputs/selects
+    ::ng-deep {
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid #E4E4E7;
+        border-radius: 8px;
+        background-color: #FFFFFF;
+        color: #18181B;
+        font-family: inherit;
+        font-size: 14px;
+        line-height: 20px;
+        padding: 10px 14px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+        &::placeholder {
+          color: #A1A1AA;
+        }
+
+        &:focus {
+          outline: none;
+          border-color: #DC2626;
+          box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        &:disabled {
+          background-color: #F4F4F5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  &__prefix,
+  &__suffix {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #71717A;
+    z-index: 1;
+  }
+
+  &__prefix {
+    left: 12px;
+
+    & + ::ng-deep input,
+    & + ::ng-deep select {
+      padding-left: 40px;
+    }
+  }
+
+  &__suffix {
+    right: 12px;
+  }
+
+  &__hint {
+    font-size: 12px;
+    color: #71717A;
+    line-height: 16px;
+  }
+
+  &__error {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #DC2626;
+    line-height: 16px;
+
+    svg {
+      flex-shrink: 0;
+    }
+  }
+
+  // Error state
+  &--error {
+    .ui-form-field__wrapper ::ng-deep {
+      input,
+      select,
+      textarea {
+        border-color: #DC2626;
+
+        &:focus {
+          box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+        }
+      }
+    }
+  }
+}

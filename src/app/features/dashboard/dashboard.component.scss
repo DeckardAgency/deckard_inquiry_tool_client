@@ -1,0 +1,17 @@
+.page {
+  &--dashboard {
+    padding: 1rem;
+  }
+}
+.dashboard {
+  min-height: 100%;
+  background: #FAFAFA;
+
+  &__content {
+    padding: 0 1rem;
+  }
+
+  &__row {
+    display: flex;
+  }
+}

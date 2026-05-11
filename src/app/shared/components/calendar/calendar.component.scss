@@ -1,0 +1,146 @@
+.calendar-container {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
+  padding: 1rem;
+  width: 38.75rem;
+  position: absolute;
+  z-index: 1000;
+}
+
+.calendar-grid {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.month {
+  flex: 1;
+}
+
+.month-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.month-title {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #666;
+  padding: 0.25rem 0.5rem;
+
+  &:hover {
+    color: #222;
+  }
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.weekday {
+  font-size: 0.875rem;
+  color: #666;
+  padding: 0.5rem 0;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 0.125rem;
+}
+
+.day {
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 0.875rem;
+
+  &.current-month {
+    color: #333;
+  }
+
+  &.other-month {
+    color: #ccc;
+    pointer-events: none;
+  }
+
+  &.today {
+    font-weight: bold;
+    border: 0.0625rem solid #ddd;
+  }
+
+  &.selected, &.range-start, &.range-end {
+    background-color: #e74c3c;
+    color: white;
+  }
+
+  &.in-range {
+    background-color: #fadbd8;
+    border-radius: 0;
+  }
+
+  &.range-start {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &.range-end {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &:hover:not(.selected):not(.other-month):not(.range-start):not(.range-end) {
+    background-color: #f5f5f5;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 0.0625rem solid #eee;
+}
+
+.clear-button, .apply-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.clear-button {
+  background-color: white;
+  color: #666;
+  border: 0.0625rem solid #ddd;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
+
+.apply-button {
+  background-color: #e74c3c;
+  color: white;
+
+  &:hover {
+    background-color: #c0392b;
+  }
+}

@@ -1,0 +1,46 @@
+<section class="quick-actions">
+  <div class="quick-actions__header">
+    <h2 class="quick-actions__title">
+      <svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.333 11.667a.833.833 0 0 1-.65-1.359l8.25-8.5a.417.417 0 0 1 .717.384l-1.6 5.016a.833.833 0 0 0 .783 1.125h5.834a.833.833 0 0 1 .65 1.359l-8.25 8.5a.416.416 0 0 1-.717-.384l1.6-5.016a.833.833 0 0 0-.783-1.125H3.333Z" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Quick Actions
+    </h2>
+  </div>
+
+  <div class="quick-actions__body">
+    <div class="quick-actions__grid">
+      <a class="quick-action-card" (click)="openInquiryModal($event)">
+        <div class="quick-action-card__icon">
+          <app-icon name="filePlusTwo" size="36px" color="#DC2626"></app-icon>
+        </div>
+        <h3 class="quick-action-card__title">New inquiry</h3>
+        <p class="quick-action-card__description">
+          Initiate a spare part request by completing our custom tailored ordering solutions.
+        </p>
+        <span class="quick-action-card__link">
+        Create
+        <app-icon name="buttonArrowRight" size="16" color="#232323"></app-icon>
+      </span>
+      </a>
+
+      <a href="/all-machines" class="quick-action-card">
+        <div class="quick-action-card__icon">
+          <app-icon name="clipboardList" size="36px" color="#DC2626"></app-icon>
+        </div>
+        <h3 class="quick-action-card__title">View Machines</h3>
+        <p class="quick-action-card__description">
+          Explore our machine and spare parts catalogue, use custom filters to find your perfect match.
+        </p>
+        <span class="quick-action-card__link">
+        Browse
+        <app-icon name="buttonArrowRight" size="16" color="#232323"></app-icon>
+      </span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Modal Component -->
+  <app-inquiry-modal
+    [isOpen]="isModalOpen"
+    (isOpenChange)="this.modalService.close()">
+  </app-inquiry-modal>
+</section>

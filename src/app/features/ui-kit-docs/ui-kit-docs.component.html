@@ -1,0 +1,1142 @@
+<div class="ui-kit-docs">
+  <!-- Sidebar Navigation -->
+  <aside class="ui-kit-docs__sidebar">
+    <div class="ui-kit-docs__logo">
+      <h1>UI Kit</h1>
+      <span class="ui-kit-docs__version">v1.0.0</span>
+    </div>
+
+    <nav class="ui-kit-docs__nav">
+      <!-- Atoms -->
+      <div class="ui-kit-docs__nav-group">
+        <h3 class="ui-kit-docs__nav-title">Atoms</h3>
+        <ul class="ui-kit-docs__nav-list">
+          <li *ngFor="let section of atomSections; trackBy: trackBySection">
+            <a
+              [class.active]="activeSection === section.id"
+              (click)="scrollTo(section.id)"
+            >
+              {{ section.title }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Molecules -->
+      <div class="ui-kit-docs__nav-group">
+        <h3 class="ui-kit-docs__nav-title">Molecules</h3>
+        <ul class="ui-kit-docs__nav-list">
+          <li *ngFor="let section of moleculeSections; trackBy: trackBySection">
+            <a
+              [class.active]="activeSection === section.id"
+              (click)="scrollTo(section.id)"
+            >
+              {{ section.title }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Organisms -->
+      <div class="ui-kit-docs__nav-group">
+        <h3 class="ui-kit-docs__nav-title">Organisms</h3>
+        <ul class="ui-kit-docs__nav-list">
+          <li *ngFor="let section of organismSections; trackBy: trackBySection">
+            <a
+              [class.active]="activeSection === section.id"
+              (click)="scrollTo(section.id)"
+            >
+              {{ section.title }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Shared Business Components -->
+      <div class="ui-kit-docs__nav-group">
+        <h3 class="ui-kit-docs__nav-title">Shared</h3>
+        <ul class="ui-kit-docs__nav-list">
+          <li *ngFor="let section of sharedSections; trackBy: trackBySection">
+            <a
+              [class.active]="activeSection === section.id"
+              (click)="scrollTo(section.id)"
+            >
+              {{ section.title }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Modals -->
+      <div class="ui-kit-docs__nav-group">
+        <h3 class="ui-kit-docs__nav-title">Modals</h3>
+        <ul class="ui-kit-docs__nav-list">
+          <li *ngFor="let section of modalSections; trackBy: trackBySection">
+            <a
+              [class.active]="activeSection === section.id"
+              (click)="scrollTo(section.id)"
+            >
+              {{ section.title }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="ui-kit-docs__content">
+    <header class="ui-kit-docs__header">
+      <h1>Deckard UI Kit</h1>
+      <p>A comprehensive component library built with Angular, following Atomic Design principles.</p>
+    </header>
+
+    <!-- ==================== ATOMS ==================== -->
+    <div class="ui-kit-docs__category">
+      <h2 class="ui-kit-docs__category-title">Atoms</h2>
+      <p class="ui-kit-docs__category-desc">Basic building blocks of the UI</p>
+
+      <!-- Button -->
+      <section id="button" class="ui-kit-docs__section">
+        <h3>Button</h3>
+        <p>Buttons trigger actions and events.</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Variants</h4>
+          <div class="ui-kit-docs__demo-row">
+            <ui-button variant="primary" (clicked)="onButtonClick()">Primary</ui-button>
+            <ui-button variant="secondary">Secondary</ui-button>
+            <ui-button variant="outline">Outline</ui-button>
+            <ui-button variant="ghost">Ghost</ui-button>
+            <ui-button variant="danger">Danger</ui-button>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Sizes</h4>
+          <div class="ui-kit-docs__demo-row">
+            <ui-button size="sm">Small</ui-button>
+            <ui-button size="md">Medium</ui-button>
+            <ui-button size="lg">Large</ui-button>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>States</h4>
+          <div class="ui-kit-docs__demo-row">
+            <ui-button [loading]="true">Loading</ui-button>
+            <ui-button [disabled]="true">Disabled</ui-button>
+            <ui-button iconLeft="plus">With Icon</ui-button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Icon -->
+      <section id="icon" class="ui-kit-docs__section">
+        <h3>Icon</h3>
+        <p>SVG icons from the icon registry.</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Available Icons</h4>
+          <div class="ui-kit-docs__icon-grid">
+            <div *ngFor="let icon of iconList" class="ui-kit-docs__icon-item">
+              <ui-icon [name]="icon" size="md"></ui-icon>
+              <span>{{ icon }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Sizes</h4>
+          <div class="ui-kit-docs__demo-row">
+            <ui-icon name="star" size="xs"></ui-icon>
+            <ui-icon name="star" size="sm"></ui-icon>
+            <ui-icon name="star" size="md"></ui-icon>
+            <ui-icon name="star" size="lg"></ui-icon>
+            <ui-icon name="star" size="xl"></ui-icon>
+          </div>
+        </div>
+      </section>
+
+      <!-- Input -->
+      <section id="input" class="ui-kit-docs__section">
+        <h3>Input</h3>
+        <p>Text input fields for forms.</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Variants</h4>
+          <div class="ui-kit-docs__demo-col">
+            <ui-input placeholder="Default input" [(ngModel)]="inputValue"></ui-input>
+            <ui-input placeholder="With icon" prefixIcon="search"></ui-input>
+            <ui-input type="password" placeholder="Password input" [showPasswordToggle]="true"></ui-input>
+            <ui-input placeholder="Disabled" [disabled]="true"></ui-input>
+            <ui-input placeholder="Error state" error="This field is required"></ui-input>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Sizes</h4>
+          <div class="ui-kit-docs__demo-col">
+            <ui-input size="sm" placeholder="Small"></ui-input>
+            <ui-input size="md" placeholder="Medium"></ui-input>
+            <ui-input size="lg" placeholder="Large"></ui-input>
+          </div>
+        </div>
+      </section>
+
+      <!-- Textarea -->
+      <section id="textarea" class="ui-kit-docs__section">
+        <h3>Textarea</h3>
+        <p>Multi-line text input.</p>
+
+        <div class="ui-kit-docs__demo">
+          <div class="ui-kit-docs__demo-col">
+            <ui-textarea placeholder="Enter your message..." [(ngModel)]="textareaValue"></ui-textarea>
+            <ui-textarea placeholder="With character count" [maxLength]="200" [showCharCount]="true"></ui-textarea>
+            <ui-textarea placeholder="No resize" resize="none"></ui-textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Badge -->
+      <section id="badge" class="ui-kit-docs__section">
+        <h3>Badge</h3>
+        <p>Status indicators and labels.</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Variants</h4>
+          <div class="ui-kit-docs__demo-row">
+            <ui-badge variant="default">Default</ui-badge>
+            <ui-badge variant="primary">Primary</ui-badge>
+            <ui-badge variant="success">Success</ui-badge>
+            <ui-badge variant="warning">Warning</ui-badge>
+            <ui-badge variant="danger">Danger</ui-badge>
+            <ui-badge variant="info">Info</ui-badge>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Sizes</h4>
+          <div class="ui-kit-docs__demo-row">
+            <ui-badge size="sm">Small</ui-badge>
+            <ui-badge size="md">Medium</ui-badge>
+            <ui-badge size="lg">Large</ui-badge>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>With Dot</h4>
+          <div class="ui-kit-docs__demo-row">
+            <ui-badge variant="success" [dot]="true">Online</ui-badge>
+            <ui-badge variant="danger" [dot]="true">Offline</ui-badge>
+          </div>
+        </div>
+      </section>
+
+      <!-- Shimmer -->
+      <section id="shimmer" class="ui-kit-docs__section">
+        <h3>Shimmer</h3>
+        <p>Loading skeleton placeholders.</p>
+
+        <div class="ui-kit-docs__demo">
+          <div class="ui-kit-docs__demo-col">
+            <ui-shimmer width="100%" height="20px"></ui-shimmer>
+            <ui-shimmer width="80%" height="20px"></ui-shimmer>
+            <ui-shimmer width="60%" height="20px"></ui-shimmer>
+            <ui-shimmer width="100px" height="100px" borderRadius="50%"></ui-shimmer>
+          </div>
+        </div>
+      </section>
+
+      <!-- Spinner -->
+      <section id="spinner" class="ui-kit-docs__section">
+        <h3>Spinner</h3>
+        <p>Loading indicators.</p>
+
+        <div class="ui-kit-docs__demo">
+          <div class="ui-kit-docs__demo-row">
+            <ui-spinner size="sm"></ui-spinner>
+            <ui-spinner size="md"></ui-spinner>
+            <ui-spinner size="lg"></ui-spinner>
+          </div>
+        </div>
+      </section>
+
+      <!-- Avatar -->
+      <section id="avatar" class="ui-kit-docs__section">
+        <h3>Avatar</h3>
+        <p>User profile images with fallback to initials.</p>
+
+        <div class="ui-kit-docs__demo">
+          <div class="ui-kit-docs__demo-row">
+            <ui-avatar name="John Doe" size="sm"></ui-avatar>
+            <ui-avatar name="Jane Smith" size="md"></ui-avatar>
+            <ui-avatar name="Bob Wilson" size="lg"></ui-avatar>
+            <ui-avatar src="https://i.pravatar.cc/100" size="lg"></ui-avatar>
+          </div>
+        </div>
+      </section>
+
+      <!-- Checkbox -->
+      <section id="checkbox" class="ui-kit-docs__section">
+        <h3>Checkbox</h3>
+        <p>Checkbox input for boolean values.</p>
+
+        <div class="ui-kit-docs__demo">
+          <div class="ui-kit-docs__demo-col">
+            <ui-checkbox [(ngModel)]="checkboxChecked" label="Default checkbox"></ui-checkbox>
+            <ui-checkbox [checked]="true" label="Checked"></ui-checkbox>
+            <ui-checkbox [indeterminate]="true" label="Indeterminate"></ui-checkbox>
+            <ui-checkbox [disabled]="true" label="Disabled"></ui-checkbox>
+          </div>
+        </div>
+      </section>
+
+      <!-- Select -->
+      <section id="select" class="ui-kit-docs__section">
+        <h3>Select</h3>
+        <p>Dropdown select input.</p>
+
+        <div class="ui-kit-docs__demo">
+          <div class="ui-kit-docs__demo-col">
+            <ui-select
+              [options]="selectOptions"
+              placeholder="Select an option"
+              [(ngModel)]="selectedOption"
+            ></ui-select>
+            <ui-select
+              [options]="selectOptions"
+              placeholder="Disabled"
+              [disabled]="true"
+            ></ui-select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Divider -->
+      <section id="divider" class="ui-kit-docs__section">
+        <h3>Divider</h3>
+        <p>Visual separator for content.</p>
+
+        <div class="ui-kit-docs__demo">
+          <p>Content above</p>
+          <ui-divider></ui-divider>
+          <p>Content below</p>
+          <ui-divider label="OR"></ui-divider>
+          <p>Content after label</p>
+        </div>
+      </section>
+
+      <!-- Link -->
+      <section id="link" class="ui-kit-docs__section">
+        <h3>Link</h3>
+        <p>Navigation links.</p>
+
+        <div class="ui-kit-docs__demo">
+          <div class="ui-kit-docs__demo-row">
+            <ui-link href="https://example.com" [external]="true">External Link</ui-link>
+            <ui-link route="/dashboard">Internal Link</ui-link>
+            <ui-link href="#" [disabled]="true">Disabled Link</ui-link>
+          </div>
+        </div>
+      </section>
+
+      <!-- Toggle -->
+      <section id="toggle" class="ui-kit-docs__section">
+        <h3>Toggle</h3>
+        <p>On/off switch control for boolean settings.</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Basic Toggle</h4>
+          <div class="ui-kit-docs__demo-col">
+            <ui-toggle [(ngModel)]="toggleChecked" label="Enable notifications"></ui-toggle>
+            <ui-toggle [checked]="true" label="Active toggle"></ui-toggle>
+            <ui-toggle [disabled]="true" label="Disabled toggle"></ui-toggle>
+            <ui-toggle [checked]="true" [disabled]="true" label="Disabled checked"></ui-toggle>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Sizes</h4>
+          <div class="ui-kit-docs__demo-col">
+            <ui-toggle size="sm" label="Small toggle"></ui-toggle>
+            <ui-toggle size="md" label="Medium toggle"></ui-toggle>
+            <ui-toggle size="lg" label="Large toggle"></ui-toggle>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Label Position</h4>
+          <div class="ui-kit-docs__demo-col">
+            <ui-toggle labelPosition="left" label="Label on left"></ui-toggle>
+            <ui-toggle labelPosition="right" label="Label on right"></ui-toggle>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==================== MOLECULES ==================== -->
+    <div class="ui-kit-docs__category">
+      <h2 class="ui-kit-docs__category-title">Molecules</h2>
+      <p class="ui-kit-docs__category-desc">Combinations of atoms forming functional units</p>
+
+      <!-- Form Field -->
+      <section id="form-field" class="ui-kit-docs__section">
+        <h3>Form Field</h3>
+        <p>Wrapper for form inputs with label and error.</p>
+
+        <div class="ui-kit-docs__demo">
+          <div class="ui-kit-docs__demo-col">
+            <ui-form-field label="Email" [required]="true">
+              <ui-input type="email" placeholder="Enter email"></ui-input>
+            </ui-form-field>
+            <ui-form-field label="Password" hint="Minimum 8 characters">
+              <ui-input type="password" placeholder="Enter password"></ui-input>
+            </ui-form-field>
+            <ui-form-field label="Username" error="This username is already taken">
+              <ui-input placeholder="Enter username" error="This username is already taken"></ui-input>
+            </ui-form-field>
+          </div>
+        </div>
+      </section>
+
+      <!-- Card -->
+      <section id="card" class="ui-kit-docs__section">
+        <h3>Card</h3>
+        <p>Content container with optional header and footer.</p>
+
+        <div class="ui-kit-docs__demo">
+          <div class="ui-kit-docs__demo-row" style="align-items: flex-start;">
+            <ui-card style="width: 300px;">
+              <ng-container card-header>
+                <h4>Card Title</h4>
+              </ng-container>
+              <p>This is the card content. It can contain any type of content.</p>
+              <ng-container card-footer>
+                <ui-button size="sm">Action</ui-button>
+              </ng-container>
+            </ui-card>
+
+            <ui-card [hoverable]="true" style="width: 300px;">
+              <ng-container card-header>
+                <h4>Hoverable Card</h4>
+              </ng-container>
+              <p>This card has hover effects.</p>
+            </ui-card>
+          </div>
+        </div>
+      </section>
+
+      <!-- Toast -->
+      <section id="toast" class="ui-kit-docs__section">
+        <h3>Toast</h3>
+        <p>Notification messages.</p>
+
+        <div class="ui-kit-docs__demo">
+          <div class="ui-kit-docs__demo-col">
+            <ui-toast type="success" message="Operation completed successfully!" [visible]="true"></ui-toast>
+            <ui-toast type="error" message="An error occurred. Please try again." [visible]="true"></ui-toast>
+            <ui-toast type="warning" message="Please review your input." [visible]="true"></ui-toast>
+            <ui-toast type="info" message="New updates are available." [visible]="true"></ui-toast>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tabs -->
+      <section id="tabs" class="ui-kit-docs__section">
+        <h3>Tabs</h3>
+        <p>Tab navigation component.</p>
+
+        <div class="ui-kit-docs__demo">
+          <ui-tabs [tabs]="tabItems" (tabChange)="onTabChange($event)"></ui-tabs>
+        </div>
+      </section>
+
+      <!-- Dropdown -->
+      <section id="dropdown" class="ui-kit-docs__section">
+        <h3>Dropdown</h3>
+        <p>Dropdown menu with actions.</p>
+
+        <div class="ui-kit-docs__demo">
+          <ui-dropdown
+            [items]="dropdownItems"
+            triggerLabel="Actions"
+            (itemSelect)="onDropdownSelect($event)"
+          ></ui-dropdown>
+        </div>
+      </section>
+
+      <!-- File Upload -->
+      <section id="file-upload" class="ui-kit-docs__section">
+        <h3>File Upload</h3>
+        <p>Drag and drop file upload.</p>
+
+        <div class="ui-kit-docs__demo">
+          <ui-file-upload
+            accept=".jpg,.png,.pdf"
+            [multiple]="true"
+            (filesSelected)="onFileSelect($event)"
+          ></ui-file-upload>
+        </div>
+      </section>
+
+      <!-- Breadcrumbs -->
+      <section id="breadcrumbs" class="ui-kit-docs__section">
+        <h3>Breadcrumbs</h3>
+        <p>Navigation breadcrumb trail.</p>
+
+        <div class="ui-kit-docs__demo">
+          <ui-breadcrumbs [items]="breadcrumbItems"></ui-breadcrumbs>
+        </div>
+      </section>
+
+      <!-- Empty State -->
+      <section id="empty-state" class="ui-kit-docs__section">
+        <h3>Empty State</h3>
+        <p>Placeholder for empty content areas.</p>
+
+        <div class="ui-kit-docs__demo">
+          <ui-empty-state
+            icon="inbox"
+            title="No items found"
+            description="There are no items to display at the moment."
+            actionLabel="Add Item"
+          ></ui-empty-state>
+        </div>
+      </section>
+
+      <!-- Pagination -->
+      <section id="pagination" class="ui-kit-docs__section">
+        <h3>Pagination</h3>
+        <p>Page navigation for lists.</p>
+
+        <div class="ui-kit-docs__demo">
+          <ui-pagination
+            [totalItems]="100"
+            [itemsPerPage]="10"
+            [currentPage]="currentPage"
+            (pageChange)="currentPage = $event"
+          ></ui-pagination>
+        </div>
+      </section>
+
+      <!-- Search -->
+      <section id="search" class="ui-kit-docs__section">
+        <h3>Search</h3>
+        <p>Search input with suggestions.</p>
+
+        <div class="ui-kit-docs__demo">
+          <ui-search
+            placeholder="Search for items..."
+            [suggestions]="searchSuggestions"
+            (search)="onSearch($event)"
+          ></ui-search>
+        </div>
+      </section>
+
+      <!-- Calendar -->
+      <section id="calendar" class="ui-kit-docs__section">
+        <h3>Calendar</h3>
+        <p>Date picker calendar.</p>
+
+        <div class="ui-kit-docs__demo">
+          <div class="ui-kit-docs__demo-row" style="align-items: flex-start;">
+            <ui-calendar
+              [selectedDate]="selectedDate"
+              (dateSelected)="onDateSelect($event)"
+              [inline]="true"
+            ></ui-calendar>
+          </div>
+          <p *ngIf="selectedDate">Selected: {{ selectedDate | date:'fullDate' }}</p>
+        </div>
+      </section>
+
+      <!-- Carousel -->
+      <section id="carousel" class="ui-kit-docs__section">
+        <h3>Carousel</h3>
+        <p>Image/content carousel with navigation.</p>
+
+        <div class="ui-kit-docs__demo">
+          <ui-carousel
+            [slides]="carouselSlides"
+            [showDots]="true"
+            [showArrows]="true"
+            aspectRatio="16/9"
+          ></ui-carousel>
+        </div>
+      </section>
+
+      <!-- Quantity Selector -->
+      <section id="quantity-selector" class="ui-kit-docs__section">
+        <h3>Quantity Selector</h3>
+        <p>Input control for selecting numeric quantities with increment/decrement buttons.</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Basic Usage</h4>
+          <div class="ui-kit-docs__demo-row">
+            <ui-quantity-selector [(ngModel)]="quantity"></ui-quantity-selector>
+            <span>Current value: {{ quantity }}</span>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Sizes</h4>
+          <div class="ui-kit-docs__demo-row">
+            <ui-quantity-selector size="sm" [value]="1"></ui-quantity-selector>
+            <ui-quantity-selector size="md" [value]="5"></ui-quantity-selector>
+            <ui-quantity-selector size="lg" [value]="10"></ui-quantity-selector>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Min/Max Limits</h4>
+          <div class="ui-kit-docs__demo-col">
+            <div class="ui-kit-docs__demo-row">
+              <ui-quantity-selector [min]="1" [max]="10" [value]="5"></ui-quantity-selector>
+              <span>Min: 1, Max: 10</span>
+            </div>
+            <div class="ui-kit-docs__demo-row">
+              <ui-quantity-selector [min]="0" [max]="100" [step]="5" [value]="25"></ui-quantity-selector>
+              <span>Step: 5</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Disabled State</h4>
+          <ui-quantity-selector [disabled]="true" [value]="3"></ui-quantity-selector>
+        </div>
+      </section>
+
+      <!-- Price Display -->
+      <section id="price-display" class="ui-kit-docs__section">
+        <h3>Price Display</h3>
+        <p>Formatted currency display with support for discounts and multiple sizes.</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Basic Prices</h4>
+          <div class="ui-kit-docs__demo-row">
+            <ui-price-display [value]="1299.99"></ui-price-display>
+            <ui-price-display [value]="49.00" currency="$" currencyPosition="before" locale="en-US"></ui-price-display>
+            <ui-price-display [value]="199" [showDecimals]="false"></ui-price-display>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Sizes</h4>
+          <div class="ui-kit-docs__demo-row">
+            <ui-price-display size="sm" [value]="99.99"></ui-price-display>
+            <ui-price-display size="md" [value]="99.99"></ui-price-display>
+            <ui-price-display size="lg" [value]="99.99"></ui-price-display>
+            <ui-price-display size="xl" [value]="99.99"></ui-price-display>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>With Discount</h4>
+          <div class="ui-kit-docs__demo-row">
+            <ui-price-display [value]="79.99" [originalValue]="99.99"></ui-price-display>
+            <ui-price-display [value]="149.00" [originalValue]="299.00" size="lg"></ui-price-display>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Highlighted</h4>
+          <div class="ui-kit-docs__demo-row">
+            <ui-price-display [value]="599.99" [highlight]="true" size="lg"></ui-price-display>
+          </div>
+        </div>
+      </section>
+
+      <!-- Accordion -->
+      <section id="accordion" class="ui-kit-docs__section">
+        <h3>Accordion</h3>
+        <p>Collapsible content panels for organizing information.</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Single Mode (Default)</h4>
+          <ui-accordion>
+            <ui-accordion-item title="What is Deckard?">
+              <p>Deckard is a leading manufacturer of woven plastic packaging machinery, recycling machines, and PET processing systems.</p>
+            </ui-accordion-item>
+            <ui-accordion-item title="How do I place an order?">
+              <p>You can place an order through our online portal by selecting products and adding them to your cart, or by contacting our sales team directly.</p>
+            </ui-accordion-item>
+            <ui-accordion-item title="What payment methods are accepted?">
+              <p>We accept bank transfers, credit cards (Visa, MasterCard), and various regional payment methods. Payment terms can be negotiated for business accounts.</p>
+            </ui-accordion-item>
+          </ui-accordion>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Multiple Mode</h4>
+          <ui-accordion [multiple]="true">
+            <ui-accordion-item title="Section 1" [isExpanded]="true">
+              <p>First section content - this one starts expanded.</p>
+            </ui-accordion-item>
+            <ui-accordion-item title="Section 2">
+              <p>Second section content.</p>
+            </ui-accordion-item>
+            <ui-accordion-item title="Section 3">
+              <p>Third section content.</p>
+            </ui-accordion-item>
+          </ui-accordion>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Bordered Style</h4>
+          <ui-accordion [bordered]="true">
+            <ui-accordion-item title="Feature Overview">
+              <p>Our components are built with accessibility and performance in mind.</p>
+            </ui-accordion-item>
+            <ui-accordion-item title="Technical Specifications">
+              <p>Built with Angular 20+ using standalone components and OnPush change detection.</p>
+            </ui-accordion-item>
+            <ui-accordion-item title="Disabled Item" [disabled]="true">
+              <p>This content cannot be viewed.</p>
+            </ui-accordion-item>
+          </ui-accordion>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==================== ORGANISMS ==================== -->
+    <div class="ui-kit-docs__category">
+      <h2 class="ui-kit-docs__category-title">Organisms</h2>
+      <p class="ui-kit-docs__category-desc">Complex UI sections composed of molecules and atoms</p>
+
+      <!-- Modal -->
+      <section id="modal" class="ui-kit-docs__section">
+        <h3>Modal</h3>
+        <p>Dialog overlay for focused content.</p>
+
+        <div class="ui-kit-docs__demo">
+          <ui-button (clicked)="openModal()">Open Modal</ui-button>
+
+          <ui-modal
+            [isOpen]="isModalOpen"
+            title="Example Modal"
+            (close)="closeModal()"
+          >
+            <p>This is the modal content. You can put any content here.</p>
+            <ng-container modal-footer>
+              <ui-button variant="ghost" (clicked)="closeModal()">Cancel</ui-button>
+              <ui-button (clicked)="closeModal()">Confirm</ui-button>
+            </ng-container>
+          </ui-modal>
+        </div>
+      </section>
+
+      <!-- Data Table -->
+      <section id="data-table" class="ui-kit-docs__section">
+        <h3>Data Table</h3>
+        <p>Sortable, selectable data table.</p>
+
+        <div class="ui-kit-docs__demo">
+          <ui-data-table
+            [columns]="tableColumns"
+            [data]="tableData"
+            [selectable]="true"
+          ></ui-data-table>
+        </div>
+      </section>
+
+      <!-- Card Grid -->
+      <section id="card-grid" class="ui-kit-docs__section">
+        <h3>Card Grid</h3>
+        <p>Responsive grid layout for cards.</p>
+
+        <div class="ui-kit-docs__demo">
+          <ui-card-grid
+            [items]="cardGridItems"
+            [columns]="3"
+            [columnsMd]="2"
+            [columnsSm]="1"
+            gap="md"
+          >
+            <ng-template #cardTemplate let-item>
+              <ui-card [hoverable]="true">
+                <ng-container card-header>
+                  <h4>{{ item.title }}</h4>
+                </ng-container>
+                <p>{{ item.description }}</p>
+              </ui-card>
+            </ng-template>
+          </ui-card-grid>
+        </div>
+      </section>
+
+      <!-- Drawer -->
+      <section id="drawer" class="ui-kit-docs__section">
+        <h3>Drawer</h3>
+        <p>Slide-out panel for secondary content, filters, or navigation.</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Right Drawer (Default)</h4>
+          <ui-button (clicked)="openDrawer()">Open Drawer</ui-button>
+
+          <ui-drawer
+            [isOpen]="isDrawerOpen"
+            title="Drawer Title"
+            position="right"
+            size="md"
+            (close)="closeDrawer()"
+          >
+            <div style="padding: 16px;">
+              <h4>Drawer Content</h4>
+              <p>This is the drawer content. You can put any content here including forms, lists, or navigation.</p>
+              <ui-divider></ui-divider>
+              <p>The drawer supports multiple positions (left, right, top, bottom) and sizes (sm, md, lg, xl, full).</p>
+              <div style="margin-top: 16px;">
+                <ui-button variant="ghost" (clicked)="closeDrawer()">Cancel</ui-button>
+                <ui-button (clicked)="closeDrawer()">Save Changes</ui-button>
+              </div>
+            </div>
+          </ui-drawer>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Features</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li>Four positions: left, right, top, bottom</li>
+            <li>Five sizes: sm (320px), md (400px), lg (500px), xl (600px), full (100%)</li>
+            <li>Animated slide-in/out transitions</li>
+            <li>Optional overlay with click-to-close</li>
+            <li>Keyboard support (Escape to close)</li>
+            <li>Configurable close button</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==================== SHARED BUSINESS COMPONENTS ==================== -->
+    <div class="ui-kit-docs__category">
+      <h2 class="ui-kit-docs__category-title">Shared Business Components</h2>
+      <p class="ui-kit-docs__category-desc">Project-specific components with business logic integration</p>
+
+      <!-- Article Item -->
+      <section id="article-item" class="ui-kit-docs__section">
+        <h3>Article Item</h3>
+        <p>Compact product display for lists and grids. Used in search results and product listings.</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Grid View</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+            <app-article-item
+              *ngFor="let product of mockProducts"
+              [product]="product"
+              viewMode="grid"
+              [isSelected]="selectedArticle?.id === product.id"
+              (productSelected)="onArticleSelect($event)"
+            ></app-article-item>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>List View</h4>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <app-article-item
+              *ngFor="let product of mockProducts"
+              [product]="product"
+              viewMode="list"
+              [isSelected]="selectedArticle?.id === product.id"
+              (productSelected)="onArticleSelect($event)"
+            ></app-article-item>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Props</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li><code>product</code> - Product model with partNo, name, featuredImage</li>
+            <li><code>viewMode</code> - 'grid' | 'list'</li>
+            <li><code>isSelected</code> - Highlight selected state</li>
+            <li><code>(productSelected)</code> - Emits when clicked</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Product Card -->
+      <section id="product-card" class="ui-kit-docs__section">
+        <h3>Product Card</h3>
+        <p>Full product display with image carousel, specs, pricing, and cart integration.</p>
+
+        <div class="ui-kit-docs__demo">
+          <div style="max-width: 400px;">
+            <app-product-card [product]="mockProduct"></app-product-card>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Features</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li>Image carousel for multiple product images</li>
+            <li>Product specifications (Part no., Statistic, Weight)</li>
+            <li>Price display with formatting</li>
+            <li>Quantity selector with +/- buttons</li>
+            <li>Add to Cart integration with QuickCartService</li>
+            <li>Machine compatibility display</li>
+          </ul>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Props</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li><code>product</code> - Full Product model with pricing, images, specs</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Inquiry Card -->
+      <section id="inquiry-card" class="ui-kit-docs__section">
+        <h3>Inquiry Card</h3>
+        <p>Display card for orders and inquiries with status, date, and navigation.</p>
+
+        <div class="ui-kit-docs__demo">
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;">
+            <app-inquiry-card
+              *ngFor="let inquiry of mockInquiries"
+              [inquiry]="inquiry"
+            ></app-inquiry-card>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Status Variants</h4>
+          <p>The card displays different status badges: Processing, Submitted, Completed, Confirmed, Cancelled</p>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Props</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li><code>inquiry</code> - Inquiry model with:</li>
+            <li style="margin-left: 20px;"><code>type</code> - 'order' | 'inquiry'</li>
+            <li style="margin-left: 20px;"><code>orderNumber</code> / <code>inquiryNumber</code></li>
+            <li style="margin-left: 20px;"><code>dateCreated</code> - ISO date string</li>
+            <li style="margin-left: 20px;"><code>partsOrdered</code> - Number of parts</li>
+            <li style="margin-left: 20px;"><code>status</code> - Current status</li>
+            <li style="margin-left: 20px;"><code>internalReference</code> - Optional reference</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Machine Article Item -->
+      <section id="machine-article-item" class="ui-kit-docs__section">
+        <h3>Machine Article Item</h3>
+        <p>Compact machine/equipment display for lists and grids. Used in machine selection and listings.</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Grid View</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+            <app-machine-article-item
+              *ngFor="let machine of mockMachines"
+              [machine]="machine"
+              viewMode="grid"
+              [isSelected]="selectedMachine?.id === machine.id"
+              (machineSelected)="onMachineSelect($event)"
+            ></app-machine-article-item>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>List View</h4>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <app-machine-article-item
+              *ngFor="let machine of mockMachines"
+              [machine]="machine"
+              viewMode="list"
+              [isSelected]="selectedMachine?.id === machine.id"
+              (machineSelected)="onMachineSelect($event)"
+            ></app-machine-article-item>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Props</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li><code>machine</code> - Machine model with articleNumber, articleDescription, featuredImage</li>
+            <li><code>viewMode</code> - 'grid' | 'list'</li>
+            <li><code>isSelected</code> - Highlight selected state</li>
+            <li><code>(machineSelected)</code> - Emits when clicked</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Cart Notification -->
+      <section id="cart-notification" class="ui-kit-docs__section">
+        <h3>Cart Notification</h3>
+        <p>Toast notification for cart actions (add/remove products).</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Interactive Demo</h4>
+          <div class="ui-kit-docs__demo-row">
+            <ui-button (clicked)="showSuccessNotification()">Show Success</ui-button>
+            <ui-button variant="ghost" (clicked)="showRemoveNotification()">Show Remove</ui-button>
+          </div>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Features</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li>Auto-closes after 3 seconds</li>
+            <li>Slide-in/out animation</li>
+            <li>Success and remove variants</li>
+            <li>View Cart action button</li>
+          </ul>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Props</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li><code>visible</code> - Show/hide the notification</li>
+            <li><code>message</code> - Notification message text</li>
+            <li><code>type</code> - 'success' | 'remove'</li>
+            <li><code>(viewCart)</code> - Emits when View Cart is clicked</li>
+            <li><code>(close)</code> - Emits when notification is closed</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Cart Switcher -->
+      <section id="cart-switcher" class="ui-kit-docs__section">
+        <h3>Cart Switcher</h3>
+        <p>Toggle between different cart modes (Shop vs Manual Entry).</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Component Preview</h4>
+          <app-cart-switcher></app-cart-switcher>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Features</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li>Route-aware - highlights current cart mode</li>
+            <li>Links to /cart and /manual-entry/cart routes</li>
+            <li>Responsive design</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==================== MODALS ==================== -->
+    <div class="ui-kit-docs__category">
+      <h2 class="ui-kit-docs__category-title">Modals</h2>
+      <p class="ui-kit-docs__category-desc">Dialog components for user interactions</p>
+
+      <!-- Support Modal -->
+      <section id="support-modal" class="ui-kit-docs__section">
+        <h3>Support Modal</h3>
+        <p>Customer support request dialog with form fields and file attachment.</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Open Modal</h4>
+          <ui-button (clicked)="openSupportModal()">Open Support Modal</ui-button>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Features</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li>Subject and message fields</li>
+            <li>Order ID and machine reference (optional)</li>
+            <li>Urgency level selection (low, medium, high)</li>
+            <li>File attachment support</li>
+            <li>Submits to SupportTicketService</li>
+          </ul>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Props</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li><code>isOpen</code> - Control modal visibility</li>
+            <li><code>(isOpenChange)</code> - Two-way binding for open state</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Login Modal -->
+      <section id="login-modal" class="ui-kit-docs__section">
+        <h3>Login Modal</h3>
+        <p>Authentication dialog with email/password login.</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Open Modal</h4>
+          <ui-button (clicked)="openLoginModal()">Open Login Modal</ui-button>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Features</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li>Email and password fields</li>
+            <li>Remember me checkbox</li>
+            <li>Password visibility toggle</li>
+            <li>Error message display</li>
+            <li>Loading state during authentication</li>
+            <li>Configurable close behavior (allowClose)</li>
+          </ul>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Props</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li><code>isOpen</code> - Control modal visibility</li>
+            <li><code>allowClose</code> - Allow closing via backdrop/X button</li>
+            <li><code>(isOpenChange)</code> - Two-way binding for open state</li>
+            <li><code>(loginSuccess)</code> - Emits on successful login</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Inquiry Modal -->
+      <section id="inquiry-modal" class="ui-kit-docs__section">
+        <h3>Inquiry Modal</h3>
+        <p>New inquiry creation dialog with navigation options (Shop, Manual Inquiry, Inquiry Tool).</p>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Open Modal</h4>
+          <ui-button (clicked)="openInquiryModal()">Open Inquiry Modal</ui-button>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Features</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li>Three inquiry options: Shop, Manual Inquiry, Inquiry Tool</li>
+            <li>Card-based selection with icons and descriptions</li>
+            <li>Mobile-responsive carousel view</li>
+            <li>Animated transitions</li>
+          </ul>
+        </div>
+
+        <div class="ui-kit-docs__demo">
+          <h4>Props</h4>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li><code>isOpen</code> - Control modal visibility</li>
+            <li><code>(isOpenChange)</code> - Two-way binding for open state</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Cart Notification (positioned fixed) -->
+  <app-cart-notification
+    [visible]="showCartNotification"
+    [message]="cartNotificationMessage"
+    [type]="cartNotificationType"
+    (viewCart)="onViewCart()"
+    (close)="onCartNotificationClose()"
+  ></app-cart-notification>
+
+  <!-- Modals -->
+  <app-support-modal
+    [(isOpen)]="isSupportModalOpen"
+  ></app-support-modal>
+
+  <app-login-modal
+    [(isOpen)]="isLoginModalOpen"
+    [allowClose]="true"
+  ></app-login-modal>
+
+  <app-inquiry-modal
+    [(isOpen)]="isInquiryModalOpen"
+  ></app-inquiry-modal>
+</div>

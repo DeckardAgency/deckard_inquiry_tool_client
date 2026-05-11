@@ -1,0 +1,195 @@
+<div class="order-detail">
+
+  <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+
+  <!-- Shimmer loading state -->
+  <app-order-detail-shimmer *ngIf="isLoading"></app-order-detail-shimmer>
+
+  <!-- Main content (shown when not loading) -->
+  <div class="order-detail__content" *ngIf="!isLoading">
+
+    <!-- Header section -->
+    <header class="order-detail__header">
+
+      <div class="order-detail__header-top">
+        <button class="order-detail__back-btn" (click)="goBack()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8.00001 12.6668L3.33334 8.00016M3.33334 8.00016L8.00001 3.3335M3.33334 8.00016H12.6667" stroke="#232323" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <div class="order-detail__title-container">
+          <h1 class="order-detail__title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M13.3333 13.3335L15 15.0002L18.3333 11.6668M17.5 8.33341V6.66675C17.4997 6.37448 17.4225 6.08742 17.2763 5.83438C17.13 5.58134 16.9198 5.37122 16.6667 5.22508L10.8333 1.89175C10.58 1.74547 10.2926 1.66846 10 1.66846C9.70744 1.66846 9.42003 1.74547 9.16667 1.89175L3.33333 5.22508C3.08022 5.37122 2.86998 5.58134 2.72372 5.83438C2.57745 6.08742 2.5003 6.37448 2.5 6.66675V13.3334C2.5003 13.6257 2.57745 13.9127 2.72372 14.1658C2.86998 14.4188 3.08022 14.6289 3.33333 14.7751L9.16667 18.1084C9.42003 18.2547 9.70744 18.3317 10 18.3317C10.2926 18.3317 10.58 18.2547 10.8333 18.1084L12.5 17.1584M6.25 3.55851L13.75 7.85018M2.7417 5.8335L10 10.0002M10 10.0002L17.2584 5.8335M10 10.0002L10 18.3335" stroke="#71717A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Inquiry ID: #{{ order?.orderNumber }}
+          </h1>
+          <div class="order-detail__badges">
+            <span class="order-detail__badge order-detail__badge--shop">{{ order?.["@type"] }}</span>
+            <span class="order-detail__badge" [ngClass]="getOrderStatusClass(order?.status || '')">{{ order?.status }}</span>
+          </div>
+        </div>
+
+        <div class="order-detail__actions">
+
+          <button class="order-detail__action-btn order-detail__action-btn--export" (click)="exportOrder()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10M4.66667 6.66667L8 10M8 10L11.3333 6.66667M8 10V2" stroke="#232323" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Download
+          </button>
+
+        </div>
+      </div>
+
+      <div class="order-detail__header-bottom">
+        <div class="order-detail__info-group order-detail__info-group--left">
+          <div class="order-detail__info-item">
+            <span class="order-detail__info-label">Internal reference number:</span>
+            <span class="order-detail__info-value">{{ order?.id }}</span>
+          </div>
+        </div>
+
+        <div class="order-detail__info-group order-detail__info-group--right">
+          <div class="order-detail__info-item">
+            <span class="order-detail__info-label">Date created:</span>
+            <span class="order-detail__info-value">{{ order?.createdAt | dateFilter:'dd.MM.yyyy @ HH:mm' }}</span>
+          </div>
+          <div class="order-detail__info-item">
+            <span class="order-detail__info-label">Parts ordered:</span>
+            <span class="order-detail__info-value">{{ order?.items?.length || 0 }}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Display error message if there's an error -->
+    <div class="order-detail__error" *ngIf="error">
+      <p>{{ error }}</p>
+      <button class="order-detail__retry-button" (click)="loadOrderData()">Retry</button>
+    </div>
+
+    <!-- Display order details when loaded -->
+    <div class="order-detail__details" *ngIf="!error">
+
+      <!-- Products Ordered Section -->
+      <div class="order-detail__products-section">
+        <h2 class="order-detail__section-title">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <g clip-path="url(#clip0_825_105576)">
+              <path d="M4.58332 7.08341L7.49999 10.0001L4.58332 12.9167L1.66666 10.0001L4.58332 7.08341Z" stroke="#71717A" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9.99999 1.66675L12.9167 4.58341L9.99999 7.50008L7.08332 4.58341L9.99999 1.66675Z" stroke="#71717A" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M15.4167 7.08341L18.3333 10.0001L15.4167 12.9167L12.5 10.0001L15.4167 7.08341Z" stroke="#71717A" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9.99999 12.5001L12.9167 15.4167L9.99999 18.3334L7.08332 15.4167L9.99999 12.5001Z" stroke="#71717A" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_825_105576">
+                <rect width="20" height="20" fill="white"/>
+              </clipPath>
+            </defs>
+          </svg>
+          Products ordered
+        </h2>
+
+        <!-- Agent order: products grouped by client -->
+        <div *ngIf="isAgentOrder && clientGroups.length > 0">
+          <div class="order-detail__client-group" *ngFor="let group of clientGroups">
+            <div class="order-detail__client-header">
+              <span class="order-detail__client-name">Client: {{ group.clientName }}</span>
+              <span class="order-detail__client-code" *ngIf="group.clientCode">({{ group.clientCode }})</span>
+            </div>
+            <div class="order-detail__products-table">
+              <table class="order-detail__table">
+                <thead>
+                <tr>
+                  <th class="order-detail__table-header">Part no.</th>
+                  <th class="order-detail__table-header">Part name</th>
+                  <th class="order-detail__table-header">Weight</th>
+                  <th class="order-detail__table-header">Quantity</th>
+                  <th class="order-detail__table-header">Unit price</th>
+                  <th class="order-detail__table-header">Discount</th>
+                  <th class="order-detail__table-header">Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="order-detail__table-row" *ngFor="let item of group.items; trackBy: trackByItemId">
+                  <td class="order-detail__table-cell">{{ item.product.partNo }}</td>
+                  <td class="order-detail__table-cell">{{ item.product.shortDescription }}</td>
+                  <td class="order-detail__table-cell">{{ item.product.weight }}</td>
+                  <td class="order-detail__table-cell">{{ item.quantity }}</td>
+                  <td class="order-detail__table-cell">€ {{ item.unitPrice | priceFilterAdvanced }}</td>
+                  <td class="order-detail__table-cell"></td>
+                  <td class="order-detail__table-cell">€ {{ item.subtotal | priceFilterAdvanced }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Regular order: flat product list -->
+        <div class="order-detail__products-table" *ngIf="!isAgentOrder && order?.items">
+          <table class="order-detail__table">
+            <thead>
+            <tr>
+              <th class="order-detail__table-header">Part no.</th>
+              <th class="order-detail__table-header">Part name</th>
+              <th class="order-detail__table-header">Weight</th>
+              <th class="order-detail__table-header">Quantity</th>
+              <th class="order-detail__table-header">Unit price</th>
+              <th class="order-detail__table-header">Discount</th>
+              <th class="order-detail__table-header">Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="order-detail__table-row" *ngFor="let item of order?.items; trackBy: trackByItemId">
+              <td class="order-detail__table-cell">{{ item.product.partNo }}</td>
+              <td class="order-detail__table-cell">{{ item.product.shortDescription }}</td>
+              <td class="order-detail__table-cell">{{ item.product.weight }}</td>
+              <td class="order-detail__table-cell">{{ item.quantity }}</td>
+              <td class="order-detail__table-cell">€ {{ item.unitPrice | priceFilterAdvanced }}</td>
+              <td class="order-detail__table-cell"></td>
+              <td class="order-detail__table-cell">€ {{ item.subtotal | priceFilterAdvanced }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty state -->
+        <div class="order-detail__empty-state" *ngIf="!order?.items">
+          <p>No parts in this order</p>
+        </div>
+
+        <!-- Total section -->
+        <div class="order-detail__total-section">
+          <div class="order-detail__total-row">
+            <span class="order-detail__total-label">Total price</span>
+            <span class="order-detail__total-value">€ {{ grandTotal | priceFilterAdvanced }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Log Messages Section -->
+      <div class="order-logs" *ngIf="order?.logs">
+        <h2 class="order-logs__title">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M13.3333 13.3333L15 14.9999L18.3333 11.6666M17.5 8.33317V6.6665C17.4997 6.37423 17.4225 6.08718 17.2763 5.83414C17.13 5.5811 16.9198 5.37097 16.6667 5.22484L10.8333 1.8915C10.58 1.74522 10.2926 1.66821 10 1.66821C9.70744 1.66821 9.42003 1.74522 9.16667 1.8915L3.33333 5.22484C3.08022 5.37097 2.86998 5.5811 2.72372 5.83414C2.57745 6.08718 2.5003 6.37423 2.5 6.6665V13.3332C2.5003 13.6254 2.57745 13.9125 2.72372 14.1655C2.86998 14.4186 3.08022 14.6287 3.33333 14.7748L9.16667 18.1082C9.42003 18.2545 9.70744 18.3315 10 18.3315C10.2926 18.3315 10.58 18.2545 10.8333 18.1082L12.5 17.1582M6.25 3.55827L13.75 7.84993M2.7417 5.83325L10 9.99992M10 9.99992L17.2584 5.83325M10 9.99992L10 18.3333" stroke="#71717A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Log messages
+        </h2>
+
+        <div class="order-logs__container">
+          <div class="order-logs__item" *ngFor="let log of order?.logs; trackBy: trackByLogIndex">
+            <div class="order-logs__status" [ngClass]="getLogStatusClass(log.newStatus)">{{ log.newStatus }}</div>
+            <div class="order-logs__date">{{ log.createdAt | dateFilter:'dd.MM.yyyy @ HH:mm' }}</div>
+            <div class="order-logs__user">System</div>
+            <div class="order-logs__comment">{{ log.comment }}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

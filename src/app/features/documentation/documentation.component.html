@@ -1,0 +1,119 @@
+<div class="documentation">
+  <!-- Sidebar Navigation -->
+  <aside class="documentation__sidebar" [class.documentation__sidebar--open]="isSidebarOpen()">
+    <div class="documentation__sidebar-header">
+      <h2 class="documentation__sidebar-title">Documentation</h2>
+      <button
+        type="button"
+        class="documentation__sidebar-close"
+        (click)="toggleSidebar()"
+        aria-label="Toggle documentation sidebar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M7.5 5L12.5 10L7.5 15" stroke="#232323" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="documentation__nav">
+      @for (section of sections(); track section.id) {
+        <div class="documentation__nav-section">
+          @if (section.subsections && section.subsections.length > 0) {
+            <!-- Section with subsections (category) -->
+            <button
+              type="button"
+              class="documentation__nav-item documentation__nav-item--parent"
+              (click)="toggleSection(section.id)"
+              [attr.aria-expanded]="isSectionExpanded(section.id)">
+              <span class="documentation__nav-item-text">{{ section.title }}</span>
+              <svg
+                class="documentation__nav-item-arrow"
+                [class.documentation__nav-item-arrow--expanded]="isSectionExpanded(section.id)"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none">
+                <path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            @if (isSectionExpanded(section.id)) {
+              <div class="documentation__nav-subsections">
+                @for (subsection of section.subsections; track subsection.id) {
+                  <button
+                    type="button"
+                    class="documentation__nav-item documentation__nav-item--child"
+                    [class.documentation__nav-item--active]="isActivePage(subsection.slug)"
+                    (click)="navigateToPage(subsection.slug)">
+                    {{ subsection.title }}
+                  </button>
+                }
+              </div>
+            }
+          } @else {
+            <!-- Section without subsections (top-level doc) -->
+            <button
+              type="button"
+              class="documentation__nav-item"
+              [class.documentation__nav-item--active]="isActivePage(section.slug)"
+              (click)="navigateToPage(section.slug)">
+              <span class="documentation__nav-item-text">{{ section.title }}</span>
+            </button>
+          }
+        </div>
+      }
+
+      <!-- Back to Dashboard Link -->
+      <div class="documentation__nav-section documentation__nav-section--bottom">
+        <button
+          type="button"
+          class="documentation__nav-item documentation__nav-item--dashboard"
+          (click)="navigateToDashboard()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M6.66667 4L2.66667 8L6.66667 12M2.66667 8H13.3333" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="documentation__nav-item-text">Back to Dashboard</span>
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="documentation__main" [class.documentation__main--sidebar-collapsed]="!isSidebarOpen()">
+    <!-- Mobile Toggle Button -->
+    <button
+      type="button"
+      class="documentation__mobile-toggle"
+      (click)="toggleSidebar()"
+      aria-label="Toggle documentation navigation">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M3 12h18M3 6h18M3 18h18" stroke="#232323" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      Menu
+    </button>
+
+    <!-- Content -->
+    <div class="documentation__content">
+      @if (loading()) {
+        <div class="documentation__loading">
+          <div class="documentation__spinner"></div>
+          <p>Loading documentation...</p>
+        </div>
+      } @else if (error()) {
+        <div class="documentation__error">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" stroke="#DC2626" stroke-width="2"/>
+            <path d="M24 16V24M24 32H24.02" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h2>{{ error() }}</h2>
+          <p>The documentation you're looking for might not be available yet.</p>
+          <button type="button" class="documentation__error-btn" (click)="navigateToPage(getFirstDocSlug())">
+            Go to Documentation
+          </button>
+        </div>
+      } @else {
+        <article class="documentation__article" [innerHTML]="content()"></article>
+      }
+    </div>
+  </main>
+</div>

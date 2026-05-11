@@ -1,0 +1,25 @@
+<section class="activity-history">
+  <div class="activity-history__header">
+    <h2 class="activity-history__title">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Activity / History
+    </h2>
+    <a routerLink="/my-inquiries/history" class="activity-history__view-all">
+      View all
+      <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m6 12 4-4-4-4" stroke="#DC2626" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <app-order-inquiry-table
+    [inquiriesData]="inquiries"
+    [ordersData]="orders"
+    [loadingState]="loading"
+    [configuration]="tableConfig"
+    [initialTab]="'Latest'"
+    (tabChange)="onTabChange($event)"
+    (itemAction)="onItemAction($event)"
+    (loadData)="onLoadData($event)"
+    (configChange)="onConfigChange($event)"
+  />
+</section>

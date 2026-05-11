@@ -1,0 +1,296 @@
+.machine-search {
+  width: 100%;
+
+  // Active Filters
+  &__active-filters {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0.75rem;
+    background-color: #f8fafc;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  &__filter-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.625rem;
+    background-color: #fff;
+    border: 0.0625rem solid #e2e8f0;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    color: #1e293b;
+  }
+
+  &__filter-remove {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  // Header Section
+  &__header {
+    margin-bottom: 1.25rem;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 1rem;
+
+    svg {
+      flex-shrink: 0;
+    }
+  }
+
+  // Search Input
+  &__search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background-color: #ffffff;
+    border: 0.0625rem solid #e2e8f0;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+
+    &:focus-within {
+      border-color: #232323;
+      box-shadow: 0 0 0 0.1875rem rgba(35, 35, 35, 0.1);
+    }
+
+    .material-icons {
+      display: flex;
+      align-items: center;
+      color: #71717A;
+    }
+  }
+
+  &__search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 0.875rem;
+    color: #1e293b;
+    background: transparent;
+
+    &::placeholder {
+      color: #94a3b8;
+    }
+
+    &.search-loading {
+      opacity: 0.6;
+    }
+  }
+
+  &__clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    background: none;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.2s ease;
+
+    &:hover {
+      opacity: 1;
+      background-color: #f1f5f9;
+    }
+  }
+
+  // Filter Toggle
+  &__filter-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    margin-top: 0.75rem;
+    background-color: #fff;
+    border: 0.0625rem solid #e2e8f0;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: #232323;
+      background-color: #f8fafc;
+    }
+  }
+
+  &__filter-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    margin-top: 0.75rem;
+    background-color: #fff;
+    border: 0.0625rem solid #e2e8f0;
+    border-radius: 0.375rem;
+  }
+
+  &__filter-option {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.875rem;
+    color: #1e293b;
+    cursor: pointer;
+
+    input[type="checkbox"] {
+      cursor: pointer;
+    }
+  }
+
+  // Error States
+  &__search-error,
+  &__error {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    background-color: #fef2f2;
+    border: 0.0625rem solid #fecaca;
+    border-radius: 0.375rem;
+    color: #dc2626;
+    font-size: 0.875rem;
+  }
+
+  // Machine List
+  &__machines {
+    margin-top: 1.25rem;
+
+    &--list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+  }
+
+  &__no-results {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.875rem;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  // Results Count
+  &__results-count {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: #64748b;
+    background-color: #f8fafc;
+    border-radius: 0.375rem;
+  }
+}
+
+// "Other" Machine Item Styles
+.machine-other-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background-color: #fff;
+  border: 0.125rem dashed #e2e8f0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #232323;
+    border-style: solid;
+    background-color: #f8fafc;
+  }
+
+  &.selected {
+    border-color: #237804;
+    border-style: solid;
+    background-color: #f6ffed;
+  }
+}
+
+.other-item-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.other-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #f8fafc;
+  border-radius: 0.5rem;
+}
+
+.other-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.other-item-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.other-item-subtitle {
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.selection-checkmark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Loading Spinner
+.search-loading-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 0.125rem solid #e2e8f0;
+  border-top-color: #232323;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,14 @@
+<div
+  class="manual-notification"
+  *ngIf="visible"
+  [@slideInOut]
+>
+  <div class="manual-notification__content" [ngClass]="{'manual-notification__content--remove': type === 'remove'}">
+    <div class="manual-notification__message">
+      <h2 class="manual-notification__title">{{ type === 'success' ? 'Success!' : 'Removed!' }}</h2>
+      <p class="manual-notification__text">{{ message }}</p>
+    </div>
+    <div class="manual-notification__actions">
+    </div>
+  </div>
+</div>

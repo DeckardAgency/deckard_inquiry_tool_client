@@ -1,0 +1,120 @@
+<div class="all-machines">
+  <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+
+  <div class="all-machines__header">
+    <div class="all-machines__header-left">
+      <h1 class="all-machines__title">
+        My Machines
+        <span class="all-machines__title-count" *ngIf="!loading">({{ totalItems }})</span>
+        <span class="all-machines__title-count all-machines__title-count--loading" *ngIf="loading"></span>
+      </h1>
+    </div>
+
+    <div class="all-machines__header-right">
+<!--      <div class="all-machines__controls">-->
+<!--        <button-->
+<!--          class="all-machines__refresh-btn"-->
+<!--          (click)="refreshMachines()"-->
+<!--          [disabled]="loading"-->
+<!--          title="Refresh machines"-->
+<!--        >-->
+<!--          <app-icon name="refresh" size="20px" color="#232323"></app-icon>-->
+<!--        </button>-->
+<!--      </div>-->
+    </div>
+  </div>
+
+  <div class="all-machines__search-section">
+    <div class="all-machines__search">
+      <span class="all-machines__search-icon">
+        <app-icon name="searchInput" size="16px" color="#71717A"></app-icon>
+      </span>
+      <input
+        type="text"
+        [formControl]="searchControl"
+        placeholder="Search by machine name, number, or serial..."
+        class="all-machines__search-input"
+      >
+      @if (searchControl.value) {
+        <button
+          class="all-machines__search-clear"
+          (click)="clearSearch()"
+          title="Clear search"
+        >
+          <app-icon name="close" size="14px" color="#71717A"></app-icon>
+        </button>
+      }
+    </div>
+
+    @if (searchControl.value && filteredMachines.length === 0 && !loading) {
+      <div class="all-machines__search-info">
+        No machines found matching "{{ searchControl.value }}"
+      </div>
+    }
+  </div>
+
+  <div class="all-machines__content">
+    <!-- Loading State -->
+    @if (loading) {
+      <div
+        class="all-machines__grid"
+        [class.all-machines__grid--list]="viewMode === 'list'"
+        [class.all-machines__grid--grid]="viewMode === 'grid'"
+      >
+        @for (item of [1,2,3,4,5,6,7,8,9]; track item) {
+          <app-machine-article-item-shimmer [viewMode]="viewMode"></app-machine-article-item-shimmer>
+        }
+      </div>
+    }
+
+    <!-- Error State -->
+    @if (error && !loading) {
+      <div class="all-machines__error">
+        <app-icon name="alertCircle" size="48px" color="#DC2626"></app-icon>
+        <p class="all-machines__error-message">{{ error }}</p>
+        <button class="all-machines__error-retry" (click)="refreshMachines()">
+          Try Again
+        </button>
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (!loading && !error && machines.length === 0) {
+      <div class="all-machines__empty">
+        <app-icon name="package" size="64px" color="#71717A"></app-icon>
+        <h3 class="all-machines__empty-title">No machines found</h3>
+        <p class="all-machines__empty-message">
+          There are no machines associated with your account yet.
+        </p>
+      </div>
+    }
+
+    <!-- Machines Grid/List -->
+    @if (!loading && !error && filteredMachines.length > 0) {
+      <div
+        class="all-machines__grid"
+        [class.all-machines__grid--list]="viewMode === 'list'"
+        [class.all-machines__grid--grid]="viewMode === 'grid'"
+      >
+        @for (machine of filteredMachines; track machine.id) {
+          <app-machine-article-item
+            [machine]="machine"
+            [viewMode]="viewMode"
+            (machineSelected)="onMachineSelected($event)"
+          ></app-machine-article-item>
+        }
+      </div>
+    }
+
+    <!-- Results Info -->
+    @if (!loading && machines.length > 0) {
+      <div class="all-machines__results-info">
+        @if (searchControl.value) {
+          Showing {{ filteredMachines.length }} of {{ totalItems }} machines
+        } @else {
+          Showing all {{ totalItems }} machines
+        }
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<article
+  class="article-item"
+  [class.article-item--selected]="isSelected"
+  [class.article-item--grid]="viewMode === 'grid'"
+  [class.article-item--list]="viewMode === 'list'"
+  (click)="onProductClick()"
+  @fadeIn
+>
+  <div class="article-item__image">
+    <img
+      [src]="environment.apiBaseUrl + product.featuredImage?.filePath"
+      [alt]="product.name"
+      onerror="this.src='https://via.assets.so/img.jpg?w=130&h=74'"
+      loading="lazy"
+    >
+  </div>
+  <div class="article-item__content">
+    <div class="article-item__machine">
+      <span class="article-item__label">Part no.</span>
+      <p class="article-item__machine-name">
+        {{product.partNo}}
+      </p>
+    </div>
+    <div class="article-item__header">
+      <span class="article-item__label">Part name</span>
+      <h3 class="article-item__name">{{ product.shortDescription }}</h3>
+    </div>
+  </div>
+</article>

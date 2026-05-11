@@ -1,0 +1,261 @@
+<div class="my-clients">
+  <!-- Breadcrumbs -->
+  <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+
+  <!-- Page Header -->
+  <div class="my-clients__header">
+    <div class="my-clients__title-section">
+      <h1 class="my-clients__title">All clients</h1>
+    </div>
+
+    <div class="my-clients__header-actions">
+      <!-- Search -->
+      <div class="my-clients__search">
+        <svg class="my-clients__search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16ZM19 19l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input
+          type="text"
+          class="my-clients__search-input"
+          placeholder="Search by name, code, or email"
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="onSearchChange()"
+        />
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading) {
+    <div class="my-clients__loading">
+      <div class="my-clients__spinner"></div>
+      <p>Loading clients...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error && !isLoading) {
+    <div class="my-clients__error">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4 4 12.954 4 24s8.954 20 20 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M24 16v8M24 32h.02" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p class="my-clients__error-message">{{ error }}</p>
+      <button class="my-clients__retry-button" (click)="loadClients()">
+        Try Again
+      </button>
+    </div>
+  }
+
+  <!-- Backdrop for closing dropdown menu -->
+  @if (openMenuClientId) {
+    <div class="my-clients__backdrop" (click)="closeActionsMenu()"></div>
+  }
+
+  <!-- Clients Table -->
+  @if (!isLoading && !error && paginatedClients.length > 0) {
+    <div class="my-clients__table-container">
+      <table class="clients-table">
+        <thead class="clients-table__head">
+          <tr>
+            <th class="clients-table__header">Id</th>
+            <th class="clients-table__header clients-table__header--sortable" (click)="toggleSort('code')">
+              Code
+              <svg class="clients-table__sort-icon"
+                   [class.clients-table__sort-icon--active]="sortColumn === 'code'"
+                   [class.clients-table__sort-icon--desc]="sortColumn === 'code' && sortDirection === 'desc'"
+                   width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </th>
+            <th class="clients-table__header clients-table__header--sortable" (click)="toggleSort('vatNumber')">
+              OIB
+              <svg class="clients-table__sort-icon"
+                   [class.clients-table__sort-icon--active]="sortColumn === 'vatNumber'"
+                   [class.clients-table__sort-icon--desc]="sortColumn === 'vatNumber' && sortDirection === 'desc'"
+                   width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </th>
+            <th class="clients-table__header clients-table__header--sortable" (click)="toggleSort('name')">
+              Name
+              <svg class="clients-table__sort-icon"
+                   [class.clients-table__sort-icon--active]="sortColumn === 'name'"
+                   [class.clients-table__sort-icon--desc]="sortColumn === 'name' && sortDirection === 'desc'"
+                   width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </th>
+            <th class="clients-table__header clients-table__header--sortable" (click)="toggleSort('email')">
+              Email
+              <svg class="clients-table__sort-icon"
+                   [class.clients-table__sort-icon--active]="sortColumn === 'email'"
+                   [class.clients-table__sort-icon--desc]="sortColumn === 'email' && sortDirection === 'desc'"
+                   width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </th>
+            <th class="clients-table__header clients-table__header--sortable" (click)="toggleSort('status')">
+              Status
+              <svg class="clients-table__sort-icon"
+                   [class.clients-table__sort-icon--active]="sortColumn === 'status'"
+                   [class.clients-table__sort-icon--desc]="sortColumn === 'status' && sortDirection === 'desc'"
+                   width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </th>
+            <th class="clients-table__header">Purchase limit</th>
+            <th class="clients-table__header">Amount spent</th>
+            <th class="clients-table__header clients-table__header--actions"></th>
+          </tr>
+        </thead>
+        <tbody class="clients-table__body">
+          @for (client of paginatedClients; track trackByClientId($index, client); let i = $index) {
+            <tr class="clients-table__row">
+              <!-- Id (auto-increment display) -->
+              <td class="clients-table__cell clients-table__cell--id">
+                {{ showingFrom + i }}
+              </td>
+
+              <!-- Code -->
+              <td class="clients-table__cell">
+                {{ client.code }}
+              </td>
+
+              <!-- OIB / VAT Number -->
+              <td class="clients-table__cell">
+                {{ client.vatNumber || '-' }}
+              </td>
+
+              <!-- Name -->
+              <td class="clients-table__cell clients-table__cell--name">
+                {{ client.name }}
+              </td>
+
+              <!-- Email -->
+              <td class="clients-table__cell">
+                {{ client.email || '-' }}
+              </td>
+
+              <!-- Status -->
+              <td class="clients-table__cell">
+                <span
+                  class="clients-table__badge clients-table__badge--status"
+                  [class.clients-table__badge--active]="getClientStatus(client) === 'Active'"
+                  [class.clients-table__badge--inactive]="getClientStatus(client) === 'Inactive'"
+                >
+                  {{ getClientStatus(client) }}
+                </span>
+              </td>
+
+              <!-- Purchase limit -->
+              <td class="clients-table__cell">
+                -
+              </td>
+
+              <!-- Amount spent -->
+              <td class="clients-table__cell">
+                -
+              </td>
+
+              <!-- Actions -->
+              <td class="clients-table__cell clients-table__cell--actions">
+                <div class="clients-table__actions-wrapper">
+                  <button
+                    class="clients-table__actions-button"
+                    [class.clients-table__actions-button--active]="isMenuOpen(client.id)"
+                    (click)="toggleActionsMenu(client.id, $event)"
+                    aria-label="Open actions menu"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                      <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                      <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                    </svg>
+                  </button>
+
+                  <!-- Dropdown Menu -->
+                  @if (isMenuOpen(client.id)) {
+                    <div class="clients-table__dropdown-menu">
+                      <button class="clients-table__menu-item" (click)="createOrder(client, $event)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1.333 1.333h2.667l1.787 8.92a1.333 1.333 0 0 0 1.333 1.08h6.48a1.333 1.333 0 0 0 1.333-1.08L16 4H4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          <circle cx="6" cy="14" r="1" fill="currentColor"/>
+                          <circle cx="13.333" cy="14" r="1" fill="currentColor"/>
+                        </svg>
+                        Create order
+                      </button>
+                      <button class="clients-table__menu-item" (click)="createInquiry(client, $event)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M14 10v2.667A1.334 1.334 0 0 1 12.667 14H3.333A1.334 1.334 0 0 1 2 12.667V10m9.333-4.667L8 2m0 0L4.667 5.333M8 2v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Create Manual inquiry
+                      </button>
+                      <button class="clients-table__menu-item" (click)="viewClient(client, $event)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M14 8c-1.5 2.5-4 4-6 4s-4.5-1.5-6-4c1.5-2.5 4-4 6-4s4.5 1.5 6 4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        View
+                      </button>
+                    </div>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="my-clients__pagination">
+      <span class="my-clients__pagination-info">
+        Showing {{ showingFrom }} to {{ showingTo }} from {{ totalItems }} results
+      </span>
+      <div class="my-clients__pagination-controls">
+        <button
+          class="my-clients__pagination-btn"
+          [disabled]="currentPage === 1"
+          (click)="previousPage()"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        @for (page of [].constructor(totalPages); track $index) {
+          <button
+            class="my-clients__pagination-btn my-clients__pagination-btn--page"
+            [class.my-clients__pagination-btn--active]="currentPage === $index + 1"
+            (click)="goToPage($index + 1)"
+          >
+            {{ $index + 1 }}
+          </button>
+        }
+        <button
+          class="my-clients__pagination-btn"
+          [disabled]="currentPage === totalPages"
+          (click)="nextPage()"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!isLoading && !error && filteredClients.length === 0 && clients.length > 0) {
+    <div class="my-clients__empty">
+      <p class="my-clients__empty-message">No clients found matching your search</p>
+    </div>
+  }
+
+  @if (!isLoading && !error && clients.length === 0) {
+    <div class="my-clients__empty">
+      <p class="my-clients__empty-message">No clients found</p>
+    </div>
+  }
+</div>

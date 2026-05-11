@@ -1,0 +1,67 @@
+<div class="calendar-container">
+  <div class="calendar-grid">
+    <!-- First month -->
+    <div class="month">
+      <div class="month-header">
+        <button class="nav-button" (click)="prevMonth()">&lt;</button>
+        <span class="month-title">{{ getMonthName(currentMonth) }}</span>
+      </div>
+
+      <div class="weekdays">
+        <div class="weekday" *ngFor="let day of daysOfWeek; trackBy: trackByIndex">{{ day }}</div>
+      </div>
+
+      <div class="days">
+        <div
+          *ngFor="let day of calendarDays; trackBy: trackByDate"
+          [class.current-month]="day.isCurrentMonth"
+          [class.other-month]="!day.isCurrentMonth"
+          [class.today]="day.isToday"
+          [class.selected]="day.isSelected"
+          [class.in-range]="day.isInRange"
+          [class.range-start]="day.isRangeStart"
+          [class.range-end]="day.isRangeEnd"
+          (click)="day.isCurrentMonth && selectDate(day.date)"
+          class="day"
+        >
+          {{ day.date.getDate() }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Second month -->
+    <div class="month">
+      <div class="month-header">
+        <span class="month-title">{{ getMonthName(nextMonth) }}</span>
+        <button class="nav-button" (click)="nextMonthClick()">&gt;</button>
+      </div>
+
+      <div class="weekdays">
+        <div class="weekday" *ngFor="let day of daysOfWeek; trackBy: trackByIndex">{{ day }}</div>
+      </div>
+
+      <div class="days">
+        <div
+          *ngFor="let day of calendarDays; trackBy: trackByDate"
+          [class.current-month]="day.isCurrentMonth"
+          [class.other-month]="!day.isCurrentMonth"
+          [class.today]="day.isToday"
+          [class.selected]="day.isSelected"
+          [class.in-range]="day.isInRange"
+          [class.range-start]="day.isRangeStart"
+          [class.range-end]="day.isRangeEnd"
+          (click)="day.isCurrentMonth && selectDate(day.date)"
+          class="day"
+        >
+          {{ day.date.getDate() }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="action-buttons">
+    <button class="clear-button" (click)="clearSelection()">Clear ✕</button>
+    <button class="apply-button" (click)="applySelection()">Apply ✓</button>
+  </div>
+</div>

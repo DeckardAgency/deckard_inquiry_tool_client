@@ -1,0 +1,230 @@
+<div class="manual-entry">
+  <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+
+  <div class="manual-entry__header">
+    <div class="manual-entry__header-left">
+      <h1 class="manual-entry__title">Available machines <span class="manual-entry__title--total-items">{{ totalItems }}</span></h1>
+    </div>
+
+    <div class="manual-entry__header-right">
+      <div class="manual-entry__controls">
+        <div class="manual-entry__view-controls">
+          <button class="manual-entry__view-btn">
+            <a routerLink="/manual-entry/input-form" routerLinkActive="manual-entry__view-btn--active">
+              <app-icon name="inputForm" size="17px" color="#232323"></app-icon>
+              Use input form
+            </a>
+          </button>
+          <button class="manual-entry__view-btn">
+            <a routerLink="/manual-entry/template" routerLinkActive="manual-entry__view-btn--active">
+              <app-icon name="template" size="17px" color="#232323"></app-icon>
+              Use template
+            </a>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="manual-entry__filters">
+    <div class="manual-entry__filters-title">Select machine</div>
+    <div *ngIf="isAgent" class="manual-entry__agent-client-select">
+      <span class="manual-entry__client-label">Choose client(s):</span>
+      <app-agent-client-select
+        [selectedClients]="selectedAgentClients"
+        (clientSelected)="onAgentClientSelected($event)"
+        (clientDeselected)="onAgentClientDeselected($event)">
+      </app-agent-client-select>
+    </div>
+    <div class="manual-entry__search">
+        <span class="material-icons">
+          <app-icon name="searchInput" size="16px" color="#71717A"></app-icon>
+        </span>
+      <input
+        type="text"
+        [formControl]="searchControl"
+        placeholder="Filter by machine name"
+        class="manual-entry__search-input"
+      >
+    </div>
+  </div>
+
+  @if (activeFilters.length > 0) {
+    <div class="manual-entry__active-filters">
+      <span>Active filters:</span>
+      @for (filter of activeFilters; track filter) {
+        <div class="manual-entry__filter-tag">
+          {{ filter }}
+          <button class="manual-entry__filter-remove" (click)="removeFilter(filter)">
+            <span class="material-icons">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 3L3 9M3 3L9 9" stroke="#71717A" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- List View with Form Details -->
+  <div class="manual-entry__container">
+    <div class="manual-entry__machines-section"
+         [class.manual-entry__machines-section--details]="selectedMachine">
+
+      @if (loading) {
+        <div class="manual-entry__machines manual-entry__machines--list">
+          <app-machine-article-item-shimmer *ngFor="let i of [1,2,3,4,5,6,7,8,9]; trackBy: trackByIndex" [viewMode]="'list'"></app-machine-article-item-shimmer>
+        </div>
+      }
+
+      @if (error) {
+        <div class="manual-entry__error">{{ error }}</div>
+      }
+
+      @if (!loading && !error) {
+        <div class="manual-entry__machines manual-entry__machines--list">
+          @for (machine of filteredMachines; track machine.id) {
+            @if (machine.id === 'other') {
+              <!-- Other Machine Item -->
+              <div class="machine-other-item"
+                   [class.selected]="selectedMachine?.id === 'other'"
+                   (click)="selectMachine(machine)">
+                <div class="other-item-content">
+                  <div class="other-item-icon">
+                    <app-icon name="addPlus" size="20px" color="#232323"></app-icon>
+                  </div>
+                  <div class="other-item-text">
+                    <div class="other-item-title">{{ machine.articleDescription }}</div>
+                    <div class="other-item-subtitle">For machines not listed above</div>
+                  </div>
+                </div>
+                @if (selectedMachine?.id === 'other') {
+                  <div class="selection-checkmark">
+                    <app-icon name="successCheck" size="20px" color="#237804"></app-icon>
+                  </div>
+                }
+              </div>
+            } @else {
+              <app-machine-article-item
+                [machine]="machine"
+                viewMode="list"
+                [isSelected]="selectedMachine?.id === machine.id"
+                (machineSelected)="selectMachine($event)"
+              ></app-machine-article-item>
+            }
+          }
+        </div>
+      }
+    </div>
+
+    @if (selectedMachine) {
+      <div class="product-details">
+        <div class="manual-entry__details">
+          <div class="manual-entry__details-header">
+            <!--            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">-->
+            <!--              <path d="M6.66659 5.33317H6.67325M7.99992 7.99984H8.00659M9.33325 5.33317H9.33992M10.6666 7.99984H10.6733M11.9999 5.33317H12.0066M3.99992 5.33317H4.00659M4.66659 10.6665H11.3333M5.33325 7.99984H5.33992M2.66659 2.6665H13.3333C14.0696 2.6665 14.6666 3.26346 14.6666 3.99984V11.9998C14.6666 12.7362 14.0696 13.3332 13.3333 13.3332H2.66659C1.93021 13.3332 1.33325 12.7362 1.33325 11.9998V3.99984C1.33325 3.26346 1.93021 2.6665 2.66659 2.6665Z" stroke="#232323" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
+            <!--            </svg>-->
+            <h2 class="manual-entry__details-title">Input data</h2>
+          </div>
+
+          <!-- Single Part Form -->
+          <div class="manual-entry__form">
+            <form [formGroup]="partForm">
+              @for (part of parts; track part.id; let i = $index) {
+                <div class="part-repeater__item">
+
+                  <!-- Machine ID Field (shown only when "Other" is selected) -->
+                  @if (isOtherMachineSelected) {
+                    <div class="form-group">
+                      <label [for]="'machineId' + i">
+                        Machine ID *
+                        <span class="label-info">Required for unlisted/older machines</span>
+                      </label>
+                      <input
+                        type="text"
+                        [id]="'machineId' + i"
+                        [(ngModel)]="part.data!.machineId"
+                        [ngModelOptions]="{standalone: true}"
+                        class="form-control"
+                        placeholder="Enter the machine ID or model number"
+                      >
+                      @if (!part.data.machineId && isOtherMachineSelected) {
+                        <div class="field-description">
+                          If you don't know the exact ID, provide any identifying information about your machine
+                          (model number, serial number, or description)
+                        </div>
+                      }
+                    </div>
+                  }
+
+                  <!-- Spreadsheet -->
+                  <div class="form-group">
+                    <app-spreadsheet
+                      [initialData]="part.spreadsheetData"
+                      (dataChanged)="onSpreadsheetDataChanged($event, i)"
+                      (tabChanged)="onSpreadsheetTabChanged($event)">
+                    </app-spreadsheet>
+                  </div>
+
+                  <!-- File Upload Field -->
+                  <div class="form-group">
+                    <app-file-upload
+                      [files]="part.files"
+                      (filesChanged)="onFilesChanged($event, i)"
+                      (filePreviewRequested)="onFilePreviewRequested($event)"
+                    ></app-file-upload>
+                  </div>
+
+                  <!-- Additional Notes Field -->
+                  <div class="form-group">
+                    <label [for]="'additionalNotes' + i">Additional notes</label>
+                    <textarea
+                      [id]="'additionalNotes' + i"
+                      [(ngModel)]="part.additionalNotes"
+                      [ngModelOptions]="{standalone: true}"
+                      class="form-control"
+                      rows="5"
+                      placeholder="If you have more information that you want to share with us, please type here."
+                    ></textarea>
+                  </div>
+
+                </div>
+              }
+
+              <!-- Form Actions -->
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary" (click)="closeDetails()">Cancel</button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  [disabled]="!isFormValid() || currentSpreadsheetTab === 'demo'"
+                  [title]="currentSpreadsheetTab === 'demo' ? 'Please switch to Client data tab to continue' : ''"
+                  (click)="onSubmit()">
+                  Continue
+                  <span>
+                    <app-icon name="continueArrow" size="17px" color="white"></app-icon>
+                  </span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Advanced Image Preview Modal -->
+@if (showImagePreview && previewImageSrc) {
+  <app-advanced-image-preview-modal
+    [imageSrc]="previewImageSrc"
+    [imageAlt]="previewImageAlt"
+    [imageFileName]="previewImageFileName"
+    (closeModal)="closeImagePreview()"
+    (saveImage)="saveEditedImage($event)"
+  ></app-advanced-image-preview-modal>
+}
+
+<!-- Template Populator Dev Tool -->
+<app-template-populator (populate)="onPopulateTemplate($event)"></app-template-populator>

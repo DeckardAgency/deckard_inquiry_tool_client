@@ -1,0 +1,41 @@
+.client-admin-history {
+  &__content {
+    padding: 0 1rem;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #18181B;
+    margin: 0;
+
+    svg {
+      color: #71717A;
+    }
+  }
+
+  &__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 0;
+    color: #DC2626;
+    text-align: center;
+
+    p {
+      margin: 1rem 0;
+    }
+  }
+}

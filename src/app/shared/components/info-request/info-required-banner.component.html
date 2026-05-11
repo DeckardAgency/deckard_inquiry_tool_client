@@ -1,0 +1,31 @@
+<div class="info-banner" *ngIf="requestCount > 0">
+    <div class="info-banner__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+    </div>
+
+    <div class="info-banner__content">
+        <h3 class="info-banner__title">Additional Information Required</h3>
+        <p class="info-banner__message" *ngIf="requestCount === 1">
+            Deckard needs more information about <strong>{{ firstRequestPart }}</strong>.
+            Please provide the requested details to continue processing your inquiry.
+        </p>
+        <p class="info-banner__message" *ngIf="requestCount > 1">
+            Deckard needs more information about <strong>{{ requestCount }} parts</strong> in this inquiry.
+            Please provide the requested details to continue processing your inquiry.
+        </p>
+    </div>
+
+    <div class="info-banner__actions">
+        <button class="info-banner__btn info-banner__btn--primary" (click)="onViewAll()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            {{ requestCount === 1 ? 'View Request' : 'View All Requests' }}
+        </button>
+    </div>
+</div>

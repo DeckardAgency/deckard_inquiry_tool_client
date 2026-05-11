@@ -1,0 +1,140 @@
+.my-inquiries {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-bottom: 2rem;
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+  }
+
+  &__section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #232323;
+    margin: 0;
+  }
+
+  &__view-all {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #DC2626;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  &__section-body {
+    padding: 0 1rem;
+  }
+
+  &__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem 1.5rem;
+    text-align: center;
+
+    p {
+      color: #71717A;
+      font-size: 0.875rem;
+      margin: 0;
+    }
+  }
+
+  &__loading-spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid #E4E4E7;
+    border-top-color: #DC2626;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  &__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    background-color: #FEF2F2;
+    border: 1px solid #FECACA;
+    border-radius: 0.5rem;
+
+    p {
+      color: #DC2626;
+      font-size: 0.875rem;
+      margin: 0;
+    }
+  }
+
+  &__retry-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #DC2626;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #B91C1C;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    background-color: #FAFAFA;
+    border: 1px solid #E4E4E7;
+    border-radius: 0.5rem;
+
+    p {
+      color: #71717A;
+      font-size: 0.875rem;
+      margin: 0;
+    }
+  }
+}

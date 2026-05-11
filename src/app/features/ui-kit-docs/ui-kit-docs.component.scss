@@ -1,0 +1,265 @@
+.ui-kit-docs {
+  display: flex;
+  min-height: 100vh;
+  background-color: #F9FAFB;
+
+  // Sidebar
+  &__sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    background-color: #FFFFFF;
+    border-right: 1px solid #E5E7EB;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 24px;
+    border-bottom: 1px solid #E5E7EB;
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      color: #DC2626;
+    }
+  }
+
+  &__version {
+    padding: 2px 8px;
+    background-color: #F3F4F6;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #6B7280;
+  }
+
+  &__nav {
+    padding: 16px 0;
+  }
+
+  &__nav-group {
+    margin-bottom: 24px;
+  }
+
+  &__nav-title {
+    margin: 0 0 8px;
+    padding: 0 24px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #9CA3AF;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin: 0;
+    }
+
+    a {
+      display: block;
+      padding: 8px 24px;
+      font-size: 14px;
+      color: #374151;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+
+      &:hover {
+        background-color: #F3F4F6;
+        color: #111827;
+      }
+
+      &.active {
+        background-color: #FEE2E2;
+        color: #DC2626;
+        font-weight: 500;
+      }
+    }
+  }
+
+  // Main content
+  &__content {
+    flex: 1;
+    margin-left: 260px;
+    padding: 40px;
+    max-width: 1200px;
+  }
+
+  &__header {
+    margin-bottom: 48px;
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 32px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    p {
+      margin: 0;
+      font-size: 16px;
+      color: #6B7280;
+    }
+  }
+
+  // Category
+  &__category {
+    margin-bottom: 64px;
+  }
+
+  &__category-title {
+    margin: 0 0 8px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  &__category-desc {
+    margin: 0 0 32px;
+    font-size: 14px;
+    color: #6B7280;
+  }
+
+  // Section
+  &__section {
+    margin-bottom: 48px;
+    padding: 32px;
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    scroll-margin-top: 24px;
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    > p {
+      margin: 0 0 24px;
+      font-size: 14px;
+      color: #6B7280;
+    }
+  }
+
+  // Demo area
+  &__demo {
+    margin-bottom: 24px;
+    padding: 24px;
+    background-color: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    h4 {
+      margin: 0 0 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    p {
+      margin: 8px 0;
+      font-size: 14px;
+      color: #374151;
+    }
+  }
+
+  &__demo-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__demo-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 400px;
+  }
+
+  // Icon grid
+  &__icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 16px;
+  }
+
+  &__icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 8px;
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    transition: all 0.15s ease;
+
+    &:hover {
+      border-color: #DC2626;
+      box-shadow: 0 2px 8px rgba(220, 38, 38, 0.1);
+    }
+
+    span {
+      font-size: 11px;
+      color: #6B7280;
+      text-align: center;
+      word-break: break-all;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 1024px) {
+  .ui-kit-docs {
+    &__sidebar {
+      width: 220px;
+    }
+
+    &__content {
+      margin-left: 220px;
+      padding: 24px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .ui-kit-docs {
+    flex-direction: column;
+
+    &__sidebar {
+      position: relative;
+      width: 100%;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid #E5E7EB;
+    }
+
+    &__content {
+      margin-left: 0;
+    }
+
+    &__icon-grid {
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+  }
+}

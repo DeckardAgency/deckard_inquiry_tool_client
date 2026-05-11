@@ -1,0 +1,40 @@
+<div class="app">
+  <app-top-bar></app-top-bar>
+  <app-sidebar></app-sidebar>
+  <app-mobile-menu></app-mobile-menu>
+  <main class="app__main" [class.app__main--collapsed]="sidebarService.isCollapsed()">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Quick Cart Component -->
+  <app-quick-cart [isOpen]="(quickCartService.isOpen$ | async) ?? false"></app-quick-cart>
+
+  <!-- Manual Quick Cart Component -->
+  <app-manual-quick-cart [isOpen]="(manualQuickCartService.isOpen$ | async) ?? false"></app-manual-quick-cart>
+
+  <!-- Cart Notification Component -->
+  <app-cart-notification
+    [visible]="(quickCartService.notificationVisible$ | async) ?? false"
+    [message]="(quickCartService.lastAddedProduct$ | async) ?? 'Product added to cart.'"
+    [type]="(quickCartService.notificationType$ | async) ?? 'success'"
+    (viewCart)="onViewCart()"
+    (close)="hideNotification()"
+  ></app-cart-notification>
+
+  <!-- Manual Notification Component -->
+  <app-manual-notification
+    [visible]="(manualQuickCartService.notificationVisible$ | async) ?? false"
+    [message]="(manualQuickCartService.notificationMessage$ | async) ?? 'Part removed from inquiry.'"
+    [type]="(manualQuickCartService.notificationType$ | async) ?? 'success'"
+    (viewInquiry)="onViewInquiry()"
+    (close)="hideManualNotification()"
+  ></app-manual-notification>
+
+  <!-- Login Modal Component -->
+  <app-login-modal
+    [isOpen]="(loginModalService.isOpen$ | async) === true && !isAuthenticated"
+    [allowClose]="false"
+    (isOpenChange)="onLoginModalOpenChange($event)"
+    (loginSuccess)="onLoginSuccess()">
+  </app-login-modal>
+</div>

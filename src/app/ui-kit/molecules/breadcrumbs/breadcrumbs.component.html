@@ -1,0 +1,60 @@
+<nav class="ui-breadcrumbs" aria-label="Breadcrumb">
+  <ol class="ui-breadcrumbs__list">
+    <!-- Home item -->
+    <li *ngIf="showHome" class="ui-breadcrumbs__item">
+      <a [routerLink]="homeRoute" class="ui-breadcrumbs__link ui-breadcrumbs__link--home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" width="16" height="16">
+          <path d="M6 14.667V8h4v6.667M2 6l6-4.667L14 6v7.333a1.334 1.334 0 01-1.333 1.334H3.333A1.334 1.334 0 012 13.333V6z" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <span *ngIf="items.length > 0" class="ui-breadcrumbs__separator">
+        <ng-container [ngSwitch]="separator">
+          <svg *ngSwitchCase="'chevron'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none">
+            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <svg *ngSwitchCase="'arrow'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none">
+            <path d="M3.333 8H12.667M12.667 8L8 3.333M12.667 8L8 12.667" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span *ngSwitchCase="'slash'" class="ui-breadcrumbs__separator--slash">/</span>
+        </ng-container>
+      </span>
+    </li>
+
+    <!-- Breadcrumb items -->
+    <li
+      *ngFor="let item of items; let last = last; let i = index; trackBy: trackByIndex"
+      class="ui-breadcrumbs__item"
+    >
+      <!-- Link (not last) -->
+      <a
+        *ngIf="!last && item.route"
+        [routerLink]="item.route"
+        class="ui-breadcrumbs__link"
+      >
+        {{ item.label }}
+      </a>
+
+      <!-- Current page (last or no route) -->
+      <span
+        *ngIf="last || !item.route"
+        class="ui-breadcrumbs__current"
+        [attr.aria-current]="last ? 'page' : null"
+      >
+        {{ item.label }}
+      </span>
+
+      <!-- Separator (not last) -->
+      <span *ngIf="!last" class="ui-breadcrumbs__separator">
+        <ng-container [ngSwitch]="separator">
+          <svg *ngSwitchCase="'chevron'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none">
+            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <svg *ngSwitchCase="'arrow'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none">
+            <path d="M3.333 8H12.667M12.667 8L8 3.333M12.667 8L8 12.667" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span *ngSwitchCase="'slash'" class="ui-breadcrumbs__separator--slash">/</span>
+        </ng-container>
+      </span>
+    </li>
+  </ol>
+</nav>

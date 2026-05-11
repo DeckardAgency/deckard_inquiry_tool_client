@@ -1,0 +1,231 @@
+.active-inquiries {
+  margin-bottom: 2rem;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.125rem;
+  }
+
+  &__title {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #18181B;
+
+    svg {
+      color: #71717A;
+    }
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  &__search {
+    position: relative;
+    flex: 1;
+    min-width: 15.625rem;
+  }
+
+  &__search-input {
+    width: -webkit-fill-available;
+    padding: 0.5rem 0 0.5rem 0.75rem;
+    border: 0.0625rem solid #E4E4E7;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    color: #18181B;
+    background-color: #ffffff;
+    transition: border-color 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: #71717A;
+    }
+
+    &::placeholder {
+      color: #A1A1AA;
+    }
+  }
+
+  &__search-icon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  &__filter {
+    flex-shrink: 0;
+  }
+
+  &__select {
+    padding: 0.5rem 2rem 0.5rem 0.75rem;
+    border: 0.0625rem solid #E4E4E7;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    color: #18181B;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='m3 4.5 3 3 3-3' stroke='%2371717A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    cursor: pointer;
+    appearance: none;
+    transition: border-color 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: #71717A;
+    }
+
+    &:hover {
+      border-color: #A1A1AA;
+    }
+  }
+
+  &__clear-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border: 0.0625rem solid #E4E4E7;
+    border-radius: 0.375rem;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: #F4F4F5;
+      border-color: #A1A1AA;
+    }
+
+    &:active {
+      background-color: #E4E4E7;
+    }
+  }
+
+  &__clear-filters-btn {
+    padding: 0.625rem 1.25rem;
+    background-color: #DC2626;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #B91C1C;
+    }
+
+    &:active {
+      background-color: #991B1B;
+    }
+  }
+
+  &__view-all {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #DC2626;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+
+  &__body {
+    padding: 1.25rem 1rem;
+  }
+
+  &__grid {
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+
+    @media screen and (max-width: 52.125rem) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+
+  &__empty {
+    padding: 3rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    p {
+      color: #71717A;
+      margin: 0;
+    }
+  }
+
+  &__error {
+    padding: 3rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    p {
+      color: #DC2626;
+      margin: 0;
+    }
+  }
+
+  &__retry-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background-color: #DC2626;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #B91C1C;
+    }
+
+    &:active {
+      background-color: #991B1B;
+    }
+  }
+
+  @media screen and (max-width: 48rem) {
+    &__controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__search {
+      min-width: 100%;
+    }
+
+    &__filter {
+      width: 100%;
+    }
+
+    &__select {
+      width: 100%;
+    }
+  }
+}

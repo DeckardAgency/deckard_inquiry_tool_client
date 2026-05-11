@@ -1,0 +1,125 @@
+.article-item {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  background: white;
+  border: 0.0625rem solid #e2e8f0;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0.125rem;
+    border: 0.125rem solid #232323;
+    border-radius: 0.5rem;
+    opacity: 0;
+    transition: all 0.2s ease;
+  }
+
+  &:hover::before {
+    inset: 0;
+    opacity: 1;
+  }
+
+  &--selected {
+    &::before {
+      opacity: 1;
+    }
+    .article-item__content:before {
+      opacity: 1;
+    }
+  }
+
+  &--grid {
+    padding: 1rem;
+
+    .article-item__image {
+      margin: 0 auto 1rem;
+    }
+  }
+
+  &--list {
+    padding: 1.125rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .article-item__image {
+      width: 8.125rem;
+      height: auto;
+      flex-shrink: 0;
+    }
+  }
+
+  &__image {
+    img {
+      width: 100%;
+      object-fit: cover;
+      border-radius: 0.25rem;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    position: relative;
+
+    &::before {
+      content: "->";
+      position: absolute;
+      right: 0;
+      top: 0;
+      background-color: black;
+      border-radius: 50%;
+      height: 2rem;
+      width: 2rem;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+  }
+
+  &__label {
+    font-size: 0.75rem;
+    color: #64748b;
+    display: block;
+    font-weight: 400;
+    margin-bottom: 0.25rem;
+  }
+
+  &__name {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    color: #1e293b;
+  }
+
+  &__machine {
+    &-name {
+      margin: 0;
+      padding: 0;
+      font-size: 0.875rem;
+    }
+  }
+
+  // Responsive styles
+  @media (max-width: 48rem) {
+    &--list {
+      flex-direction: column;
+      text-align: center;
+      padding: 1rem;
+
+      .article-item__image {
+        margin: 0 auto 1rem;
+      }
+    }
+  }
+
+  // Print styles
+  @media print {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}

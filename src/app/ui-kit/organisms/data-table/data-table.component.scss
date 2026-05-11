@@ -1,0 +1,131 @@
+.ui-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  &__wrapper {
+    overflow-x: auto;
+    border: 1px solid #E4E4E7;
+    border-radius: 12px;
+    background-color: #FFFFFF;
+  }
+
+  &__head {
+    background-color: #FAFAFA;
+  }
+
+  &__body {
+    background-color: #FFFFFF;
+  }
+
+  &__row {
+    border-bottom: 1px solid #E4E4E7;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &--selected {
+      background-color: #FEF2F2 !important;
+    }
+  }
+
+  &__cell {
+    padding: 12px 16px;
+    text-align: left;
+    vertical-align: middle;
+
+    &--header {
+      font-weight: 600;
+      color: #52525B;
+      white-space: nowrap;
+    }
+
+    &--sortable {
+      cursor: pointer;
+      user-select: none;
+
+      &:hover {
+        color: #18181B;
+      }
+    }
+
+    &--checkbox {
+      width: 48px;
+      padding-right: 8px;
+    }
+
+    &--actions {
+      width: 1%;
+      white-space: nowrap;
+      text-align: right;
+    }
+  }
+
+  &__header-content {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__sort-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &--inactive {
+      opacity: 0.4;
+    }
+  }
+
+  &__pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+  }
+
+  // Modifiers
+  &--sticky-header {
+    .ui-data-table__head {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+  }
+
+  &--striped {
+    .ui-data-table__body .ui-data-table__row:nth-child(even) {
+      background-color: #FAFAFA;
+    }
+  }
+
+  &--hoverable {
+    .ui-data-table__body .ui-data-table__row {
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background-color: #F4F4F5;
+      }
+    }
+  }
+
+  &--bordered {
+    .ui-data-table__cell {
+      border: 1px solid #E4E4E7;
+    }
+  }
+
+  &--compact {
+    font-size: 13px;
+
+    .ui-data-table__cell {
+      padding: 8px 12px;
+    }
+  }
+}

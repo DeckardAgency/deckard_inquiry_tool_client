@@ -1,0 +1,187 @@
+<div class="my-machines">
+  <app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs>
+
+  <div class="my-machines__header">
+    <div class="my-machines__header-left">
+      <h1 class="my-machines__title">
+        My Machines
+        <span class="my-machines__title-count" *ngIf="!loading">({{ totalItems }})</span>
+        <span class="my-machines__title-count my-machines__title-count--loading" *ngIf="loading"></span>
+      </h1>
+    </div>
+
+    <div class="my-machines__header-right">
+      <div class="my-machines__controls">
+        <button
+          class="my-machines__refresh-btn"
+          (click)="refreshMachines()"
+          [disabled]="loading"
+          title="Refresh machines"
+        >
+          <app-icon name="refresh" size="20px" color="#232323"></app-icon>
+        </button>
+
+        <div class="my-machines__view-controls">
+          <button
+            class="my-machines__view-btn"
+            [class.my-machines__view-btn--active]="viewMode === 'list'"
+            (click)="toggleViewMode('list')"
+            title="List view"
+          >
+            <app-icon name="listView" size="17px" color="#232323"></app-icon>
+            List
+          </button>
+          <button
+            class="my-machines__view-btn"
+            [class.my-machines__view-btn--active]="viewMode === 'grid'"
+            (click)="toggleViewMode('grid')"
+            title="Grid view"
+          >
+            <app-icon name="gridView" size="17px" color="#232323"></app-icon>
+            Grid
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="my-machines__search-section">
+    <div class="my-machines__search">
+      <span class="my-machines__search-icon">
+        <app-icon name="searchInput" size="16px" color="#71717A"></app-icon>
+      </span>
+      <input
+        type="text"
+        [formControl]="searchControl"
+        placeholder="Search by machine name, number, serial, location, status..."
+        class="my-machines__search-input"
+      >
+      @if (searchControl.value) {
+        <button
+          class="my-machines__search-clear"
+          (click)="clearSearch()"
+          title="Clear search"
+        >
+          <app-icon name="close" size="14px" color="#71717A"></app-icon>
+        </button>
+      }
+    </div>
+
+    @if (searchControl.value && filteredMachines.length === 0 && !loading) {
+      <div class="my-machines__search-info">
+        No machines found matching "{{ searchControl.value }}"
+      </div>
+    }
+  </div>
+
+  <div class="my-machines__content">
+    <!-- Loading State -->
+    @if (loading) {
+      <div
+        class="my-machines__grid"
+        [class.my-machines__grid--list]="viewMode === 'list'"
+        [class.my-machines__grid--grid]="viewMode === 'grid'"
+      >
+        @for (item of [1,2,3,4,5,6,7,8,9]; track item) {
+          <app-machine-article-item-shimmer [viewMode]="viewMode"></app-machine-article-item-shimmer>
+        }
+      </div>
+    }
+
+    <!-- Error State -->
+    @if (error && !loading) {
+      <div class="my-machines__error">
+        <app-icon name="alertCircle" size="48px" color="#DC2626"></app-icon>
+        <p class="my-machines__error-message">{{ error }}</p>
+        <button class="my-machines__error-retry" (click)="refreshMachines()">
+          Try Again
+        </button>
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (!loading && !error && clientMachines.length === 0) {
+      <div class="my-machines__empty">
+        <app-icon name="package" size="64px" color="#71717A"></app-icon>
+        <h3 class="my-machines__empty-title">No machines found</h3>
+        <p class="my-machines__empty-message">
+          There are no machines associated with your account yet.
+        </p>
+      </div>
+    }
+
+    <!-- Machines Grid/List -->
+    @if (!loading && !error && filteredAdaptedMachines.length > 0) {
+      <div
+        class="my-machines__grid"
+        [class.my-machines__grid--list]="viewMode === 'list'"
+        [class.my-machines__grid--grid]="viewMode === 'grid'"
+      >
+        @for (machine of filteredAdaptedMachines; track machine.id; let i = $index) {
+          <div class="my-machines__machine-wrapper">
+            <app-machine-article-item
+              [machine]="machine"
+              [viewMode]="viewMode"
+              (machineSelected)="onMachineSelected($event)"
+            ></app-machine-article-item>
+
+            <!-- Additional ClientMachineInstalledBase information -->
+            <div class="my-machines__machine-extra-info">
+              <div class="my-machines__machine-status">
+                <span [class]="getStatusBadgeClass(filteredMachines[i].status)">
+                  {{ filteredMachines[i].status | titlecase }}
+                </span>
+              </div>
+
+              @if (filteredMachines[i].location) {
+                <div class="my-machines__machine-location">
+                  <app-icon name="mapPin" size="14px" color="#71717A"></app-icon>
+                  <span>{{ filteredMachines[i].location }}</span>
+                </div>
+              }
+
+              @if (filteredMachines[i].installedDate) {
+                <div class="my-machines__machine-installed">
+                  <app-icon name="calendar" size="14px" color="#71717A"></app-icon>
+                  <span>Installed: {{ filteredMachines[i].installedDate | date:'shortDate' }}</span>
+                </div>
+              }
+
+              @if (filteredMachines[i].warrantyEndDate) {
+                <div class="my-machines__machine-warranty"
+                     [class]="'my-machines__machine-warranty--' + getWarrantyStatus(filteredMachines[i])">
+                  <app-icon name="shield" size="14px" color="#71717A"></app-icon>
+                  <span>Warranty: {{ filteredMachines[i].warrantyEndDate | date:'shortDate' }}</span>
+                  @if (getWarrantyStatus(filteredMachines[i]) === 'expiring') {
+                    <span class="my-machines__warranty-alert">Expiring Soon</span>
+                  }
+                  @if (getWarrantyStatus(filteredMachines[i]) === 'expired') {
+                    <span class="my-machines__warranty-alert">Expired</span>
+                  }
+                </div>
+              }
+
+              @if (filteredMachines[i].monthlyRate) {
+                <div class="my-machines__machine-rate">
+                  <app-icon name="dollarSign" size="14px" color="#71717A"></app-icon>
+                  <span>Monthly Rate: {{ filteredMachines[i].monthlyRate }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Results Info -->
+    @if (!loading && clientMachines.length > 0) {
+      <div class="my-machines__results-info">
+        @if (searchControl.value) {
+          Showing {{ filteredMachines.length }} of {{ totalItems }} machines
+        } @else {
+          Showing all {{ totalItems }} machines
+        }
+      </div>
+    }
+  </div>
+</div>

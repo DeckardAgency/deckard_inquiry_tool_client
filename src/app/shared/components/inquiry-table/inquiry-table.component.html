@@ -1,0 +1,92 @@
+<div class="inquiry-component">
+  <!-- Tabs - Always visible -->
+  <div class="inquiry-tabs">
+    <button
+      *ngFor="let tab of tabs; trackBy: trackByIndex"
+      class="inquiry-tabs__tab"
+      [class.inquiry-tabs__tab--active]="activeTab === tab"
+      (click)="selectTab(tab)"
+    >
+      {{ tab }}
+    </button>
+  </div>
+
+  <!-- Content section -->
+  @if (loading) {
+    <!-- Show shimmer while loading -->
+    <app-inquiry-shimmer [rows]="5"></app-inquiry-shimmer>
+  } @else if (inquiries.length === 0) {
+    <!-- No data state -->
+    <div class="empty-state">
+      <div class="empty-state__icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4C12.96 4 4 12.96 4 24C4 35.04 12.96 44 24 44C35.04 44 44 35.04 44 24C44 12.96 35.04 4 24 4ZM26 34H22V30H26V34ZM26 26H22V14H26V26Z" fill="#E4E4E7"/>
+        </svg>
+      </div>
+      <h3 class="empty-state__title">No inquiries found</h3>
+      <p class="empty-state__message">There are no inquiries available for this filter.</p>
+    </div>
+  } @else {
+    <!-- Table with data -->
+    <div class="inquiry-table-wrapper">
+      <table class="inquiry-table">
+        <thead>
+        <tr>
+          <th>Order/Inquiry Number</th>
+          <th></th>
+          <th>Date Created</th>
+          <th>Customer</th>
+          <th>Parts ordered</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (inquiry of filteredInquiries; track inquiry.id) {
+            <tr>
+              <td>{{ inquiry.orderNumber || inquiry.inquiryNumber || '-' }}</td>
+              <td></td>
+              <td>{{ inquiry.dateCreated | date:'dd.MM.yyyy @ HH:mm' }}</td>
+              <td>
+                <div class="customer-cell">
+                  @if (inquiry.customer.image) {
+                    <img [src]="inquiry.customer.image" [alt]="inquiry.customer.name" class="customer-cell__image" loading="lazy">
+                  } @else {
+                    <div class="customer-cell__initials">{{ inquiry.customer.initials }}</div>
+                  }
+                  {{ inquiry.customer.name }}
+                </div>
+              </td>
+              <td>{{ inquiry.partsOrdered }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(inquiry.status)">
+                  {{ getStatusLabel(inquiry.status) }}
+                </span>
+              </td>
+              <td class="action-menu-cell">
+                <div class="action-menu-container">
+                  <button class="action-menu" (click)="toggleMenu(inquiry.id, $event)">
+                    <svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M10 10.833a.833.833 0 1 0 0-1.666.833.833 0 0 0 0 1.666ZM10 5a.833.833 0 1 0 0-1.667A.833.833 0 0 0 10 5Zm0 11.667a.833.833 0 1 0 0-1.667.833.833 0 0 0 0 1.667Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                  @if (isMenuOpen(inquiry.id)) {
+                    <div class="dropdown-menu" (click)="$event.stopPropagation()">
+                      <button class="dropdown-item" (click)="viewInquiry(inquiry, $event)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path d="M8 3.33334C4.66667 3.33334 1.82 5.07334 0.666672 7.66668C1.82 10.26 4.66667 12 8 12C11.3333 12 14.18 10.26 15.3333 7.66668C14.18 5.07334 11.3333 3.33334 8 3.33334Z" stroke="currentColor" stroke-width="1.5"/>
+                          <path d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        View
+                      </button>
+                    </div>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
