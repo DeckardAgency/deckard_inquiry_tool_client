@@ -9,7 +9,6 @@ import { BreadcrumbsComponent } from '@shared/components/ui/breadcrumbs/breadcru
 import { ProductCardComponent } from '@shared/components/product/product-card/product-card.component';
 import { ArticleItemComponent } from '@shared/components/product/article-item/article-item.component';
 import { ProductService } from '@services/http/product.service';
-import { PimProductService } from '@services/http/pim-product.service';
 import { CartService } from '@services/cart/cart.service';
 import { mediaUrl } from '@utils/format-utils';
 import { AuthService } from '@core/auth/auth.service';
@@ -76,7 +75,6 @@ export class ShopComponent implements OnInit, OnDestroy {
 
   constructor(
     private productService: ProductService,
-    private pimProductService: PimProductService,
     private cartService: CartService,
     private authService: AuthService,
     private agentClientSelectionService: AgentClientSelectionService,
@@ -208,10 +206,11 @@ export class ShopComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.totalItems = 0;
 
-    // Load products with optional search.
-    // Source: Deckard PIM (inquiry_tool channel) via PimProductService.
-    this.logger.debug('Loading products from PIM', { search });
-    this.pimProductService.getProducts({ search: search || undefined }).subscribe({
+    // Load products via the local backend. Master data is synced into the
+    // backend from the Deckard PIM (channel: inquiry_tool); the backend is
+    // the single read surface for the client.
+    this.logger.debug('Loading products', { search });
+    this.productService.getProducts({ search: search || undefined }).subscribe({
       next: (response) => {
         this.logger.debug('Product response received', { productCount: response.member.length });
         // Deduplicate products by id to avoid duplicate key errors in @for loops
