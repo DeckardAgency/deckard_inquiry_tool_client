@@ -20,6 +20,7 @@ import { LoggerService, ScopedLogger } from '@services/logger.service';
 
 // Extracted components
 import { MachineSearchComponent } from '../components/machine-search/machine-search.component';
+import { CarPickerComponent } from '../components/car-picker/car-picker.component';
 import { PartsFormComponent } from '../components/parts-form/parts-form.component';
 
 // Agent client select
@@ -40,6 +41,7 @@ import { CanComponentDeactivate } from '@core/guards/can-deactivate.guard';
     AdvancedImagePreviewModalComponent,
     IconComponent,
     MachineSearchComponent,
+    CarPickerComponent,
     PartsFormComponent,
     AgentClientSelectComponent,
     FormPopulatorComponent

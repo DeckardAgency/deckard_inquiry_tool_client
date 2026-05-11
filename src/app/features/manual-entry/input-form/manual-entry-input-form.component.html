@@ -32,21 +32,19 @@
     <div class="manual-entry__machines-section"
          [class.manual-entry__machines-section--details]="selectedMachine">
 
-      <!-- Machine Search Component -->
-      <app-machine-search
-        #machineSearch
-        [restoreSelectedMachineId]="selectedMachine?.id ?? null"
-        (machineSelected)="selectMachine($event)"
-        (otherMachineSelected)="selectOtherMachine()">
-        <div slot="before-search" *ngIf="isAgent" class="manual-entry__agent-client-select">
-          <span class="manual-entry__client-label">Choose client(s):</span>
-          <app-agent-client-select
-            [selectedClients]="selectedAgentClients"
-            (clientSelected)="onAgentClientSelected($event)"
-            (clientDeselected)="onAgentClientDeselected($event)">
-          </app-agent-client-select>
-        </div>
-      </app-machine-search>
+      <!-- Agent client select (when acting on behalf of clients) -->
+      <div *ngIf="isAgent" class="manual-entry__agent-client-select">
+        <span class="manual-entry__client-label">Choose client(s):</span>
+        <app-agent-client-select
+          [selectedClients]="selectedAgentClients"
+          (clientSelected)="onAgentClientSelected($event)"
+          (clientDeselected)="onAgentClientDeselected($event)">
+        </app-agent-client-select>
+      </div>
+
+      <!-- Cars / modules picker. Emits a synthetic Machine for
+           selectMachine() so the existing per-machine parts flow continues. -->
+      <app-car-picker (selectionMade)="selectMachine($event)"></app-car-picker>
     </div>
 
     @if (selectedMachine) {

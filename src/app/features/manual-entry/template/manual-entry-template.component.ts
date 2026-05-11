@@ -16,6 +16,7 @@ import { MachineArticleItemShimmerComponent } from '@shared/components/machine/m
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { SpreadsheetComponent } from '@shared/components/spreadsheet/spreadsheet.component';
 import { FileUploadComponent } from '../components/file-upload/file-upload.component';
+import { CarPickerComponent } from '../components/car-picker/car-picker.component';
 import { AgentClientSelectComponent } from '@shared/components/agent-client-select/agent-client-select.component';
 
 // Dev tools
@@ -55,6 +56,7 @@ import { CanComponentDeactivate } from '@core/guards/can-deactivate.guard';
     IconComponent,
     SpreadsheetComponent,
     FileUploadComponent,
+    CarPickerComponent,
     AgentClientSelectComponent,
     TemplatePopulatorComponent
   ],

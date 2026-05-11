@@ -72,50 +72,10 @@
     <div class="manual-entry__machines-section"
          [class.manual-entry__machines-section--details]="selectedMachine">
 
-      @if (loading) {
-        <div class="manual-entry__machines manual-entry__machines--list">
-          <app-machine-article-item-shimmer *ngFor="let i of [1,2,3,4,5,6,7,8,9]; trackBy: trackByIndex" [viewMode]="'list'"></app-machine-article-item-shimmer>
-        </div>
-      }
-
-      @if (error) {
-        <div class="manual-entry__error">{{ error }}</div>
-      }
-
-      @if (!loading && !error) {
-        <div class="manual-entry__machines manual-entry__machines--list">
-          @for (machine of filteredMachines; track machine.id) {
-            @if (machine.id === 'other') {
-              <!-- Other Machine Item -->
-              <div class="machine-other-item"
-                   [class.selected]="selectedMachine?.id === 'other'"
-                   (click)="selectMachine(machine)">
-                <div class="other-item-content">
-                  <div class="other-item-icon">
-                    <app-icon name="addPlus" size="20px" color="#232323"></app-icon>
-                  </div>
-                  <div class="other-item-text">
-                    <div class="other-item-title">{{ machine.articleDescription }}</div>
-                    <div class="other-item-subtitle">For machines not listed above</div>
-                  </div>
-                </div>
-                @if (selectedMachine?.id === 'other') {
-                  <div class="selection-checkmark">
-                    <app-icon name="successCheck" size="20px" color="#237804"></app-icon>
-                  </div>
-                }
-              </div>
-            } @else {
-              <app-machine-article-item
-                [machine]="machine"
-                viewMode="list"
-                [isSelected]="selectedMachine?.id === machine.id"
-                (machineSelected)="selectMachine($event)"
-              ></app-machine-article-item>
-            }
-          }
-        </div>
-      }
+      <!-- Cars / modules picker. Emits a synthetic Machine for
+           selectMachine() so the existing per-machine spreadsheet
+           flow continues without changes. -->
+      <app-car-picker (selectionMade)="selectMachine($event)"></app-car-picker>
     </div>
 
     @if (selectedMachine) {

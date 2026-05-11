@@ -1,0 +1,66 @@
+<div class="car-picker">
+  <!-- Header -->
+  <div class="car-picker__header">
+    <h2 class="car-picker__title">
+      @if (!selectedVehicle) {
+        Select a car
+      } @else {
+        Select a module of {{ prettyMake(selectedVehicle.make) }} {{ selectedVehicle.model }}
+      }
+    </h2>
+    @if (selectedVehicle) {
+      <button type="button" class="car-picker__back" (click)="clearSelectedVehicle()">
+        ← Back to cars
+      </button>
+    }
+  </div>
+
+  <!-- Loading / error states -->
+  @if (loading) {
+    <div class="car-picker__hint">Loading vehicles…</div>
+  } @else if (error) {
+    <div class="car-picker__hint car-picker__hint--error">{{ error }}</div>
+  } @else if (vehicles.length === 0) {
+    <div class="car-picker__hint">No vehicles found.</div>
+  }
+
+  <!-- Step 1: cars -->
+  @if (!selectedVehicle && !loading && !error) {
+    <div class="car-picker__grid">
+      @for (v of vehicles; track v.id) {
+        <button
+          type="button"
+          class="car-card"
+          [attr.aria-label]="'Select ' + prettyMake(v.make) + ' ' + v.model"
+          (click)="selectVehicle(v)"
+        >
+          <span class="car-card__make">{{ prettyMake(v.make) }}</span>
+          <span class="car-card__model">{{ v.model }}</span>
+          <span class="car-card__meta">
+            <span class="car-card__count">{{ v.partCount }} parts</span>
+            @if (yearRange(v)) {
+              <span class="car-card__years">{{ yearRange(v) }}</span>
+            }
+          </span>
+        </button>
+      }
+    </div>
+  }
+
+  <!-- Step 2: modules of the selected car -->
+  @if (selectedVehicle) {
+    <div class="car-picker__grid car-picker__grid--modules">
+      @for (m of selectedVehicle.modules; track m.code) {
+        <button
+          type="button"
+          class="module-card"
+          [attr.aria-label]="'Select module ' + m.label"
+          (click)="selectModule(m)"
+        >
+          <span class="module-card__label">{{ m.label }}</span>
+          <span class="module-card__count">{{ m.partCount }} parts</span>
+        </button>
+      }
+    </div>
+  }
+</div>
