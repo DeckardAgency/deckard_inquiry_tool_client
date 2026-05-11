@@ -58,7 +58,9 @@ export class CarPickerComponent implements OnInit {
   }
 
   prettyMake(make: string): string {
-    return make.charAt(0).toUpperCase() + make.slice(1);
+    const lower = make.toLowerCase();
+    if (lower === 'bmw') return 'BMW';
+    return lower.charAt(0).toUpperCase() + lower.slice(1);
   }
 
   yearRange(v: Vehicle): string {
