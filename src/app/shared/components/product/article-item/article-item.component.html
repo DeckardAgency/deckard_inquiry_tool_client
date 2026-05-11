@@ -8,7 +8,7 @@
 >
   <div class="article-item__image">
     <img
-      [src]="environment.apiBaseUrl + product.featuredImage?.filePath"
+      [src]="mediaUrl(product.featuredImage?.filePath)"
       [alt]="product.name"
       onerror="this.src='https://via.assets.so/img.jpg?w=130&h=74'"
       loading="lazy"

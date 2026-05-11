@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { QuickCartService } from '@services/cart/quick-cart.service';
 import { Product } from '@core/models';
 import { environment } from '@env/environment';
+import { mediaUrl } from '@utils/format-utils';
 import { CarouselComponent, CarouselImage } from '@shared/components/carousel/carousel.component';
 import { LoggerService, ScopedLogger } from '@services/logger.service';
 import { AgentClientSelectionService } from '@core/services/agent-client-selection.service';
@@ -17,6 +18,7 @@ import { AgentClientSelectionService } from '@core/services/agent-client-selecti
 })
 export class ProductCardComponent implements OnInit, OnChanges, AfterViewInit {
   environment = environment;
+  protected readonly mediaUrl = mediaUrl;
   @Input() product!: Product;
   quantity: number = 1;
   carouselImages: CarouselImage[] = [];
@@ -68,7 +70,7 @@ export class ProductCardComponent implements OnInit, OnChanges, AfterViewInit {
     // Add a featured image first if it exists
     if (this.product.featuredImage) {
       this.carouselImages.push({
-        url: this.environment.apiBaseUrl + this.product.featuredImage.filePath,
+        url: mediaUrl(this.product.featuredImage.filePath),
         alt: this.product.name
       });
     }
@@ -77,7 +79,7 @@ export class ProductCardComponent implements OnInit, OnChanges, AfterViewInit {
     if (this.product.imageGallery && this.product.imageGallery.length > 0) {
       this.product.imageGallery.forEach((image, index) => {
         this.carouselImages.push({
-          url: this.environment.apiBaseUrl + image.filePath,
+          url: mediaUrl(image.filePath),
           alt: `${this.product.name} - Image ${index + 1}`
         });
       });

@@ -114,7 +114,7 @@
           <div class="shop__details-part">
             <div class="shop__details-image">
               <img
-                [src]="environment.apiBaseUrl + selectedProduct.featuredImage?.filePath"
+                [src]="mediaUrl(selectedProduct.featuredImage?.filePath)"
                 [alt]="selectedProduct.name"
                 onerror="this.src='https://via.assets.so/img.jpg?w=600&h=400'"
                 loading="lazy"

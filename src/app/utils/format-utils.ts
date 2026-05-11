@@ -69,3 +69,19 @@ export function getImageVariationUrl(filePath: string | undefined, variation: st
 
   return `${environment.apiBaseUrl}/media/cache/resolve/${variation}${filePath}`;
 }
+
+/**
+ * Resolve a MediaItem.filePath to a usable URL.
+ * Returns absolute URLs as-is (used by PIM-sourced media); prefixes
+ * relative paths with environment.apiBaseUrl. Returns empty string for
+ * missing input so callers can guard with the `*ngIf` they already have.
+ */
+export function mediaUrl(filePath: string | undefined | null): string {
+  if (!filePath) {
+    return '';
+  }
+  if (/^https?:\/\//i.test(filePath)) {
+    return filePath;
+  }
+  return `${environment.apiBaseUrl}${filePath}`;
+}

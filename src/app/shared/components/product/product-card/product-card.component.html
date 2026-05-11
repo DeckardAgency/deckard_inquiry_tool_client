@@ -14,7 +14,7 @@
     <!-- Show single image if there's only one -->
     <img *ngIf="hasImages() && !shouldShowCarousel()"
          class="product-card__img"
-         [src]="environment.apiBaseUrl + product.featuredImage!.filePath"
+         [src]="mediaUrl(product.featuredImage?.filePath)"
          [alt]="product.name">
 
     <!-- Fallback if no images at all -->

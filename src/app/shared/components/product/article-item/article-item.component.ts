@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 import { CommonModule } from '@angular/common';
 import { environment } from '@env/environment';
 import { Product } from '@core/models';
-import { getImageVariationUrl } from '@utils/format-utils';
+import { getImageVariationUrl, mediaUrl } from '@utils/format-utils';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 
@@ -34,4 +34,5 @@ export class ArticleItemComponent {
   }
 
   protected readonly getImageVariationUrl = getImageVariationUrl;
+  protected readonly mediaUrl = mediaUrl;
 }

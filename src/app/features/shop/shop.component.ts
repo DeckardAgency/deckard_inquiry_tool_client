@@ -9,7 +9,9 @@ import { BreadcrumbsComponent } from '@shared/components/ui/breadcrumbs/breadcru
 import { ProductCardComponent } from '@shared/components/product/product-card/product-card.component';
 import { ArticleItemComponent } from '@shared/components/product/article-item/article-item.component';
 import { ProductService } from '@services/http/product.service';
+import { PimProductService } from '@services/http/pim-product.service';
 import { CartService } from '@services/cart/cart.service';
+import { mediaUrl } from '@utils/format-utils';
 import { AuthService } from '@core/auth/auth.service';
 import { AgentClientSelectionService } from '@core/services/agent-client-selection.service';
 import { ManagedClientResponse } from '@core/services/http/agent.service';
@@ -40,6 +42,7 @@ import { LoggerService, ScopedLogger } from '@services/logger.service';
 })
 export class ShopComponent implements OnInit, OnDestroy {
   environment = environment;
+  protected readonly mediaUrl = mediaUrl;
   products: Product[] = [];
   filteredProducts: Product[] = [];
   selectedProduct: Product | null = null;
@@ -73,6 +76,7 @@ export class ShopComponent implements OnInit, OnDestroy {
 
   constructor(
     private productService: ProductService,
+    private pimProductService: PimProductService,
     private cartService: CartService,
     private authService: AuthService,
     private agentClientSelectionService: AgentClientSelectionService,
@@ -204,9 +208,10 @@ export class ShopComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.totalItems = 0;
 
-    // Load products with optional search
-    this.logger.debug('Loading products', { search });
-    this.productService.getProducts({ search: search || undefined }).subscribe({
+    // Load products with optional search.
+    // Source: Deckard PIM (inquiry_tool channel) via PimProductService.
+    this.logger.debug('Loading products from PIM', { search });
+    this.pimProductService.getProducts({ search: search || undefined }).subscribe({
       next: (response) => {
         this.logger.debug('Product response received', { productCount: response.member.length });
         // Deduplicate products by id to avoid duplicate key errors in @for loops
